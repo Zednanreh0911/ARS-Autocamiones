@@ -2,7 +2,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from models import Vehiculo
 from bson import ObjectId
 
-client = AsyncIOMotorClient('mongodb://localhost:27017')
+client = AsyncIOMotorClient('mongodb+srv://emg4bgabrielhernandezcastillo:Camilo01@encava.qngdp.mongodb.net/')
 
 database = client.encava
 

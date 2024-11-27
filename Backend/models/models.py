@@ -62,7 +62,6 @@ class Repuesto(BaseModel):
 
     id: Optional[PyObjectId] = Field(default_factory=ObjectId, alias='_id')
     name: str
-    year: Optional[int] = None
     desc: Optional[str] = None
     disp: bool = False
 
@@ -75,7 +74,6 @@ class Repuesto(BaseModel):
 class UpdateRepuesto(BaseModel):
 
     name: Optional[str] = None
-    year: Optional[int] = None
     desc: Optional[str] = None
     disp: Optional[bool] = None
 

@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
-from database import get_allR, createR, get_oneR, get_oneR_id, updateR, deleteR
-from models import Repuesto, UpdateRepuesto
+from database.database import get_allR, createR, get_oneR, get_oneR_id, updateR, deleteR
+from models.models import Repuesto, UpdateRepuesto
 
 repuesto = APIRouter()
 

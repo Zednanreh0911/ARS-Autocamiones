@@ -1,8 +1,9 @@
 from motor.motor_asyncio import AsyncIOMotorClient
-from models import Vehiculo, Repuesto
+from models.models import Vehiculo, Repuesto
+from database.password import BDPASS
 from bson import ObjectId
 
-client = AsyncIOMotorClient('mongodb+srv://emg4bgabrielhernandezcastillo:Camilo01@encava.qngdp.mongodb.net/')
+client = AsyncIOMotorClient(f'mongodb+srv://emg4bgabrielhernandezcastillo:{BDPASS}@encava.qngdp.mongodb.net/')
 
 database = client.encava
 

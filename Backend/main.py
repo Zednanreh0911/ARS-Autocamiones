@@ -21,7 +21,7 @@ app.add_middleware(
 
 @app.get('/')
 def home():
-
+    
     return {"message":"este es el inicio uwu"}
 
 app.include_router(vehiculo)

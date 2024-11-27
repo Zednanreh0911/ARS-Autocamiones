@@ -36,7 +36,7 @@ class Vehiculo(BaseModel):
     id: Optional[PyObjectId] = Field(default_factory=ObjectId, alias='_id')
     name: str
     year: Optional[int] = None
-    desc: Optional[str] = None
+    desc: str
     disp: bool = False
 
     class Config:
@@ -62,7 +62,7 @@ class Repuesto(BaseModel):
 
     id: Optional[PyObjectId] = Field(default_factory=ObjectId, alias='_id')
     name: str
-    desc: Optional[str] = None
+    desc: str
     disp: bool = False
 
     class Config:

@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from routes.Vehiculos import vehiculo
+from routes.Repuestos import repuesto
 from fastapi.middleware.cors import CORSMiddleware
 from decouple import config
 
@@ -24,7 +25,7 @@ def home():
     return {"message":"este es el inicio uwu"}
 
 app.include_router(vehiculo)
-
+app.include_router(repuesto)
 
 
     

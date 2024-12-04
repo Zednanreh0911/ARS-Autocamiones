@@ -1,5 +1,4 @@
 import { Link, NavLink } from "react-router-dom";
-import "../sas.css";
 
 function Navbar() {
   return (
@@ -42,7 +41,9 @@ function Navbar() {
             <NavLink
               to="/"
               className={({ isActive }) =>
-                isActive ? "resaltar" : "boton_navegacion"
+                isActive
+                  ? "relative z-10 before:content-[''] before:absolute before:w-[120%] before:h-[15%] before:left-[-11%] before:bottom-[-10%] before:bg-orange-500 before:-z-10"
+                  : "relative before:content-[''] before:absolute before:w-[120%] before:h-[15%] before:left-[-100%] before:bottom-[-10%] before:bg-transparent before:-z-10 hover:before:left-[-11%] hover:before:transition-all hover:before:duration-300 hover:before:bg-orange-500 hover:before:z-10"
               }
             >
               Inicio
@@ -52,7 +53,9 @@ function Navbar() {
             <NavLink
               to="/vehiculos"
               className={({ isActive }) =>
-                isActive ? "resaltar" : "boton_navegacion"
+                isActive
+                  ? "relative z-10 before:content-[''] before:absolute before:w-[120%] before:h-[15%] before:left-[-11%] before:bottom-[-10%] before:bg-orange-500 before:-z-10"
+                  : "relative before:content-[''] before:absolute before:w-[120%] before:h-[15%] before:left-[-100%] before:bottom-[-10%] before:bg-transparent before:-z-10 hover:before:left-[-11%] hover:before:transition-all hover:before:duration-300 hover:before:bg-orange-500 hover:before:z-10"
               }
             >
               Vehiculos
@@ -62,7 +65,9 @@ function Navbar() {
             <NavLink
               to="/repuestos"
               className={({ isActive }) =>
-                isActive ? "resaltar" : "boton_navegacion"
+                isActive
+                  ? "relative z-10 before:content-[''] before:absolute before:w-[120%] before:h-[15%] before:left-[-11%] before:bottom-[-10%] before:bg-orange-500 before:-z-10"
+                  : "relative before:content-[''] before:absolute before:w-[120%] before:h-[15%] before:left-[-100%] before:bottom-[-10%] before:bg-transparent before:-z-10 hover:before:left-[-11%] hover:before:transition-all hover:before:duration-300 hover:before:bg-orange-500 hover:before:z-10"
               }
             >
               Repuestos
@@ -72,7 +77,9 @@ function Navbar() {
             <NavLink
               to="/sobre_nosotros"
               className={({ isActive }) =>
-                isActive ? "resaltar" : "boton_navegacion"
+                isActive
+                  ? "relative z-10 before:content-[''] before:absolute before:w-[120%] before:h-[15%] before:left-[-11%] before:bottom-[-10%] before:bg-orange-500 before:-z-10"
+                  : "relative before:content-[''] before:absolute before:w-[120%] before:h-[15%] before:left-[-100%] before:bottom-[-10%] before:bg-transparent before:-z-10 hover:before:left-[-11%] hover:before:transition-all hover:before:duration-300 hover:before:bg-orange-500 hover:before:z-10"
               }
             >
               Sobre Nosotros
@@ -82,7 +89,9 @@ function Navbar() {
             <NavLink
               to="/contactanos"
               className={({ isActive }) =>
-                isActive ? "resaltar" : "boton_navegacion"
+                isActive
+                  ? "relative z-10 before:content-[''] before:absolute before:w-[120%] before:h-[15%] before:left-[-11%] before:bottom-[-10%] before:bg-orange-500 before:-z-10"
+                  : "relative before:content-[''] before:absolute before:w-[120%] before:h-[15%] before:left-[-100%] before:bottom-[-10%] before:bg-transparent before:-z-10 hover:before:left-[-11%] hover:before:transition-all hover:before:duration-300 hover:before:bg-orange-500 hover:before:z-10"
               }
             >
               Contactanos

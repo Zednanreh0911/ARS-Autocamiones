@@ -41,7 +41,7 @@ function Carousel({ images }) {
     return () => clearInterval(interval);
   }, [imagenSiguiente]);
   return (
-    <section className="w-full h-auto px-8">
+    <section className="container mx-auto h-auto">
       <figure className="relative w-full h-96 bg-white rounded-xl overflow-hidden">
         <ul
           className="h-full flex transition-all ease-out duration-300"

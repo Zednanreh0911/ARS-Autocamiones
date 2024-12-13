@@ -7,9 +7,6 @@ BotonTipo1.propTypes = {
 };
 
 function BotonTipo1({ texto, paddingY, paddingX }) {
-  // py-4 px-24
-  // paddingY = "1.3rem"
-  // paddingX = "6rem"
   return (
     <button
       onClick={() => alert("hi")}

@@ -14,7 +14,6 @@ function App() {
         <Route path="/vehiculos" element={<VehiculosPage />} />
         <Route path="/repuestos" element={<RepuestosPage />} />
         <Route path="/sobre_nosotros" element={<SobreNosotrosPage />} />
-        <Route path="/contactanos" element={<h1>404 Not Found</h1>} />
       </Routes>
     </BrowserRouter>
   );

@@ -76,7 +76,12 @@ function HomePage() {
           <AutoCard image={auto2} />
           <AutoCard image={auto3} />
         </div>
-        <BotonTipo1 texto="Ver más" paddingY="1.2rem" paddingX="5.8rem" />
+        <BotonTipo1
+          texto="Ver más"
+          paddingY="1.2rem"
+          paddingX="5.8rem"
+          navigateTo={"vehiculos"}
+        />
       </section>
 
       <section className="container mx-auto h-96 mt-32 rounded-2xl overflow-hidden">
@@ -193,6 +198,7 @@ function HomePage() {
               texto="Miralos Aqui"
               paddingY="0.8rem"
               paddingX="2.3rem"
+              navigateTo={"repuestos"}
             />
           </footer>
         </article>
@@ -201,6 +207,7 @@ function HomePage() {
             texto="Miralos Aquí"
             paddingY="0.8rem"
             paddingX="2.3rem"
+            navigateTo={"repuestos"}
           />
         </aside>
       </section>

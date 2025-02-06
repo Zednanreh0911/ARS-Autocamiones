@@ -4,11 +4,13 @@ import Navbar from "./components/Navbar.jsx";
 import VehiculosPage from "./pages/VehiculosPage";
 import RepuestosPage from "./pages/RepuestosPage";
 import SobreNosotrosPage from "./pages/SobrePage";
+import ScrollToTop from "./components/ScrollToTop.jsx";
 
 function App() {
   return (
     <BrowserRouter>
       <Navbar />
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/vehiculos" element={<VehiculosPage />} />

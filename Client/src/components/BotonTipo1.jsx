@@ -1,15 +1,24 @@
 import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
 
 BotonTipo1.propTypes = {
   texto: PropTypes.string.isRequired,
   paddingY: PropTypes.string.isRequired,
   paddingX: PropTypes.string.isRequired,
+  navigateTo: PropTypes.string,
 };
 
-function BotonTipo1({ texto, paddingY, paddingX }) {
+function BotonTipo1({ texto, paddingY, paddingX, navigateTo }) {
+  const navigate = useNavigate();
+
+  function handleClick() {
+    console.log("BotonTipo1 clicked");
+    if (navigateTo) navigate(navigateTo);
+  }
+
   return (
     <button
-      onClick={() => alert("hi")}
+      onClick={handleClick}
       style={{
         "--before-content": `"${texto}"`,
         padding: `${paddingY} ${paddingX}`,

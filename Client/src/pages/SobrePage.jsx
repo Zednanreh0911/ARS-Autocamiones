@@ -24,9 +24,9 @@ function SobrePage() {
             máximo de tu inversión.
           </p>
           <img
-            className="w-full rounded"
+            className="w-full rounded max-[375px]:hidden"
             src="https://s3-alpha-sig.figma.com/img/68ae/8d97/e0b12b7488abc7c87a58a78539e9bb14?Expires=1740960000&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=uUU9wklhKmKKqji0fVhRnSE6lf0VdUSvvKUXlrxvzxwE7XfmVclU~joswrnMlHyHPj8TJLa~YqRTUGshqjQpyQF9Cxfgx0~25X~8i30kVNYFApmFxLtOx4B5EkmmzQCkD3qvw86456u72OmdsONQzfuejaDJzaPVUL8nxjlqlP~qKAIWNT~Ofu395rG7eKb484CPBthM7F7sKobO0O5EaUFqf63ANbGSViasSQUlHVdgDYkBNO~X~bshZ7tFgGQmZuAmcCnDO5Zkj9zQdYquyvExfj55JaibWZH2rtx4-7AJbItDzdXynAdDDHYrzoFUaufz2ME6EJRd1xnIGdZrVg__"
-            alt="foto empresarial"
+            alt="foto de la empresa"
           />
         </article>
 

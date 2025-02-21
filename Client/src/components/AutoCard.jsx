@@ -5,7 +5,7 @@ AutoCard.propTypes = { image: PropTypes.string.isRequired };
 function AutoCard({ image }) {
   return (
     <article className="max-w-96 md:max-w-80 xl:max-w-96 h-fit rounded-2xl overflow-hidden shadow-2xl mt-4">
-      <img className="w-full" src={image} alt="auto1" />
+      <img className="w-full max-h-64 min-w-96" src={image} alt="auto1" />
       <section className="text-left p-4">
         <header>
           <h2 className="text-orange-500 text-xs">Mini Cooper 3 similar</h2>

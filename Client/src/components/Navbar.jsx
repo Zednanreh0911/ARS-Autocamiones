@@ -186,15 +186,12 @@ function Navbar() {
               </NavLink>
             </li>
             <li className="mt-5">
-              <NavLink
-                to="/contactanos"
-                className={({ isActive }) =>
-                  (isActive ? "text-orange-500" : "") +
-                  " py-1 px-8 transition-all duration-300 hover:text-orange-500"
-                }
+              <a
+                href="#footerbar"
+                className="py-1 px-8 transition-all duration-300 hover:text-orange-500"
               >
                 Contactanos
-              </NavLink>
+              </a>
             </li>
           </ul>
         </div>

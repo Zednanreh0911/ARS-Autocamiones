@@ -12,13 +12,13 @@ function VehiclePage() {
 
   return (
     <main className="mt-40">
-      <section className="w-full flex justify-evenly gap-8">
+      <section className="w-full flex flex-wrap justify-evenly gap-8">
         <button
           onClick={() => handleSelectVehicle("camionetas")}
-          className="relative overflow-hidden rounded-lg"
+          className="relative overflow-hidden rounded-lg max-[470px]:mx-4"
         >
           <img
-            className="transition-transform duration-300 ease-in-out transform hover:scale-110"
+            className="transition-transform duration-300 ease-in-out transform hover:scale-110 w-[450px] min-[1350px]:w-full"
             src={carro1}
             alt="camionetas img"
           />
@@ -27,16 +27,16 @@ function VehiclePage() {
           </span>
         </button>
         <button
-          className="relative overflow-hidden rounded-lg"
+          className="relative overflow-hidden rounded-lg max-[470px]:mx-4"
           onClick={() => handleSelectVehicle("autobuses")}
         >
           <img
-            className="transition-transform duration-300 ease-in-out transform hover:scale-110"
+            className="transition-transform duration-300 ease-in-out transform hover:scale-110 w-[450px] min-[1350px]:w-full"
             src={carro2}
             alt="autobus img"
           />
           <span className="absolute bottom-2 left-4 font-bold text-xl">
-            autobuses
+            Autobuses
           </span>
         </button>
       </section>

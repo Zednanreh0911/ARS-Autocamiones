@@ -5,7 +5,11 @@ AutoCard.propTypes = { image: PropTypes.string.isRequired };
 function AutoCard({ image }) {
   return (
     <article className="max-w-96 md:max-w-80 xl:max-w-96 h-fit rounded-2xl overflow-hidden shadow-2xl mt-4">
-      <img className="w-full max-h-64 min-w-96" src={image} alt="auto1" />
+      <img
+        className="w-full max-h-64 min-[400px]:min-w-96"
+        src={image}
+        alt="auto1"
+      />
       <section className="text-left p-4">
         <header>
           <h2 className="text-orange-500 text-xs">Mini Cooper 3 similar</h2>
@@ -59,7 +63,7 @@ function AutoCard({ image }) {
             </div>
           </div>
         </dl>
-        <button className="mt-4 flex items-center gap-2">
+        <button className="mt-4 flex items-center gap-2 border border-transparent rounded-xl hover:border-orange-500 ease-in-out duration-300 p-3">
           Ver detalles{" "}
           <svg
             xmlns="http://www.w3.org/2000/svg"

@@ -1,18 +1,28 @@
 import AutoCard from "../components/AutoCard";
 import carro1 from "../assets/auto3.jpg";
 import carro2 from "../assets/auto2.jpg";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 function VehiclePage() {
   const [selectedVehicle, setSelectedVehicle] = useState("camionetas");
+  const vehiculosRef = useRef(null);
 
   const handleSelectVehicle = (vehicle) => {
     setSelectedVehicle(vehicle);
+    if (vehicle === "camionetas" || vehicle === "autobuses") {
+      vehiculosRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
   };
 
   return (
     <main className="mt-40">
-      <section className="w-full flex flex-wrap justify-evenly gap-8">
+      <section
+        ref={vehiculosRef}
+        className="w-full flex flex-wrap justify-evenly gap-8"
+      >
         <button
           onClick={() => handleSelectVehicle("camionetas")}
           className="relative overflow-hidden rounded-lg max-[470px]:mx-4"

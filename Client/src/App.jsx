@@ -5,6 +5,7 @@ import VehiculosPage from "./pages/VehiculosPage";
 import RepuestosPage from "./pages/RepuestosPage";
 import SobreNosotrosPage from "./pages/SobrePage";
 import ScrollToTop from "./components/ScrollToTop.jsx";
+import Footerbar from "./components/Footerbar.jsx";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/repuestos" element={<RepuestosPage />} />
         <Route path="/sobre_nosotros" element={<SobreNosotrosPage />} />
       </Routes>
+      <Footerbar/>
     </BrowserRouter>
   );
 }

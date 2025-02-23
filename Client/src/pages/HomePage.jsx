@@ -7,7 +7,6 @@ import auto2 from "../assets/auto2.jpg";
 import auto3 from "../assets/auto3.jpg";
 import SubtituloTipo1 from "../components/SubtituloTipo1";
 import LogroCard from "../components/LogroCard";
-import Footerbar from "../components/Footerbar";
 
 function HomePage() {
   const iconoAuto = (
@@ -211,8 +210,6 @@ function HomePage() {
           />
         </aside>
       </section>
-
-      <Footerbar />
     </main>
   );
 }

@@ -6,6 +6,7 @@ import RepuestosPage from "./pages/RepuestosPage";
 import SobreNosotrosPage from "./pages/SobrePage";
 import Login from "./pages/Login";
 import ScrollToTop from "./components/ScrollToTop.jsx";
+import Footerbar from "./components/Footerbar.jsx";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/sobre_nosotros" element={<SobreNosotrosPage />} />
         <Route path="/login" element={<Login />} />
       </Routes>
+      <Footerbar/>
     </BrowserRouter>
   );
 }

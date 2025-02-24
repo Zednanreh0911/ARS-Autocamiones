@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar.jsx";
 import VehiculosPage from "./pages/VehiculosPage";
 import RepuestosPage from "./pages/RepuestosPage";
 import SobreNosotrosPage from "./pages/SobrePage";
+import Login from "./pages/Login";
 import ScrollToTop from "./components/ScrollToTop.jsx";
 import Footerbar from "./components/Footerbar.jsx";
 
@@ -17,6 +18,7 @@ function App() {
         <Route path="/vehiculos" element={<VehiculosPage />} />
         <Route path="/repuestos" element={<RepuestosPage />} />
         <Route path="/sobre_nosotros" element={<SobreNosotrosPage />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
       <Footerbar/>
     </BrowserRouter>

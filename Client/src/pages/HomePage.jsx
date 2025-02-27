@@ -110,16 +110,18 @@ function HomePage() {
               <path d="m418.474 478.768c4.143 0 7.5-3.357 7.5-7.5v-19.961c0-4.143-3.357-7.5-7.5-7.5s-7.5 3.357-7.5 7.5v19.961c0 4.143 3.358 7.5 7.5 7.5z" />
             </svg>
             <p className="max-w-56 md:max-w-72 text-justify">
-              Necesitas ayuda con alguna falla que presenta tu vehiculo, no
-              dudes en agendar una cita con nuestros mecanicos calificados y
-              capacitados para darte la mejor atencion
+              {" "}
+              Necesitas ayuda con alguna falla que presenta tu vehículo,
+              nuestros mecánicos calificados y capacitados te darán la mejor
+              atención y solución a tus problemas.
             </p>
           </div>
           <footer>
             <BotonTipo1
-              texto="Agendar Cita"
+              texto="Conócenos"
               paddingY="0.8rem"
               paddingX="2.3rem"
+              navigateTo={"/sobre_nosotros"}
             />
           </footer>
         </article>

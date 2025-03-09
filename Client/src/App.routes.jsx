@@ -20,11 +20,15 @@ function AppRoutes() {
     "/login",
     "/admin",
   ];
-  const hideNavbarAndFooter =
-    location.pathname === "/login" || !validPaths.includes(location.pathname);
+  const hideFooter =
+    location.pathname === "/login" ||
+    !validPaths.includes(location.pathname) ||
+    location.pathname === "/admin";
+
+  const hideNavbar = !validPaths.includes(location.pathname);
   return (
     <>
-      {!hideNavbarAndFooter && <Navbar />}
+      {!hideNavbar && <Navbar />}
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<HomePage />} />
@@ -35,7 +39,7 @@ function AppRoutes() {
         <Route path="/admin" element={<Admin />} />
         <Route path="*" element={<Error404 />} />
       </Routes>
-      {!hideNavbarAndFooter && <Footerbar />}
+      {!hideFooter && <Footerbar />}
     </>
   );
 }

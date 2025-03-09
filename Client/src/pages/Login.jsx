@@ -1,12 +1,16 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
   const { register, handleSubmit } = useForm();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
   const onSubmit = handleSubmit((data) => {
     console.log(`Jeison info: ${data.email} ${data.password}`);
+    navigate("/admin");
   });
 
   return (

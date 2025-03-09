@@ -25,7 +25,7 @@ function AppRoutes() {
     !validPaths.includes(location.pathname) ||
     location.pathname === "/admin";
 
-  const hideNavbar = !validPaths.includes(location.pathname);
+  const hideNavbar = !validPaths.includes(location.pathname) || location.pathname === "/login";
   return (
     <>
       {!hideNavbar && <Navbar />}

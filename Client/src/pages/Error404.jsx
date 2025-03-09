@@ -19,7 +19,7 @@ function Error404() {
   return (
     <div className="h-screen w-full flex justify-center items-center">
       <section className="p-4 bg-gray-100 rounded-lg shadow-lg text-center">
-        <h1 className="text-red-500 font-extrabold text-8xl">Error 404</h1>
+        <h1 className="text-orange-500 font-extrabold text-8xl">Error 404</h1>
         <p className="font-bold text-lg">Ruta no encontrada...</p>
         <p className="text-lg">
           Redirigiendo a la página de inicio en{" "}

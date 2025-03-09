@@ -1,10 +1,4 @@
-import { useState } from "react";
-
 function SobrePage() {
-  const [selectedParrafo, setSelectedParrafo] = useState(0);
-  const cambiarParrafo = (parrafo) => {
-    setSelectedParrafo(parrafo);
-  };
   return (
     <>
       <div className="container mx-auto">
@@ -54,7 +48,7 @@ function SobrePage() {
                 110 mil metros cuadrados.Este espacio ha permitido las
                 inversiones necesarias en infraestructura, capital humano y
                 tecnología para consolidar su posición de liderazgo en el
-                sector. 
+                sector.
               </p>
 
               <img

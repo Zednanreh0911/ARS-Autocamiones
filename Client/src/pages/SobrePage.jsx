@@ -1,3 +1,8 @@
+import ars from "../assets/ARS-Auto-Camiones.png";
+import historia from "../assets/encav.png";
+import mision from "../assets/image 4.png";
+import vision from "../assets/Vision.png";
+import futuro from "../assets/futuro.png";
 function SobrePage() {
   return (
     <>
@@ -15,7 +20,7 @@ function SobrePage() {
           </p>
           <img
             className="w-full rounded max-[375px]:hidden"
-            src="https://s3-alpha-sig.figma.com/img/68ae/8d97/e0b12b7488abc7c87a58a78539e9bb14?Expires=1740960000&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=uUU9wklhKmKKqji0fVhRnSE6lf0VdUSvvKUXlrxvzxwE7XfmVclU~joswrnMlHyHPj8TJLa~YqRTUGshqjQpyQF9Cxfgx0~25X~8i30kVNYFApmFxLtOx4B5EkmmzQCkD3qvw86456u72OmdsONQzfuejaDJzaPVUL8nxjlqlP~qKAIWNT~Ofu395rG7eKb484CPBthM7F7sKobO0O5EaUFqf63ANbGSViasSQUlHVdgDYkBNO~X~bshZ7tFgGQmZuAmcCnDO5Zkj9zQdYquyvExfj55JaibWZH2rtx4-7AJbItDzdXynAdDDHYrzoFUaufz2ME6EJRd1xnIGdZrVg__"
+            src={ars}
             alt="foto de la empresa"
           />
         </article>
@@ -52,7 +57,7 @@ function SobrePage() {
               </p>
 
               <img
-                src="https://s3-alpha-sig.figma.com/img/19bc/2b79/95a6b4809104be1cde029a2acbdae13c?Expires=1740960000&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=l4NHjZVvohBIHHTN5nvXS4o1PRVJE8cGAKmchUyhCpWsKCVvJ1ffxO6LSp3pRx5XT8ByUCtw3nDmlWEOhmJzp-b4rd01HL89kgPGpv4GuKhzLx9Wdzp0-zwBVtLfOCj2LksqGmbYqHDBlggrzw9a5u3QKRuCta2OaCwZ5w0xpjSIZg~aemybGq2e2rQjpDFHtZ~F196QgOLzx7jgJAh1V~ccgyLnIrNJckR8Y1qdpXfrNpVWGOoPC-sXcXts3GlPYk5bGPYmHQ~LfWTbx~5~SCR4qepvDnzuZPIQtQ8540sU1WgTWlE5zs0F4UdAc3CXRriwbEw2jwe8a5h-Va9gsA__"
+                src={historia}
                 className="rounded sm:w-full md:w-full lg:w-full xl:full"
                 alt=""
               />
@@ -62,11 +67,7 @@ function SobrePage() {
         <section className="mt-10 mx-auto sm:py-24">
           <div className="rounded-2xl shadow-xl grid lg:grid-cols-2 gap-8 items-center bg-white">
             <div className=" flex items-center justify-center h-[400px] ">
-              <img
-                src="https://s3-alpha-sig.figma.com/img/7177/e442/a4e5233d7e51357157ecb013e48a1c0a?Expires=1740960000&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=nyJ4MhL2gcUTMS3N6Uv9h~A0Rj-1JwxYmWEyq7yfNY1M3GgbD7repD6Hqh9NDdfAiPCeN-8kz~Cww0Rym3kOChg0a8NzCk7xvfTvDhzyP64B-bUIfIRLHz5ASuQ4xkQTjAbcZLxqfLJM7EGhy~r2I8vFjGv7DNwR4TsL4rR4RNW9Pkobvnz2OwfA3chlEjlJ9gJAG3bDb25g29n21XD-yNCSnIaKnZGEq7Ff3ERoju~9R7ztWWF~1rL7eeyK~K0aRb4qktL9UmZlgua87QOAR7ONjWD1kVKxjCHb5adVhjPsEEGtvBxl~sCTt88HJhep1C9dgAYc73ChZcQ7w5vrxg__"
-                width="350"
-                alt="Placeholder image"
-              ></img>
+              <img src={mision} width="350" alt="Placeholder image"></img>
             </div>
             <div className=" flex flex-col items-center lg:items-start justify-center">
               <h2 className=" mb-2 font-bold text-3xl">Mision</h2>
@@ -80,11 +81,7 @@ function SobrePage() {
         <section className="mx-auto mt-4 sm:py-24">
           <div className="rounded-2xl shadow-xl grid lg:grid-cols-2 gap-8 items-center bg-white">
             <div className=" flex items-center justify-center h-[400px] ">
-              <img
-                src="https://s3-alpha-sig.figma.com/img/7220/d4d6/92b7c072022c123bd071b9ef2c49c004?Expires=1740960000&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=jo2v2jJfdnneMT4A3ftkVpeqVRBbK8Y7fUxWHJWLp4VHVbgBjJFKScGjYaelIL6-M3uTLZxw9fHFsyjr~zFBxS3QaY2nnbd8VI-EauG9cp577c8NDajeEAL9gYAIuI4sFLbskM241heAoSByhHzOwn5GS~VU14pM225L0J1kD1Pcr-C6zlGzeEfH~MaUvOb64~kaXuoDAACObdmcu06knXie1YcNZ6HqX9j7neVEhYJdu1wNXflAFOPt1JfkfXHz3kRzrMT7gFoATzNidQcGmtUNIPdXHci4Ngla2wIIdavxmdixMPGB3A-3LXBBk5oa2Haeh14UBaBoKVta1exGJw__"
-                width="350"
-                alt="Placeholder image"
-              ></img>
+              <img src={vision} width="350" alt="Placeholder image"></img>
             </div>
             <div className=" flex flex-col items-center lg:items-start justify-center">
               <h2 className=" mb-2 font-bold text-3xl">Vision</h2>
@@ -103,11 +100,7 @@ function SobrePage() {
         <section className="mt-4 mx-auto  sm:py-24">
           <div className="rounded-2xl shadow-xl grid lg:grid-cols-2 gap-8 items-center bg-white">
             <div className=" flex items-center justify-center h-[400px] ">
-              <img
-                src="https://s3-alpha-sig.figma.com/img/d7c9/c231/92eee3209255fb1e421681fbad6286be?Expires=1740960000&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=J8Ccr9Mb4PRz5NM8NvYQr4IFYMqgQt6b9w4nB-GmpaFu85Mqkz-hNl1LAi77b7FiHIq-ZT3FN6GyFWkNAo-xzRVPF5EibtzFOCx7lYhj2g2H~o4N1xpoYUKu8qkYVfUjZLuOFx4FXjLBFTOb7sZ1AneN1SOYTmAH0OGUhIqrRO5gHFAIrXQuSMbnECRjeMv~GXcZUemUxcF1BNgOWfBYjgHPX6iiF94l4T1SXJ6Mfxav0KYzGXtQj1Z1NG6RvhGsL53NIEQxaYhDiUiq3mFizilYt~GAz9K45uBTqddKUv3ocdA6Tiq3zgA-DHYjcucJj1ANrNFTHfqF0peaHmhHdw__"
-                width="350"
-                alt="Placeholder image"
-              ></img>
+              <img src={futuro} width="350" alt="Placeholder image"></img>
             </div>
             <div className=" flex flex-col items-center lg:items-start justify-center">
               <h2 className=" mb-2 font-bold text-3xl">Futuro</h2>

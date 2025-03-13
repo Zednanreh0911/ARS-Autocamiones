@@ -11,14 +11,14 @@ function Admin() {
   };
 
   return (
-    <main className="mt-40 w-full h-screen flex">
-      <aside className="w-1/6 h-screen border-2 border-blue-700">
+    <main className="mt-[138px] w-full h-screen flex">
+      <aside className="w-1/6 h-screen bg-black pt-4 opacity-90">
         <ul className="text-center text-2xl gap-4 flex flex-col font-bold">
           <li>
             <button
               onClick={manejoDeCategoria}
               className={`cursor-pointer hover:text-orange-500 ease-in-out duration-300 ${
-                category === "Vehículos" ? "text-orange-500" : "text-black"
+                category === "Vehículos" ? "text-orange-500" : "text-white"
               }`}
             >
               Vehículos
@@ -28,7 +28,7 @@ function Admin() {
             <button
               onClick={manejoDeCategoria}
               className={`cursor-pointer hover:text-orange-500 ease-in-out duration-300 ${
-                category === "Repuestos" ? "text-orange-500" : "text-black"
+                category === "Repuestos" ? "text-orange-500" : "text-white"
               }`}
             >
               Repuestos
@@ -38,7 +38,7 @@ function Admin() {
             <button
               onClick={manejoDeCategoria}
               className={`cursor-pointer hover:text-orange-500 ease-in-out duration-300 ${
-                category === "Usuarios" ? "text-orange-500" : "text-black"
+                category === "Usuarios" ? "text-orange-500" : "text-white"
               }`}
             >
               Usuarios
@@ -48,7 +48,7 @@ function Admin() {
             <button
               onClick={manejoDeCategoria}
               className={`cursor-pointer hover:text-orange-500 ease-in-out duration-300 ${
-                category === "Reportes" ? "text-orange-500" : "text-black"
+                category === "Reportes" ? "text-orange-500" : "text-white"
               }`}
             >
               Reportes
@@ -56,10 +56,10 @@ function Admin() {
           </li>
         </ul>
       </aside>
-      <section className="flex items-center flex-col w-5/6 h-screen border-2 border-red-700">
+      <section className="flex items-center flex-col w-5/6 h-screen p-4">
         <h1 className="text-4xl text-center font-bold">{category}</h1>
         <form
-          className={`mt-2 p-5 w-96 flex flex-col gap-4 items-center text-center ${
+          className={`mt-2 p-5 w-96 flex flex-col gap-4 items-center text-center shadow-md rounded-lg ${
             category === "Vehículos" ? "block" : "hidden"
           }`}
         >
@@ -73,7 +73,7 @@ function Admin() {
             type="text"
             placeholder="Modelo"
           />
-          <select className="border rounded-md w-full p-2 mt-2">
+          <select className="border rounded-md w-full p-2 mt-2 cursor-pointer">
             <option value="" disabled selected>
               Tipo de combustible
             </option>
@@ -81,7 +81,7 @@ function Admin() {
             <option value="Gasolina">Gasolina</option>
             <option value="Hibrido">Hibrido</option>
           </select>
-          <select className="border rounded-md w-full p-2 mt-2">
+          <select className="border rounded-md w-full p-2 mt-2 cursor-pointer">
             <option value="" disabled selected>
               Tipo de Transmisión
             </option>
@@ -112,7 +112,7 @@ function Admin() {
         </form>
 
         <form
-          className={`mt-2 p-5 w-96 flex flex-col gap-4 items-center text-center ${
+          className={`mt-2 p-5 w-96 flex flex-col gap-4 items-center text-center shadow-md rounded-lg ${
             category === "Repuestos" ? "block" : "hidden"
           }`}
         >
@@ -131,7 +131,7 @@ function Admin() {
             type="number"
             placeholder="Precio"
           />
-          <select className="border rounded-md w-full p-2 mt-2">
+          <select className="border rounded-md w-full p-2 mt-2 cursor-pointer">
             <option value="" disabled selected>
               Seleccione la categoria
             </option>
@@ -161,7 +161,7 @@ function Admin() {
           </button>
         </form>
         <form
-          className={`mt-2 p-5 w-96 flex flex-col gap-4 items-center text-center ${
+          className={`mt-2 p-5 w-96 flex flex-col gap-4 items-center text-center shadow-md rounded-lg ${
             category === "Usuarios" ? "block" : "hidden"
           }`}
         >
@@ -186,7 +186,7 @@ function Admin() {
           </button>
         </form>
         <div
-          className={`mt-2 p-5 w-96 flex flex-col gap-4 items-center text-center ${
+          className={`mt-2 p-5 w-96 flex flex-col gap-4 items-center text-center shadow-md rounded-md ${
             category === "Reportes" ? "block" : "hidden"
           }`}
         >
@@ -215,7 +215,7 @@ function Admin() {
               reportes === "Inventario" ? "block" : "hidden"
             }`}
           >
-            <select className="border rounded-md w-full p-2 mt-2">
+            <select className="border rounded-md w-full p-2 mt-2 cursor-pointer">
               <option value="" disabled selected>
                 Seleccione reporte a generar
               </option>
@@ -236,7 +236,7 @@ function Admin() {
               reportes === "Ventas" ? "block" : "hidden"
             }`}
           >
-            <select className="border rounded-md w-full p-2 mt-2 mb-2">
+            <select className="border rounded-md w-full p-2 mt-2 mb-2 cursor-pointer">
               <option value="" disabled selected>
                 Seleccione reporte a generar
               </option>
@@ -250,7 +250,7 @@ function Admin() {
               <h2 className="text-left">Seleccione fecha desde:</h2>
               <input
                 id="desde"
-                className="border rounded-md w-full p-2 mb-2"
+                className="border rounded-md w-full p-2 mb-2 cursor-pointer"
                 type="date"
               />
             </label>
@@ -258,7 +258,7 @@ function Admin() {
               <h2 className="text-left">Hasta:</h2>
               <input
                 id="hasta"
-                className="border rounded-md w-full p-2 mb-2"
+                className="border rounded-md w-full p-2 mb-2 cursor-pointer"
                 type="date"
               />
             </label>

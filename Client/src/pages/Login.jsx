@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import auto2 from "../assets/auto2.jpg";
 
 function Login() {
   const { register, handleSubmit } = useForm();
@@ -14,8 +15,12 @@ function Login() {
   });
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="w-full max-w-md p-8 space-y-6 bg-white rounded shadow-md">
+    <div
+      className="flex items-center justify-center min-h-screen bg-cover"
+      style={{ backgroundImage: `url(${auto2})` }}
+    >
+      <div className="absolute z-[1] w-full h-full bg-black opacity-60"></div>
+      <div className="w-full max-w-md p-8 space-y-6 bg-white rounded shadow-md z-[2]">
         <h2 className="text-2xl font-bold text-center">Autenticación</h2>
         <form className="text-center space-y-6" onSubmit={onSubmit}>
           <div>

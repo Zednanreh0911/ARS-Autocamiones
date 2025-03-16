@@ -1,25 +1,16 @@
 import { Router } from "express";
+import { getVehiculos, getVehiculo, createVehiculo, updateVehiculo, deleteVehiculo  } from "../controllers/vehiculos.controller.js";
 
 const vehiculosRouter = Router();
 
-vehiculosRouter.get("/", (req, res) => {
-  res.send("GET vehiculos");
-});
+vehiculosRouter.get("/", getVehiculos);
 
-vehiculosRouter.get("/:id", (req, res) => {
-  res.send("GET vehiculos");
-});
+vehiculosRouter.get("/:id", getVehiculo);
 
-vehiculosRouter.post("/", (req, res) => {
-  res.send("POST vehiculos");
-});
+vehiculosRouter.post("/", createVehiculo);
 
-vehiculosRouter.put("/:id", (req, res) => {
-  res.send("PUT vehiculos");
-});
+vehiculosRouter.put("/:id", updateVehiculo);
 
-vehiculosRouter.delete("/:id", (req, res) => {
-  res.send("DELETE vehiculos");
-});
+vehiculosRouter.delete("/:id", deleteVehiculo);
 
 export default vehiculosRouter;

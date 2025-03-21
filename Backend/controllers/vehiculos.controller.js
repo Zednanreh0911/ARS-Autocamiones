@@ -1,3 +1,5 @@
+import client from "../db.js";
+
 export const getVehiculos = (req, res) => {
     res.json({ message: 'GET vehiculos' });
 }

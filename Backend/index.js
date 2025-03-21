@@ -5,6 +5,8 @@ import usuariosRouter from "./routes/usuarios.routes.js";
 
 const app = express();
 
+app.use(express.json());
+
 //Endpoints
 app.use("/vehiculos", vehiculosRouter);
 
@@ -12,6 +14,10 @@ app.use("/repuestos", repuestosRouter);
 
 app.use("/usuarios", usuariosRouter);
 
+// await client.connect();
+// const res = await client.query("SELECT * FROM repuestos");
+// console.log(res.rows);
+// await client;
 
 //Puerto
 app.listen(6969, () => {

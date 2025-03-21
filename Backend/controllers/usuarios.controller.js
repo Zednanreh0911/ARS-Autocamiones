@@ -1,3 +1,5 @@
+import client from "../db.js";
+
 export const getUsuarios = (req, res) => {
     res.json({ message: 'GET usuarios' });
 }

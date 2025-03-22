@@ -27,10 +27,10 @@ export const getVehiculo = async (req, res) => {
 
 export const createVehiculo = async (req, res) => {
   try {
-    const { marca, year, tipo, desc, trans, combus } = req.body;
+    const { marca, year, tipo, desc, trans, combus, img } = req.body;
     const response = await client.query(
-      "INSERT INTO vehiculos (marca, year, tipo, desc, trans, combus) VALUES ($1, $2, $3, $4, $5, $6)",
-      [marca, year, tipo, desc, trans, combus]
+      "INSERT INTO vehiculos (marca, year, tipo, desc, trans, combus, img) VALUES ($1, $2, $3, $4, $5, $6, $7)",
+      [marca, year, tipo, desc, trans, combus, img]
     );
     res.status(200).json({
       message: "Vehiculo creado",
@@ -42,6 +42,7 @@ export const createVehiculo = async (req, res) => {
           desc,
           trans,
           combus,
+          img,
         },
       },
     });
@@ -53,15 +54,15 @@ export const createVehiculo = async (req, res) => {
 export const updateVehiculo = async (req, res) => {
   try {
     const { id } = req.params;
-    const { marca, year, tipo, desc, trans, combus } = req.body;
+    const { marca, year, tipo, desc, trans, combus, img } = req.body;
     const response = await client.query(
-      "UPDATE vehiculos SET marca = $1, year = $2, tipo = $3, desc = 4$, trans = $5, combus = $6 WHERE id = $7",
-      [marca, year, tipo, desc, trans, combus, id]
+      "UPDATE vehiculos SET marca = $1, year = $2, tipo = $3, desc = 4$, trans = $5, combus = $6, img = $7 WHERE id = $8",
+      [marca, year, tipo, desc, trans, combus, img, id]
     );
     res.status(200).json({
       message: "Vehiculo actualizado",
       body: {
-        vehiculo: { marca, year, tipo, desc, trans, combus },
+        vehiculo: { marca, year, tipo, desc, trans, combus, img },
       },
     });
   } catch (error) {

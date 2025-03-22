@@ -29,15 +29,15 @@ export const getRepuesto = async (req, res) => {
 
 export const createRepuesto = async (req, res) => {
   try {
-    const { name, marca, cantidad, cat, precio } = req.body;
+    const { name, marca, cantidad, cat, precio, img } = req.body;
     const response = await pool.query(
-      "INSERT INTO repuestos (name, marca, cantidad, cat, precio) VALUES ($1, $2, $3, $4, $5)",
-      [name, marca, cantidad, cat, precio]
+      "INSERT INTO repuestos (name, marca, cantidad, cat, precio, img) VALUES ($1, $2, $3, $4, $5, $6)",
+      [name, marca, cantidad, cat, precio, img]
     );
     res.status(200).json({
       message: "Repuesto creado",
       body: {
-        repuesto: { name, marca, cantidad, precio },
+        repuesto: { name, marca, cantidad, precio, img },
       },
     });
   } catch (error) {
@@ -48,15 +48,15 @@ export const createRepuesto = async (req, res) => {
 export const updateRepuesto = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, marca, cantidad, precio } = req.body;
+    const { name, marca, cantidad, precio, img } = req.body;
     const response = await pool.query(
-      "UPDATE repuestos SET name = $1, marca = $2, cantidad = $3, precio = $4 WHERE id = $5",
-      [name, marca, cantidad, precio, id]
+      "UPDATE repuestos SET name = $1, marca = $2, cantidad = $3, precio = $4, img = $5 WHERE id = $6",
+      [name, marca, cantidad, precio, img, id]
     );
     res.status(200).json({
       message: "Repuesto actualizado",
       body: {
-        repuesto: { name, marca, cantidad, precio },
+        repuesto: { name, marca, cantidad, precio, img },
       },
     });
   } catch (error) {

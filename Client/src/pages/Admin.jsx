@@ -131,6 +131,11 @@ function Admin() {
             type="number"
             placeholder="Precio"
           />
+          <input
+            className="border rounded-md w-full p-2"
+            type="number"
+            placeholder="Cantidad"
+          />
           <select className="border rounded-md w-full p-2 mt-2">
             <option value="" disabled selected>
               Seleccione la categoria

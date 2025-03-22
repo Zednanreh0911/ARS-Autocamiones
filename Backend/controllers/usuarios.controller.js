@@ -1,13 +1,51 @@
 import client from "../db.js";
 
-export const getUsuarios = (req, res) => {
-    res.json({ message: 'GET usuarios' });
-}
+export const getUsuarios = async (req, res) => {
+  try {
+    const response = await client.query("SELECT * FROM usuarios");
+    if (response.rows.length === 0) {
+      return res.status(404).json({ message: "Usuarios no encontrados" });
+    }
+    res.status(200).json(response.rows);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
-export const createUsuario = (req, res) => {
-    res.json({ message: 'POST usuario' });
-}
+export const createUsuario = async (req, res) => {
+  try {
+    const { name, password } = req.body;
+    const response = await client.query(
+      "INSERT INTO usuarios (name, password) VALUES ($1, $2)",
+      [name, password]
+    );
+    res.status(200).json({
+      message: "Usuario creado",
+      body: {
+        usuario: { name, password },
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
-export const deleteUsuario = (req, res) => {
-    res.json({ message: 'DELETE usuario' });
-}
+export const deleteUsuario = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const response = await client.query("DELETE FROM usuarios WHERE id = $1", [
+      id,
+    ]);
+    if (response.rowCount === 0) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+    res.status(200).json({
+      message: "Usuario eliminado",
+      body: {
+        usuario: { id },
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

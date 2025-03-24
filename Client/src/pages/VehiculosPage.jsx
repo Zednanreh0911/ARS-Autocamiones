@@ -1,9 +1,14 @@
 import AutoCard from "../components/AutoCard";
 import carro1 from "../assets/auto3.jpg";
 import carro2 from "../assets/auto2.jpg";
-import { useState, useRef } from "react";
+import { obtenerVehiculos } from "../api/axios";
+import { useState, useRef, useEffect } from "react";
 
 function VehiclePage() {
+  const [vehiculos, setVehiculos] = useState([]);
+  useEffect(() => {
+    obtenerVehiculos().then((vehiculos) => setVehiculos(vehiculos));
+  }, []);
   const [selectedVehicle, setSelectedVehicle] = useState("camionetas");
   const vehiculosRef = useRef(null);
 
@@ -58,16 +63,38 @@ function VehiclePage() {
         <div className="flex flex-wrap gap-8 items-end justify-center">
           <div>
             <h3 className="font-bold text-4xl">Camionetas</h3>
-            <AutoCard image={carro1} />
+            {vehiculos &&
+              vehiculos
+                .filter((vehiculo) => vehiculo.tipo === "Camioneta")
+                .slice(0, 1)
+                .map((vehiculo, index) => (
+                  <AutoCard
+                    key={index}
+                    image={vehiculo.img}
+                    marca={vehiculo.marca}
+                    year={vehiculo.year}
+                    model={vehiculo.model}
+                    combus={vehiculo.combus}
+                    trans={vehiculo.trans}
+                  />
+                ))}
           </div>
 
-          <AutoCard image={carro1} />
-          <AutoCard image={carro1} />
-          <AutoCard image={carro1} />
-          <AutoCard image={carro1} />
-          <AutoCard image={carro1} />
-          <AutoCard image={carro1} />
-          <AutoCard image={carro1} />
+          {vehiculos &&
+            vehiculos
+              .filter((vehiculo) => vehiculo.tipo === "Camioneta")
+              .slice(1)
+              .map((vehiculo, index) => (
+                <AutoCard
+                  key={index}
+                  image={vehiculo.img}
+                  marca={vehiculo.marca}
+                  year={vehiculo.year}
+                  model={vehiculo.model}
+                  combus={vehiculo.combus}
+                  trans={vehiculo.trans}
+                />
+              ))}
         </div>
       </section>
 
@@ -78,17 +105,39 @@ function VehiclePage() {
           }`}
         >
           <div>
-            <h3 className="font-bold text-4xl">Autobuses</h3>
-            <AutoCard image={carro2} />
+            <h3 className="font-bold text-4xl">Buseta</h3>
+            {vehiculos &&
+              vehiculos
+                .filter((vehiculo) => vehiculo.tipo === "Buseta")
+                .slice(0, 1)
+                .map((vehiculo, index) => (
+                  <AutoCard
+                    key={index}
+                    image={vehiculo.img}
+                    marca={vehiculo.marca}
+                    year={vehiculo.year}
+                    model={vehiculo.model}
+                    combus={vehiculo.combus}
+                    trans={vehiculo.trans}
+                  />
+                ))}
           </div>
 
-          <AutoCard image={carro2} />
-          <AutoCard image={carro2} />
-          <AutoCard image={carro2} />
-          <AutoCard image={carro2} />
-          <AutoCard image={carro2} />
-          <AutoCard image={carro2} />
-          <AutoCard image={carro2} />
+          {vehiculos &&
+            vehiculos
+              .filter((vehiculo) => vehiculo.tipo === "Buseta")
+              .slice(1)
+              .map((vehiculo, index) => (
+                <AutoCard
+                  key={index}
+                  image={vehiculo.img}
+                  marca={vehiculo.marca}
+                  year={vehiculo.year}
+                  model={vehiculo.model}
+                  combus={vehiculo.combus}
+                  trans={vehiculo.trans}
+                />
+              ))}
         </div>
       </section>
     </main>

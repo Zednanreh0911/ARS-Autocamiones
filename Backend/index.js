@@ -17,11 +17,6 @@ app.use("/repuestos", repuestosRouter);
 
 app.use("/usuarios", usuariosRouter);
 
-// await client.connect();
-// const res = await client.query("SELECT * FROM repuestos");
-// console.log(res.rows);
-// await client;
-
 //Puerto
 app.listen(6969, () => {
   console.log("Server is running on http://localhost:6969");

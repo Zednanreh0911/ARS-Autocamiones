@@ -2,20 +2,20 @@ import PropTypes from "prop-types";
 
 RepuestoCard.propTypes = {
   image: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  category: PropTypes.string.isRequired,
-  price: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  marca: PropTypes.string.isRequired,
+  precio: PropTypes.string.isRequired,
 };
 
-function RepuestoCard({ image, title, category, price }) {
+function RepuestoCard({ image, name, marca, precio }) {
   return (
     <article className="max-w-96 md:max-w-80 xl:max-w-96 h-fit rounded-2xl overflow-hidden shadow-2xl mt-4">
       <img className="w-full max-h-64 max-w-96" src={image} alt="auto1" />
       <section className="text-left p-4">
         <header className="border-b border-gray-300 pb-4">
-          <h2 className="text-orange-500 text-sm">{category}</h2>
-          <h3 className="font-medium text-xl mt-2 text-center">{title}</h3>
-          <p className="text-orange-500 text-base font-medium mt-2">{price}</p>
+          <h2 className="text-orange-500 text-sm">{marca}</h2>
+          <h3 className="font-medium text-xl mt-2 text-center">{name}</h3>
+          <p className="text-orange-500 text-base font-medium mt-2">{precio}</p>
         </header>
 
         <button className="border rounded-xl border-transparent hover:border-orange-500 ease-in-out duration-300 mt-4 flex items-center gap-2 p-3">

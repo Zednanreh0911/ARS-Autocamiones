@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import RepuestoCard from "../components/RepuestoCard";
 import ColapsedButton from "../components/ColapsedButton";
-
-import gearImage from "../assets/worm-gear.jpeg";
+import { obtenerRepuestos } from "../api/axios";
 
 function RepuestosPage() {
+  const [repuestos, setRepuestos] = useState([]);
+  useEffect(() => {
+    obtenerRepuestos().then((repuestos) => setRepuestos(repuestos));
+  }, []);
   const [selectedCategory, setSelectedCategory] = useState("repuestos");
   const [openDropdown, setOpenDropdown] = useState(false);
 
@@ -19,13 +22,8 @@ function RepuestosPage() {
           Categorias
         </h2>
         <ColapsedButton
-          title="vehiculos"
-          categories={["internos", "externos"]}
-          onCategorySelect={setSelectedCategory}
-        />
-        <ColapsedButton
-          title="repuestos"
-          categories={["internos", "loooong category", "externos"]}
+          title="Repuestos"
+          categories={["Internos", "Externos"]}
           onCategorySelect={setSelectedCategory}
         />
       </aside>
@@ -50,60 +48,26 @@ function RepuestosPage() {
             }`}
           >
             <ColapsedButton
-              title="repuestos"
-              categories={["internos", "loooong category", "externos"]}
-              onCategorySelect={setSelectedCategory}
-            />
-            <ColapsedButton
-              title="repuestos"
-              categories={["internos", "loooong category", "externos"]}
-              onCategorySelect={setSelectedCategory}
-            />
-            <ColapsedButton
-              title="repuestos"
-              categories={["internos", "loooong category", "externos"]}
+              title="Repuestos"
+              categories={["Internos", "Externos"]}
               onCategorySelect={setSelectedCategory}
             />
           </span>
           <h2 className="hidden min-[720px]:block text-5xl font-bold absolute top-0 left-4">
             {selectedCategory.toUpperCase()}
           </h2>
-          <RepuestoCard
-            image={gearImage}
-            title="motor"
-            category="encava"
-            price="120$"
-          />
-          <RepuestoCard
-            image={gearImage}
-            title="motor"
-            category="encava"
-            price="120$"
-          />
-          <RepuestoCard
-            image={gearImage}
-            title="motor"
-            category="encava"
-            price="120$"
-          />
-          <RepuestoCard
-            image={gearImage}
-            title="motor"
-            category="encava"
-            price="120$"
-          />
-          <RepuestoCard
-            image={gearImage}
-            title="motor"
-            category="encava"
-            price="120$"
-          />
-          <RepuestoCard
-            image={gearImage}
-            title="motor"
-            category="encava"
-            price="120$"
-          />
+          {repuestos &&
+            repuestos
+              .filter((repuesto) => repuesto.category === selectedCategory)
+              .map((repuesto, index) => (
+                <RepuestoCard
+                  key={index}
+                  image={repuesto.img}
+                  name={repuesto.name}
+                  marca={repuesto.marca}
+                  precio={repuesto.precio}
+                />
+              ))}
         </div>
       </section>
     </main>

@@ -132,6 +132,7 @@ function Admin() {
             placeholder="Precio"
           />
           <select className="border rounded-md w-full p-2 mt-2 cursor-pointer">
+
             <option value="" disabled selected>
               Seleccione la categoria
             </option>

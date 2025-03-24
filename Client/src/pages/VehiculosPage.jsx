@@ -30,19 +30,19 @@ function VehiclePage() {
       >
         <button
           onClick={() => handleSelectVehicle("camionetas")}
-          className="relative overflow-hidden rounded-lg max-[470px]:mx-4"
+          className="relative overflow-hidden rounded-lg max-[470px]:mx-4 group"
         >
           <img
             className="transition-transform duration-300 ease-in-out transform hover:scale-110 w-[450px] min-[1350px]:w-full"
             src={carro1}
             alt="camionetas img"
           />
-          <span className="absolute bottom-2 right-4 font-bold text-xl">
+          <span className="pointer-events-none bg-black bg-opacity-25 p-2 rounded-md text-white absolute bottom-2 right-4 font-bold text-xl transition-all duration-300 ease-in-out group-hover:bottom-1/2 group-hover:right-1/2 group-hover:translate-x-1/2 group-hover:translate-y-1/2 group-hover:text-4xl">
             Camionetas
           </span>
         </button>
         <button
-          className="relative overflow-hidden rounded-lg max-[470px]:mx-4"
+          className="relative overflow-hidden rounded-lg max-[470px]:mx-4 group"
           onClick={() => handleSelectVehicle("autobuses")}
         >
           <img
@@ -50,7 +50,7 @@ function VehiclePage() {
             src={carro2}
             alt="autobus img"
           />
-          <span className="absolute bottom-2 left-4 font-bold text-xl">
+          <span className="pointer-events-none bg-black bg-opacity-25 p-2 rounded-md text-white absolute bottom-2 right-4 font-bold text-xl transition-all duration-300 ease-in-out group-hover:bottom-1/2 group-hover:right-1/2 group-hover:translate-x-1/2 group-hover:translate-y-1/2 group-hover:text-4xl">
             Autobuses
           </span>
         </button>

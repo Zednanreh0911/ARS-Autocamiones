@@ -7,8 +7,14 @@ import auto2 from "../assets/auto2.jpg";
 import auto3 from "../assets/auto3.jpg";
 import SubtituloTipo1 from "../components/SubtituloTipo1";
 import LogroCard from "../components/LogroCard";
+import { obtenerVehiculos } from "../api/axios";
+import { useEffect, useState } from "react";
 
 function HomePage() {
+  const [vehiculos, setVehiculos] = useState([]);
+  useEffect(() => {
+    obtenerVehiculos().then((vehiculos) => setVehiculos(vehiculos));
+  }, []);
   const iconoAuto = (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -71,9 +77,20 @@ function HomePage() {
       <section className="container mx-auto text-center mt-32">
         <SubtituloTipo1 texto="Echa un vistazo a nuestros vehiculos disponibles" />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  mt-8 justify-items-center">
-          <AutoCard image={auto1} />
-          <AutoCard image={auto2} />
-          <AutoCard image={auto3} />
+          {vehiculos &&
+            vehiculos
+              .slice(0, 3)
+              .map((vehiculo, index) => (
+                <AutoCard
+                  key={index}
+                  image={vehiculo.img}
+                  marca={vehiculo.marca}
+                  year={vehiculo.year}
+                  model={vehiculo.model}
+                  combus={vehiculo.combus}
+                  trans={vehiculo.trans}
+                />
+              ))}
         </div>
         <BotonTipo1
           texto="Ver más"

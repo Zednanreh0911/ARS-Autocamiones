@@ -4,7 +4,7 @@ RepuestoCard.propTypes = {
   image: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   marca: PropTypes.string.isRequired,
-  precio: PropTypes.string.isRequired,
+  precio: PropTypes.number.isRequired,
 };
 
 function RepuestoCard({ image, name, marca, precio }) {
@@ -15,7 +15,7 @@ function RepuestoCard({ image, name, marca, precio }) {
         <header className="border-b border-gray-300 pb-4">
           <h2 className="text-orange-500 text-sm">{marca}</h2>
           <h3 className="font-medium text-xl mt-2 text-center">{name}</h3>
-          <p className="text-orange-500 text-base font-medium mt-2">{precio}</p>
+          <p className="text-orange-500 text-base font-medium mt-2">$ {precio}</p>
         </header>
 
         <button className="border rounded-xl border-transparent hover:border-orange-500 ease-in-out duration-300 mt-4 flex items-center gap-2 p-3">

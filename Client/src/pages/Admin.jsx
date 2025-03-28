@@ -1,14 +1,32 @@
 import { useState } from "react";
+import { useForm} from 'react-hook-form'
+import { crearVehiculo } from "../api/axios";
 
 function Admin() {
   const [category, setCategory] = useState("Vehículos");
   const [reportes, setReportes] = useState("");
+  const { register, handleSubmit } = useForm();
+
   const manejoDeCategoria = (e) => {
     setCategory(e.target.innerText);
   };
   const reporte = (e) => {
     setReportes(e.target.innerText);
   };
+
+  const subir = handleSubmit((data) => {
+    console.log(`Jeison info: ${data.marca} ${data.combustible} ${data.transmision} ${data.modelo} ${data.anno} ${data.img} ${data.categoria}`);
+    const vehiculoJson = {
+      marca: data.marca,
+      year: data.anno,
+      tipo: data.modelo,
+      combus: data.combustible,
+      trans: data.transmision,
+      model:data.categoria
+    }
+
+    crearVehiculo(vehiculoJson)
+  });
 
   return (
     <main className="mt-[138px] w-full h-screen flex">
@@ -59,21 +77,45 @@ function Admin() {
       <section className="flex items-center flex-col w-5/6 h-screen p-4">
         <h1 className="text-4xl text-center font-bold">{category}</h1>
         <form
+          onSubmit={subir}
           className={`mt-2 p-5 w-96 flex flex-col gap-4 items-center text-center shadow-md rounded-lg ${
             category === "Vehículos" ? "block" : "hidden"
           }`}
         >
+          <select className="border rounded-md w-full p-2 mt-2 cursor-pointer"
+          {...register("marca", {required:true})}
+          defaultValue={""}>
+            
+            <option value="" disabled>
+              Marca
+            </option>
+            <option value="Encava">Encava</option>
+            <option value="Isuzu">Isuzu</option>
+          </select>
           <input
             className="border rounded-md w-full p-2"
-            type="text"
-            placeholder="Marca"
+            type="number"
+            placeholder="Año"
+            {...register("anno", {required:true})}
           />
           <input
             className="border rounded-md w-full p-2"
             type="text"
             placeholder="Modelo"
+            {...register("modelo", {required:true})}
           />
-          <select className="border rounded-md w-full p-2 mt-2 cursor-pointer">
+          <select className="border rounded-md w-full p-2 mt-2 cursor-pointer"
+          {...register("categoria", {required:true})}
+          defaultValue={""}>
+            <option value="" disabled>
+              Categoria
+            </option>
+            <option value="Buseta">Buseta</option>
+            <option value="Camioneta">Camioneta</option>
+          </select>
+          <select className="border rounded-md w-full p-2 mt-2 cursor-pointer"
+          {...register("combustible", {required:true})}
+          defaultValue={""}>
             <option value="" disabled selected>
               Tipo de combustible
             </option>
@@ -81,7 +123,9 @@ function Admin() {
             <option value="Gasolina">Gasolina</option>
             <option value="Hibrido">Hibrido</option>
           </select>
-          <select className="border rounded-md w-full p-2 mt-2 cursor-pointer">
+          <select className="border rounded-md w-full p-2 mt-2 cursor-pointer"
+          {...register("transmision", {required:true})}
+          defaultValue={""}>
             <option value="" disabled selected>
               Tipo de Transmisión
             </option>
@@ -100,6 +144,7 @@ function Admin() {
               type="file"
               accept="image/*"
               placeholder="Imagen del Vehiculo"
+              {...register("img", {required:true})}
             />
           </label>
 

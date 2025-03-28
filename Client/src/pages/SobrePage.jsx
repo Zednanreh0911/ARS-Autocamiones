@@ -1,8 +1,8 @@
 import ars from "../assets/ARS-Auto-Camiones.png";
-import historia from "../assets/auto1.jpg";
-import mision from "../assets/auto1.jpg";
-import vision from "../assets/auto1.jpg";
-import futuro from "../assets/auto1.jpg";
+import historia from "../assets/encav.png";
+import mision from "../assets/image 4.png";
+import vision from "../assets/vision.png";
+import futuro from "../assets/futuro.png";
 function SobrePage() {
   return (
     <>
@@ -100,7 +100,7 @@ function SobrePage() {
         <section className="mt-4 mx-auto  sm:py-24">
           <div className="rounded-2xl shadow-xl grid lg:grid-cols-2 gap-8 items-center bg-white">
             <div className=" flex items-center justify-center h-[400px] ">
-              <img src={futuro} width="350" alt="Placeholder image"></img>
+              <img src={futuro} width="300" alt="Placeholder image"></img>
             </div>
             <div className=" flex flex-col items-center lg:items-start justify-center">
               <h2 className=" mb-2 font-bold text-3xl">Futuro</h2>

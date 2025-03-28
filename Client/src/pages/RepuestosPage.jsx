@@ -8,7 +8,7 @@ function RepuestosPage() {
   useEffect(() => {
     obtenerRepuestos().then((repuestos) => setRepuestos(repuestos));
   }, []);
-  const [selectedCategory, setSelectedCategory] = useState("repuestos");
+  const [selectedCategory, setSelectedCategory] = useState("Internos");
   const [openDropdown, setOpenDropdown] = useState(false);
 
   const handleDropdown = () => {
@@ -58,7 +58,7 @@ function RepuestosPage() {
           </h2>
           {repuestos &&
             repuestos
-              .filter((repuesto) => repuesto.category === selectedCategory)
+              .filter((repuesto) => repuesto.cat === selectedCategory)
               .map((repuesto, index) => (
                 <RepuestoCard
                   key={index}

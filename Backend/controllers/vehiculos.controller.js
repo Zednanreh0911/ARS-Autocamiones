@@ -27,10 +27,15 @@ export const getVehiculo = async (req, res) => {
 
 export const createVehiculo = async (req, res) => {
   try {
-    const { marca, year, tipo, desc, trans, combus, img } = req.body;
+    const { marca, year, tipo, trans, combus, model } = req.body;
+
+    if (!req.savedFilename) {
+      return res.status(400).json({ message: "No se ha subido una imagen" });
+    }
+    const img = `src/assets/${req.savedFilename}`;
     const response = await client.query(
-      "INSERT INTO vehiculos (marca, year, tipo, desc, trans, combus, img) VALUES ($1, $2, $3, $4, $5, $6, $7)",
-      [marca, year, tipo, desc, trans, combus, img]
+      "INSERT INTO vehiculos (marca, year, tipo, trans, combus, model, img) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
+      [marca, year, tipo, trans, combus, model, img]
     );
     res.status(200).json({
       message: "Vehiculo creado",
@@ -39,14 +44,17 @@ export const createVehiculo = async (req, res) => {
           marca,
           year,
           tipo,
-          desc,
           trans,
           combus,
+          model,
           img,
         },
       },
     });
   } catch (error) {
+    if (error.code === "23505") {
+      return res.status(409).json({ message: "Vehiculo ya existe" });
+    }
     res.status(500).json({ message: error.message });
   }
 };

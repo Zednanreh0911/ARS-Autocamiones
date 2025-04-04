@@ -9,13 +9,15 @@ RepuestoCard.propTypes = {
 
 function RepuestoCard({ image, name, marca, precio }) {
   return (
-    <article className="max-w-96 md:max-w-80 xl:max-w-96 h-fit rounded-2xl overflow-hidden shadow-2xl mt-4">
-      <img className="w-full max-h-64 max-w-96" src={image} alt="auto1" />
+    <article className="w-72 md:w-80 xl:w-96 h-full rounded-2xl overflow-hidden shadow-2xl mt-4">
+      <img className="w-full max-h-64 min-h-64" src={image} alt={name} />
       <section className="text-left p-4">
         <header className="border-b border-gray-300 pb-4">
           <h2 className="text-orange-500 text-sm">{marca}</h2>
           <h3 className="font-medium text-xl mt-2 text-center">{name}</h3>
-          <p className="text-orange-500 text-base font-medium mt-2">$ {precio}</p>
+          <p className="text-orange-500 text-base font-medium mt-2">
+            $ {precio}
+          </p>
         </header>
 
         <button className="border rounded-xl border-transparent hover:border-orange-500 ease-in-out duration-300 mt-4 flex items-center gap-2 p-3">

@@ -29,7 +29,12 @@ export const getRepuesto = async (req, res) => {
 
 export const createRepuesto = async (req, res) => {
   try {
-    const { name, marca, cantidad, cat, precio, img } = req.body;
+    if (!req.savedFilename) {
+      return res.status(400).json({ message: "No se ha subido una imagen" });
+    }
+
+    const img = `src/assets/${req.savedFilename}`; // Obtener el nombre del archivo guardado
+    const { name, marca, cantidad, cat, precio } = req.body;
     const response = await pool.query(
       "INSERT INTO repuestos (name, marca, cantidad, cat, precio, img) VALUES ($1, $2, $3, $4, $5, $6)",
       [name, marca, cantidad, cat, precio, img]

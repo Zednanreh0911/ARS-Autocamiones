@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:6969";
+const API_URL = "http://localhost:3000";
 
 export const obtenerRepuestos = async () => {
   try {
@@ -38,72 +38,18 @@ export const crearVehiculo = async (datos) => {
   }
 };
 
-export const crearRepuesto = async () => {
+export const crearRepuesto = async (datos) => {
   try {
-    const response = await axios.post(`${API_URL}/repuestos`);
+    const response = await axios.post(`${API_URL}/repuestos`, datos);
     return response.data;
   } catch (error) {
     console.error(error);
   }
 };
 
-export const crearUsuario = async () => {
+export const crearUsuario = async (datos) => {
   try {
-    const response = await axios.post(`${API_URL}/usuarios`);
-    return response.data;
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-export const editarVehiculo = async (id) => {
-  try {
-    const response = await axios.put(`${API_URL}/vehiculos/${id}`);
-    return response.data;
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-export const editarRepuesto = async (id) => {
-  try {
-    const response = await axios.put(`${API_URL}/repuestos/${id}`);
-    return response.data;
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-export const editarUsuario = async (id) => {
-  try {
-    const response = await axios.put(`${API_URL}/usuarios/${id}`);
-    return response.data;
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-export const eliminarVehiculo = async (id) => {
-  try {
-    const response = await axios.delete(`${API_URL}/vehiculos/${id}`);
-    return response.data;
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-export const eliminarRepuesto = async (id) => {
-  try {
-    const response = await axios.delete(`${API_URL}/repuestos/${id}`);
-    return response.data;
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-export const eliminarUsuario = async (id) => {
-  try {
-    const response = await axios.delete(`${API_URL}/usuarios/${id}`);
+    const response = await axios.post(`${API_URL}/usuarios`, datos);
     return response.data;
   } catch (error) {
     console.error(error);

@@ -1,8 +1,8 @@
 import ars from "../assets/ARS-Auto-Camiones.png";
-import historia from "../assets/encav.png";
-import mision from "../assets/image 4.png";
-import vision from "../assets/vision.png";
-import futuro from "../assets/futuro.png";
+import historia from "../assets/auto1.jpg";
+import mision from "../assets/auto1.jpg";
+import vision from "../assets/auto1.jpg";
+import futuro from "../assets/auto1.jpg";
 function SobrePage() {
   return (
     <>

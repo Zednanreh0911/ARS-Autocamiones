@@ -13,9 +13,9 @@ function AutoCard({ image, marca, year, model, combus, trans }) {
   return (
     <article className="max-w-96 md:max-w-80 xl:max-w-96 h-fit rounded-2xl overflow-hidden shadow-2xl mt-4">
       <img
-        className="w-full max-h-64 min-[400px]:min-w-96"
+        className="w-full h-64 min-[400px]:min-w-96"
         src={image}
-        alt="auto1"
+        alt={model}
       />
       <section className="text-left p-4">
         <header>

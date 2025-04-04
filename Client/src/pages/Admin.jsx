@@ -1,11 +1,16 @@
 import { useState } from "react";
-import { useForm} from 'react-hook-form'
-import { crearVehiculo } from "../api/axios";
+import { useForm } from "react-hook-form";
+import { crearRepuesto, crearVehiculo } from "../api/axios";
+import DialogoAfirmativo from "../components/DialogoAfirmativo";
 
 function Admin() {
   const [category, setCategory] = useState("Vehículos");
   const [reportes, setReportes] = useState("");
-  const { register, handleSubmit } = useForm();
+  const { register: registerRepuesto, handleSubmit: handleSubmitRepuesto } =
+    useForm();
+  const { register: registerVehiculo, handleSubmit: handleSubmitVehiculo } =
+    useForm();
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const manejoDeCategoria = (e) => {
     setCategory(e.target.innerText);
@@ -14,18 +19,38 @@ function Admin() {
     setReportes(e.target.innerText);
   };
 
-  const subir = handleSubmit((data) => {
-    console.log(`Jeison info: ${data.marca} ${data.combustible} ${data.transmision} ${data.modelo} ${data.anno} ${data.img} ${data.categoria}`);
-    const vehiculoJson = {
-      marca: data.marca,
-      year: data.anno,
-      tipo: data.modelo,
-      combus: data.combustible,
-      trans: data.transmision,
-      model:data.categoria
-    }
+  const subirVehiculo = handleSubmitVehiculo((data) => {
+    const formData = new FormData();
+    formData.append("imgvehiculo", data.img[0]); // Imagen
+    formData.append("marca", data.marca); // Otros datos
+    formData.append("year", data.anno);
+    formData.append("tipo", data.categoria);
+    formData.append("combus", data.combustible);
+    formData.append("trans", data.transmision);
+    formData.append("model", data.modelo);
+    console.log(
+      `Jeison info: ${data.marca} ${data.combustible} ${data.transmision} ${data.modelo} ${data.anno} ${data.img} ${data.categoria}`
+    );
 
-    crearVehiculo(vehiculoJson)
+    crearVehiculo(formData).then(() => {
+      setIsDialogOpen(true);
+    });
+  });
+
+  const subirRepuesto = handleSubmitRepuesto((data) => {
+    const formData = new FormData();
+    formData.append("imgRepuesto", data.imgRepuesto[0]); // Imagen
+    formData.append("marca", data.marcaRepuesto); // Otros datos
+    formData.append("name", data.nombreRepuesto);
+    formData.append("precio", data.precioRepuesto);
+    formData.append("cantidad", data.cantidadRepuesto);
+    formData.append("cat", data.categoriaRepuesto);
+    console.log(
+      `Jeison info: ${data.marcaRepuesto} ${data.nombreRepuesto} ${data.precioRepuesto} ${data.cantidadRepuesto} ${data.imgRepuesto} ${data.categoriaRepuesto}`
+    );
+    crearRepuesto(formData).then(() => {
+      setIsDialogOpen(true);
+    });
   });
 
   return (
@@ -74,18 +99,24 @@ function Admin() {
           </li>
         </ul>
       </aside>
+
       <section className="flex items-center flex-col w-5/6 h-screen p-4">
+        <DialogoAfirmativo isOpen={isDialogOpen} setIsOpen={setIsDialogOpen}>
+          ¡Operacion exitosa!
+        </DialogoAfirmativo>
         <h1 className="text-4xl text-center font-bold">{category}</h1>
+        {/* form de vehiculos */}
         <form
-          onSubmit={subir}
+          onSubmit={subirVehiculo}
           className={`mt-2 p-5 w-96 flex flex-col gap-4 items-center text-center shadow-md rounded-lg ${
             category === "Vehículos" ? "block" : "hidden"
           }`}
         >
-          <select className="border rounded-md w-full p-2 mt-2 cursor-pointer"
-          {...register("marca", {required:true})}
-          defaultValue={""}>
-            
+          <select
+            className="border rounded-md w-full p-2 mt-2 cursor-pointer"
+            {...registerVehiculo("marca", { required: true })}
+            defaultValue={""}
+          >
             <option value="" disabled>
               Marca
             </option>
@@ -96,40 +127,46 @@ function Admin() {
             className="border rounded-md w-full p-2"
             type="number"
             placeholder="Año"
-            {...register("anno", {required:true})}
+            {...registerVehiculo("anno", { required: true })}
           />
           <input
             className="border rounded-md w-full p-2"
             type="text"
             placeholder="Modelo"
-            {...register("modelo", {required:true})}
+            {...registerVehiculo("modelo", { required: true })}
           />
-          <select className="border rounded-md w-full p-2 mt-2 cursor-pointer"
-          {...register("categoria", {required:true})}
-          defaultValue={""}>
+          <select
+            className="border rounded-md w-full p-2 mt-2 cursor-pointer"
+            {...registerVehiculo("categoria", { required: true })}
+            defaultValue={""}
+          >
             <option value="" disabled>
               Categoria
             </option>
             <option value="Buseta">Buseta</option>
             <option value="Camioneta">Camioneta</option>
           </select>
-          <select className="border rounded-md w-full p-2 mt-2 cursor-pointer"
-          {...register("combustible", {required:true})}
-          defaultValue={""}>
-            <option value="" disabled selected>
+          <select
+            className="border rounded-md w-full p-2 mt-2 cursor-pointer"
+            {...registerVehiculo("combustible", { required: true })}
+            defaultValue={""}
+          >
+            <option value="" disabled>
               Tipo de combustible
             </option>
             <option value="Diesel">Diesel</option>
             <option value="Gasolina">Gasolina</option>
             <option value="Hibrido">Hibrido</option>
           </select>
-          <select className="border rounded-md w-full p-2 mt-2 cursor-pointer"
-          {...register("transmision", {required:true})}
-          defaultValue={""}>
-            <option value="" disabled selected>
+          <select
+            className="border rounded-md w-full p-2 mt-2 cursor-pointer"
+            {...registerVehiculo("transmision", { required: true })}
+            defaultValue={""}
+          >
+            <option value="" disabled>
               Tipo de Transmisión
             </option>
-            <option value="Sincrónico">Sincrónico</option>
+            <option value="Manual">Manual</option>
             <option value="Automático">Automático</option>
           </select>
           <label
@@ -144,7 +181,7 @@ function Admin() {
               type="file"
               accept="image/*"
               placeholder="Imagen del Vehiculo"
-              {...register("img", {required:true})}
+              {...registerVehiculo("img", { required: true })}
             />
           </label>
 
@@ -155,8 +192,9 @@ function Admin() {
             Publicar
           </button>
         </form>
-
+        {/* form de repuestos */}
         <form
+          onSubmit={subirRepuesto}
           className={`mt-2 p-5 w-96 flex flex-col gap-4 items-center text-center shadow-md rounded-lg ${
             category === "Repuestos" ? "block" : "hidden"
           }`}
@@ -165,37 +203,55 @@ function Admin() {
             className="border rounded-md w-full p-2"
             type="text"
             placeholder="Marca"
+            {...registerRepuesto("marcaRepuesto", { required: true })}
           />
           <input
             className="border rounded-md w-full p-2"
             type="text"
             placeholder="Nombre del repuesto"
+            {...registerRepuesto("nombreRepuesto", { required: true })}
           />
           <input
             className="border rounded-md w-full p-2"
             type="number"
             placeholder="Precio"
+            min="0" // No permite valores menores a 0
+            {...registerRepuesto("precioRepuesto", { required: true, min: 0 })}
           />
-          <select className="border rounded-md w-full p-2 mt-2 cursor-pointer">
-
-            <option value="" disabled selected>
+          <input
+            className="border rounded-md w-full p-2"
+            type="number"
+            placeholder="Cantidad"
+            min="0" // No permite valores menores a 0
+            {...registerRepuesto("cantidadRepuesto", {
+              required: true,
+              min: 0,
+            })}
+          />
+          <select
+            className="border rounded-md w-full p-2 mt-2 cursor-pointer"
+            {...registerRepuesto("categoriaRepuesto", { required: true })}
+            defaultValue={""}
+          >
+            <option value="" disabled>
               Seleccione la categoria
             </option>
-            <option value="Diesel">Internos</option>
-            <option value="Gasolina">Externos</option>
+            <option value="Internos">Internos</option>
+            <option value="Externos">Externos</option>
           </select>
           <label
             className="bg-orange-500 text-white w-full p-2 rounded-md cursor-pointer"
-            htmlFor="imgvehiculo"
+            htmlFor="imgRepuesto"
           >
             {" "}
             Agrega la imagen del Repuesto
             <input
-              id="imgvehiculo"
+              id="imgRepuesto"
               className="hidden"
               type="file"
               accept="image/*"
-              placeholder="Imagen del Vehiculo"
+              placeholder="Imagen del repuesto"
+              {...registerRepuesto("imgRepuesto", { required: true })}
             />
           </label>
 
@@ -262,7 +318,7 @@ function Admin() {
             }`}
           >
             <select className="border rounded-md w-full p-2 mt-2 cursor-pointer">
-              <option value="" disabled selected>
+              <option value="" disabled>
                 Seleccione reporte a generar
               </option>
               <option value="Vehículos">Vehículos</option>
@@ -283,7 +339,7 @@ function Admin() {
             }`}
           >
             <select className="border rounded-md w-full p-2 mt-2 mb-2 cursor-pointer">
-              <option value="" disabled selected>
+              <option value="" disabled>
                 Seleccione reporte a generar
               </option>
               <option value="Vehículos">Vehículos</option>

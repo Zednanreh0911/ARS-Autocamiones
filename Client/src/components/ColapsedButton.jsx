@@ -5,16 +5,24 @@ ColapsedButton.propTypes = {
   title: PropTypes.string.isRequired,
   categories: PropTypes.arrayOf(PropTypes.string).isRequired,
   onCategorySelect: PropTypes.func.isRequired,
+  Color: PropTypes.string,
+  textColor: PropTypes.string,
 };
 
-function ColapsedButton({ title, categories, onCategorySelect }) {
+function ColapsedButton({
+  title,
+  categories,
+  onCategorySelect,
+  Color = "#000",
+  textColor = "text-black",
+}) {
   const arrowDown = (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       height="24px"
       viewBox="0 -960 960 960"
       width="24px"
-      fill="#000"
+      fill={Color}
     >
       <path d="M480-360 280-560h400L480-360Z" />
     </svg>
@@ -25,7 +33,7 @@ function ColapsedButton({ title, categories, onCategorySelect }) {
       height="24px"
       viewBox="0 -960 960 960"
       width="24px"
-      fill="#000"
+      fill={Color}
     >
       <path d="M480-560 280-360h400L480-560Z" />
     </svg>
@@ -44,7 +52,7 @@ function ColapsedButton({ title, categories, onCategorySelect }) {
     <div>
       <button
         onClick={toggleOpen}
-        className="text-black font-bold text-2xl mt-4 border-b-2 border-transparent flex items-center hover:border-orange-500 duration-300 ease-in-out"
+        className={`${textColor} font-bold text-2xl mt-4 border-b-2 border-transparent flex items-center hover:border-orange-500 duration-300 ease-in-out`}
       >
         {title} {isOpen ? arrowUp : arrowDown}
       </button>
@@ -57,7 +65,7 @@ function ColapsedButton({ title, categories, onCategorySelect }) {
           <li
             onClick={handleCategoryClick}
             key={index}
-            className="text-black font-bold text-2xl max-w-fit cursor-pointer hover:text-orange-500 ease-in-out duration-300"
+            className={`${textColor} font-bold text-2xl max-w-fit cursor-pointer hover:text-orange-500 ease-in-out duration-300`}
           >
             {category}
           </li>

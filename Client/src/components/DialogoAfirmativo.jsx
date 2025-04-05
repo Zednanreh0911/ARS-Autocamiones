@@ -15,7 +15,7 @@ function DialogoAfirmativo({ isOpen, setIsOpen, children }) {
           {children}
         </p>
         <button
-          className="mt-4 bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
+          className="mt-4 bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600"
           onClick={() => setIsOpen(false)}
         >
           Aceptar

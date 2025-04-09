@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:6969";
+const API_URL = "http://localhost:3000";
 
 export const obtenerRepuestos = async () => {
   try {
@@ -50,6 +50,59 @@ export const crearRepuesto = async (datos) => {
 export const crearUsuario = async (datos) => {
   try {
     const response = await axios.post(`${API_URL}/usuarios`, datos);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const eliminarVehiculo = async (id) => {
+  try {
+    const response = await axios.delete(`${API_URL}/vehiculos/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const eliminarRepuesto = async (id) => {
+  try {
+    const response = await axios.delete(`${API_URL}/repuestos/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const editarVehiculo = async (id, datos) => {
+  try {
+    const response = await axios.put(`${API_URL}/vehiculos/${id}`, datos);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const editarVehiculoNewImg = async (id, datos) => {
+  try {
+    const response = await axios.put(`${API_URL}/vehiculos/${id}/new`, datos);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+export const editarRepuesto = async (id, datos) => {
+  try {
+    const response = await axios.put(`${API_URL}/repuestos/${id}`, datos);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const editarRepuestoNewImg = async (id, datos) => {
+  try {
+    const response = await axios.put(`${API_URL}/repuestos/${id}/new`, datos);
     return response.data;
   } catch (error) {
     console.error(error);

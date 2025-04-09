@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { crearRepuesto, crearVehiculo } from "../api/axios";
-import ColapsedButton from "../components/ColapsedButton";
 import DialogoAfirmativo from "../components/DialogoAfirmativo";
 
 function Admin() {
@@ -22,8 +21,8 @@ function Admin() {
 
   const subirVehiculo = handleSubmitVehiculo((data) => {
     const formData = new FormData();
-    formData.append("imgvehiculo", data.img[0]); // Imagen
-    formData.append("marca", data.marca); // Otros datos
+    formData.append("imgvehiculo", data.img[0]);
+    formData.append("marca", data.marca);
     formData.append("year", data.anno);
     formData.append("tipo", data.categoria);
     formData.append("combus", data.combustible);
@@ -40,8 +39,8 @@ function Admin() {
 
   const subirRepuesto = handleSubmitRepuesto((data) => {
     const formData = new FormData();
-    formData.append("imgRepuesto", data.imgRepuesto[0]); // Imagen
-    formData.append("marca", data.marcaRepuesto); // Otros datos
+    formData.append("imgRepuesto", data.imgRepuesto[0]);
+    formData.append("marca", data.marcaRepuesto);
     formData.append("name", data.nombreRepuesto);
     formData.append("precio", data.precioRepuesto);
     formData.append("cantidad", data.cantidadRepuesto);
@@ -57,43 +56,47 @@ function Admin() {
   return (
     <main className="mt-[138px] w-full h-screen flex">
       <aside className="w-1/6 h-screen bg-black pt-4 opacity-90">
-        <ul className="pl-10 text-2xl gap-4 flex flex-col font-bold">
-          <ColapsedButton
-            title="Vehículos"
-            categories={[
-              "Crear Vehículo",
-              "Editar Vehículo",
-              "Eliminar Vehículo",
-            ]}
-            onCategorySelect={setCategory}
-            textColor="text-white"
-            Color="#fff"
-          />
-          <ColapsedButton
-            title="Repuestos"
-            categories={[
-              "Crear Repuesto",
-              "Editar Repuesto",
-              "Eliminar Repuesto",
-            ]}
-            onCategorySelect={setCategory}
-            textColor="text-white"
-            Color="#fff"
-          />
-          <ColapsedButton
-            title="Usuarios"
-            categories={["Crear Usuario", "Editar Usuario", "Eliminar Usuario"]}
-            onCategorySelect={setCategory}
-            textColor="text-white"
-            Color="#fff"
-          />
-          <ColapsedButton
-            title="Vehículos"
-            categories={["Crear", "Editar", "Eliminar"]}
-            onCategorySelect={setCategory}
-            textColor="text-white"
-            Color="#fff"
-          />
+        <ul className="text-center text-2xl gap-4 flex flex-col font-bold">
+          <li>
+            <button
+              onClick={manejoDeCategoria}
+              className={`cursor-pointer hover:text-orange-500 ease-in-out duration-300 ${
+                category === "Vehículos" ? "text-orange-500" : "text-white"
+              }`}
+            >
+              Vehículos
+            </button>
+          </li>
+          <li>
+            <button
+              onClick={manejoDeCategoria}
+              className={`cursor-pointer hover:text-orange-500 ease-in-out duration-300 ${
+                category === "Repuestos" ? "text-orange-500" : "text-white"
+              }`}
+            >
+              Repuestos
+            </button>
+          </li>
+          <li>
+            <button
+              onClick={manejoDeCategoria}
+              className={`cursor-pointer hover:text-orange-500 ease-in-out duration-300 ${
+                category === "Usuarios" ? "text-orange-500" : "text-white"
+              }`}
+            >
+              Usuarios
+            </button>
+          </li>
+          <li>
+            <button
+              onClick={manejoDeCategoria}
+              className={`cursor-pointer hover:text-orange-500 ease-in-out duration-300 ${
+                category === "Reportes" ? "text-orange-500" : "text-white"
+              }`}
+            >
+              Reportes
+            </button>
+          </li>
         </ul>
       </aside>
 
@@ -106,7 +109,7 @@ function Admin() {
         <form
           onSubmit={subirVehiculo}
           className={`mt-2 p-5 w-96 flex flex-col gap-4 items-center text-center shadow-md rounded-lg ${
-            category === "Crear Vehículo" ? "block" : "hidden"
+            category === "Vehículos" ? "block" : "hidden"
           }`}
         >
           <select
@@ -193,7 +196,7 @@ function Admin() {
         <form
           onSubmit={subirRepuesto}
           className={`mt-2 p-5 w-96 flex flex-col gap-4 items-center text-center shadow-md rounded-lg ${
-            category === "Crear Repuesto" ? "block" : "hidden"
+            category === "Repuestos" ? "block" : "hidden"
           }`}
         >
           <input
@@ -261,7 +264,7 @@ function Admin() {
         </form>
         <form
           className={`mt-2 p-5 w-96 flex flex-col gap-4 items-center text-center shadow-md rounded-lg ${
-            category === "Crear Usuario" ? "block" : "hidden"
+            category === "Usuarios" ? "block" : "hidden"
           }`}
         >
           <input

@@ -6,6 +6,7 @@ import { useState, useRef, useEffect } from "react";
 
 function VehiclePage() {
   const [vehiculos, setVehiculos] = useState([]);
+
   useEffect(() => {
     obtenerVehiculos().then((vehiculos) => setVehiculos(vehiculos));
   }, []);
@@ -20,6 +21,20 @@ function VehiclePage() {
         block: "start",
       });
     }
+  };
+
+  const handleActualizarVehiculo = (id, datosActualizados) => {
+    setVehiculos((prevVehiculos) =>
+      prevVehiculos.map((vehiculo) =>
+        vehiculo.id === id ? { ...vehiculo, ...datosActualizados } : vehiculo
+      )
+    );
+  };
+
+  const handleEliminarVehiculo = (id) => {
+    setVehiculos((prevVehiculos) =>
+      prevVehiculos.filter((vehiculo) => vehiculo.id !== id)
+    );
   };
 
   return (
@@ -76,6 +91,10 @@ function VehiclePage() {
                     model={vehiculo.model}
                     combus={vehiculo.combus}
                     trans={vehiculo.trans}
+                    id={vehiculo.id}
+                    onEliminar={handleEliminarVehiculo}
+                    onActualizar={handleActualizarVehiculo}
+                    tipo={vehiculo.tipo}
                   />
                 ))}
           </div>
@@ -93,6 +112,10 @@ function VehiclePage() {
                   model={vehiculo.model}
                   combus={vehiculo.combus}
                   trans={vehiculo.trans}
+                  id={vehiculo.id}
+                  onEliminar={handleEliminarVehiculo}
+                  onActualizar={handleActualizarVehiculo}
+                  tipo={vehiculo.tipo}
                 />
               ))}
         </div>
@@ -119,6 +142,10 @@ function VehiclePage() {
                     model={vehiculo.model}
                     combus={vehiculo.combus}
                     trans={vehiculo.trans}
+                    id={vehiculo.id}
+                    onEliminar={handleEliminarVehiculo}
+                    onActualizar={handleActualizarVehiculo}
+                    tipo={vehiculo.tipo}
                   />
                 ))}
           </div>
@@ -136,6 +163,10 @@ function VehiclePage() {
                   model={vehiculo.model}
                   combus={vehiculo.combus}
                   trans={vehiculo.trans}
+                  id={vehiculo.id}
+                  onEliminar={handleEliminarVehiculo}
+                  onActualizar={handleActualizarVehiculo}
+                  tipo={vehiculo.tipo}
                 />
               ))}
         </div>

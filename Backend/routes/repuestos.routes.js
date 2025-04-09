@@ -5,6 +5,7 @@ import {
   createRepuesto,
   updateRepuesto,
   deleteRepuesto,
+  updateRepuestoNewImg,
 } from "../controllers/repuestos.controller.js";
 import upload from "../middlewares/multerConfig.js";
 
@@ -17,6 +18,12 @@ repuestosRouter.get("/:id", getRepuesto);
 repuestosRouter.post("/", upload.single("imgRepuesto"), createRepuesto);
 
 repuestosRouter.put("/:id", updateRepuesto);
+
+repuestosRouter.put(
+  "/:id/new",
+  upload.single("imgRepuesto"),
+  updateRepuestoNewImg
+);
 
 repuestosRouter.delete("/:id", deleteRepuesto);
 

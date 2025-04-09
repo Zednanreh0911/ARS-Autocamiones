@@ -15,6 +15,19 @@ function RepuestosPage() {
     setOpenDropdown(!openDropdown);
   };
 
+  const handleEliminarRepuesto = (id) => {
+    setRepuestos((prevRepuestos) =>
+      prevRepuestos.filter((repuesto) => repuesto.id !== id)
+    );
+  };
+  const handleActualizarRepuesto = (id, datosActualizados) => {
+    setRepuestos((prevRepuestos) =>
+      prevRepuestos.map((repuesto) =>
+        repuesto.id === id ? { ...repuesto, ...datosActualizados } : repuesto
+      )
+    );
+  };
+
   return (
     <main className="mt-40 max-w-[1600px]  mx-auto flex">
       <aside className="hidden min-[720px]:block sticky top-40 min-w-64 p-4 h-fit overflow-y-auto">
@@ -66,6 +79,11 @@ function RepuestosPage() {
                   name={repuesto.name}
                   marca={repuesto.marca}
                   precio={repuesto.precio}
+                  id={repuesto.id}
+                  cantidad={repuesto.cantidad}
+                  cat={repuesto.cat}
+                  onEliminar={handleEliminarRepuesto}
+                  onActualizar={handleActualizarRepuesto}
                 />
               ))}
         </div>

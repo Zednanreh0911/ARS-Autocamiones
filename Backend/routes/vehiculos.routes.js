@@ -5,6 +5,7 @@ import {
   createVehiculo,
   updateVehiculo,
   deleteVehiculo,
+  updateVehiculoNewImg,
 } from "../controllers/vehiculos.controller.js";
 import upload from "../middlewares/multerConfig.js";
 
@@ -17,6 +18,12 @@ vehiculosRouter.get("/:id", getVehiculo);
 vehiculosRouter.post("/", upload.single("imgvehiculo"), createVehiculo);
 
 vehiculosRouter.put("/:id", updateVehiculo);
+
+vehiculosRouter.put(
+  "/:id/new",
+  upload.single("imgvehiculo"),
+  updateVehiculoNewImg
+);
 
 vehiculosRouter.delete("/:id", deleteVehiculo);
 

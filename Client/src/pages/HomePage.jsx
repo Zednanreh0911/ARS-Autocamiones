@@ -15,6 +15,21 @@ function HomePage() {
   useEffect(() => {
     obtenerVehiculos().then((vehiculos) => setVehiculos(vehiculos));
   }, []);
+
+  const handleEliminarVehiculo = (id) => {
+    setVehiculos((prevVehiculos) =>
+      prevVehiculos.filter((vehiculo) => vehiculo.id !== id)
+    );
+  };
+
+  const handleActualizarVehiculo = (id, datosActualizados) => {
+    setVehiculos((prevVehiculos) =>
+      prevVehiculos.map((vehiculo) =>
+        vehiculo.id === id ? { ...vehiculo, ...datosActualizados } : vehiculo
+      )
+    );
+  };
+
   const iconoAuto = (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -89,6 +104,10 @@ function HomePage() {
                   model={vehiculo.model}
                   combus={vehiculo.combus}
                   trans={vehiculo.trans}
+                  id={vehiculo.id}
+                  tipo={vehiculo.tipo}
+                  onEliminar={handleEliminarVehiculo}
+                  onActualizar={handleActualizarVehiculo}
                 />
               ))}
         </div>

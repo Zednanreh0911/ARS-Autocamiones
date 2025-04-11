@@ -1,17 +1,32 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { loginUsuario } from "../api/axios";
+import CryptoJS from "crypto-js";
 import auto2 from "../assets/auto2.jpg";
 
 function Login() {
   const { register, handleSubmit } = useForm();
-  const [email, setEmail] = useState("");
+  const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const onSubmit = handleSubmit((data) => {
-    console.log(`Jeison info: ${data.email} ${data.password}`);
-    navigate("/admin");
+  const onSubmit = handleSubmit(async (data) => {
+    try {
+      const hashedPass = CryptoJS.MD5(data.password).toString();
+
+      const response = await loginUsuario({ ...data, password: hashedPass });
+
+      if (response) {
+        localStorage.setItem("token", response.token);
+        navigate("/admin");
+      } else {
+        alert("Error en la autenticación");
+      }
+    } catch (error) {
+      console.error("Error during login:", error);
+      alert("Error en la autenticación");
+    }
   });
 
   return (
@@ -25,12 +40,11 @@ function Login() {
         <form className="text-center space-y-6" onSubmit={onSubmit}>
           <div>
             <input
-              type="email"
-              {...register("email", { required: true })}
-              placeholder="Email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              type="text"
+              {...register("user", { required: true })}
+              placeholder="Usuario"
+              value={user}
+              onChange={(e) => setUser(e.target.value)}
               required
               className="w-full px-3 py-2 mt-1 border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
             />
@@ -40,7 +54,6 @@ function Login() {
               type="password"
               {...register("password", { required: true })}
               placeholder="Contraseña"
-              id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required

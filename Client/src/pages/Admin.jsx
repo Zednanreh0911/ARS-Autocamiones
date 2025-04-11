@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { crearRepuesto, crearVehiculo } from "../api/axios";
+import CryptoJS from "crypto-js";
+import { crearRepuesto, crearVehiculo, crearUsuario } from "../api/axios";
 import DialogoAfirmativo from "../components/DialogoAfirmativo";
 
 function Admin() {
@@ -10,6 +11,9 @@ function Admin() {
     useForm();
   const { register: registerVehiculo, handleSubmit: handleSubmitVehiculo } =
     useForm();
+  const { register: registerUsuario, handleSubmit: handleSubmitUsuario } =
+    useForm();
+
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const manejoDeCategoria = (e) => {
@@ -49,6 +53,17 @@ function Admin() {
       `Jeison info: ${data.marcaRepuesto} ${data.nombreRepuesto} ${data.precioRepuesto} ${data.cantidadRepuesto} ${data.imgRepuesto} ${data.categoriaRepuesto}`
     );
     crearRepuesto(formData).then(() => {
+      setIsDialogOpen(true);
+    });
+  });
+
+  const subirUsuario = handleSubmitUsuario((data) => {
+    const formData = new FormData();
+    const hashedPass = CryptoJS.MD5(data.password).toString();
+    formData.append("name", data.name);
+    formData.append("password", hashedPass);
+    console.log(`Jeison info: ${data.name} ${hashedPass}`);
+    crearUsuario(formData).then(() => {
       setIsDialogOpen(true);
     });
   });
@@ -262,7 +277,9 @@ function Admin() {
             Publicar
           </button>
         </form>
+        {/* form de usuarios */}
         <form
+          onSubmit={subirUsuario}
           className={`mt-2 p-5 w-96 flex flex-col gap-4 items-center text-center shadow-md rounded-lg ${
             category === "Usuarios" ? "block" : "hidden"
           }`}
@@ -271,11 +288,13 @@ function Admin() {
             className="border rounded-md w-full p-2"
             type="text"
             placeholder="Nombre de usuario"
+            {...registerUsuario("name", { required: true })}
           />
           <input
             className="border rounded-md w-full p-2"
             type="password"
             placeholder="Contraseña"
+            {...registerUsuario("password", { required: true })}
           />
           <button
             className="text-black border-2 hover:bg-orange-400 hover:text-white ease-in-out duration-300 px-8 py-2 rounded-md cursor-pointer"

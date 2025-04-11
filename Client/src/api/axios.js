@@ -29,6 +29,15 @@ export const obtenerUsuarios = async () => {
   }
 };
 
+export const loginUsuario = async (datos) => {
+  try {
+    const response = await axios.post(`${API_URL}/usuarios/login`, datos);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export const crearVehiculo = async (datos) => {
   try {
     const response = await axios.post(`${API_URL}/vehiculos`, datos);

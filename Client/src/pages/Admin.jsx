@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import CryptoJS from "crypto-js";
 import { crearRepuesto, crearVehiculo, crearUsuario } from "../api/axios";
 import DialogoAfirmativo from "../components/DialogoAfirmativo";
 
@@ -58,12 +57,11 @@ function Admin() {
   });
 
   const subirUsuario = handleSubmitUsuario((data) => {
-    const formData = new FormData();
-    const hashedPass = CryptoJS.MD5(data.password).toString();
-    formData.append("name", data.name);
-    formData.append("password", hashedPass);
-    console.log(`Jeison info: ${data.name} ${hashedPass}`);
-    crearUsuario(formData).then(() => {
+    console.log(`Jeison info: ${data.name} ${data.password}`);
+    crearUsuario({
+      name: data.name,
+      password: data.password,
+    }).then(() => {
       setIsDialogOpen(true);
     });
   });

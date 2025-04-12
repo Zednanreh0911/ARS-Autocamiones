@@ -5,14 +5,15 @@ import {
   deleteUsuario,
   loginUsuario,
 } from "../controllers/usuarios.controller.js";
+import { hashPassword, comparePassword } from "../middlewares/hashedPass.js";
 
 const usuariosRouter = Router();
 
 usuariosRouter.get("/", getUsuarios);
 
-usuariosRouter.post("/login", loginUsuario);
+usuariosRouter.post("/login", comparePassword, loginUsuario);
 
-usuariosRouter.post("/", createUsuario);
+usuariosRouter.post("/", hashPassword, createUsuario);
 
 usuariosRouter.delete("/:id", deleteUsuario);
 

@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { loginUsuario } from "../api/axios";
-import CryptoJS from "crypto-js";
 import auto2 from "../assets/auto2.jpg";
 
 function Login() {
@@ -13,19 +12,32 @@ function Login() {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      const hashedPass = CryptoJS.MD5(data.password).toString();
+      const response = await loginUsuario({
+        user: data.user,
+        password: data.password,
+      });
 
-      const response = await loginUsuario({ ...data, password: hashedPass });
-
-      if (response) {
-        localStorage.setItem("token", response.token);
+      if (response.status === 200) {
+        console.log("Login exitoso:", response.data.message);
         navigate("/admin");
-      } else {
-        alert("Error en la autenticación");
       }
     } catch (error) {
-      console.error("Error during login:", error);
-      alert("Error en la autenticación");
+      if (error.response) {
+        // El servidor respondió con un código de error (401, 500, etc.)
+        console.error(
+          "Error en la autenticación:",
+          error.response.data.message
+        );
+        alert(error.response.data.message || "Error en la autenticación");
+      } else if (error.request) {
+        // No se recibió respuesta del servidor
+        console.error("No se recibió respuesta del servidor:", error.request);
+        alert("No se pudo conectar al servidor");
+      } else {
+        // Otro tipo de error
+        console.error("Error desconocido:", error.message);
+        alert("Ocurrió un error inesperado");
+      }
     }
   });
 

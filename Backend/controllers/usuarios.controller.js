@@ -18,7 +18,7 @@ export const loginUsuario = async (req, res) => {
     if (!isMatch) {
       return res.status(401).json({ message: "Credenciales incorrectas" });
     }
-    res.status(200).json({ message: "Login exitoso" });
+    res.status(200).json({ message: "Login exitoso", code: 200 });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

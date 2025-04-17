@@ -17,6 +17,12 @@ export const hashPassword = async (req, res, next) => {
 export const comparePassword = async (req, res, next) => {
   try {
     const { user, password } = req.body;
+    console.log("Datos de inicio de sesión:", req.body);
+    if (!user || !password) {
+      return res
+        .status(400)
+        .json({ message: "Usuario y contraseña requeridos" });
+    }
 
     const result = await pool.query(
       "SELECT password FROM usuarios WHERE name = $1",

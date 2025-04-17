@@ -17,11 +17,11 @@ function Login() {
         password: data.password,
       });
 
-      if (response.status === 200) {
-        console.log("Login exitoso:", response.data.message);
+      if (response.code === 200) {
         navigate("/admin");
       }
     } catch (error) {
+      console.error("Error en la solicitud:", error);
       if (error.response) {
         // El servidor respondió con un código de error (401, 500, etc.)
         console.error(

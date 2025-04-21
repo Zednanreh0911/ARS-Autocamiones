@@ -13,6 +13,9 @@ function Admin() {
   const { register: registerUsuario, handleSubmit: handleSubmitUsuario } =
     useForm();
 
+  const { register: registerReporte, handleSubmit: handleSubmitReporte } =
+    useForm();
+
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const manejoDeCategoria = (e) => {
@@ -64,6 +67,17 @@ function Admin() {
     }).then(() => {
       setIsDialogOpen(true);
     });
+  });
+
+  const handleGenerarReporte = handleSubmitReporte((data) => {
+    console.log(`Jeison info: ${data.reporte}`);
+
+    if (data.reporte === "Vehículos") {
+      // Abrir una nueva pestaña con la URL /pdf_vehiculos
+      window.open("/pdf_vehiculos", "_blank");
+    } else {
+      console.log("Reporte seleccionado:", data.reporte);
+    }
   });
 
   return (
@@ -329,26 +343,31 @@ function Admin() {
             Usuarios
           </button>
 
-          <div
+          <form
+            onSubmit={handleGenerarReporte}
             className={`mt-10 ${
               reportes === "Inventario" ? "block" : "hidden"
             }`}
           >
-            <select className="border rounded-md w-full p-2 mt-2 cursor-pointer">
+            <select
+              className="border rounded-md w-full p-2 mt-2 cursor-pointer"
+              {...registerReporte("reporte", { required: true })}
+              defaultValue={""}
+            >
               <option value="" disabled>
                 Seleccione reporte a generar
               </option>
               <option value="Vehículos">Vehículos</option>
               <option value="Repuestos">Repuestos</option>
-              <option value="Vehículos y Repuestos">
-                Vehículos y Repuestos
-              </option>
             </select>
 
-            <button className="mt-2 text-black border-2 hover:bg-orange-400 hover:text-white ease-in-out duration-300 px-8 py-2 rounded-md cursor-pointer text-center inline">
+            <button
+              type="submit"
+              className="mt-2 text-black border-2 hover:bg-orange-400 hover:text-white ease-in-out duration-300 px-8 py-2 rounded-md cursor-pointer text-center inline"
+            >
               Generar Reporte
             </button>
-          </div>
+          </form>
 
           <div
             className={`text-center mt-10 ${

@@ -65,6 +65,15 @@ export const crearUsuario = async (datos) => {
   }
 };
 
+export const eliminarUsuario = async (id) => {
+  try {
+    const response = await axios.delete(`${API_URL}/usuarios/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export const eliminarVehiculo = async (id) => {
   try {
     const response = await axios.delete(`${API_URL}/vehiculos/${id}`);

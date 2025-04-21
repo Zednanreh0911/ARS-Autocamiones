@@ -1,11 +1,15 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { crearRepuesto, crearVehiculo, crearUsuario } from "../api/axios";
+import { obtenerUsuarios, eliminarUsuario } from "../api/axios";
 import DialogoAfirmativo from "../components/DialogoAfirmativo";
 
 function Admin() {
   const [category, setCategory] = useState("");
   const [reportes, setReportes] = useState("");
+  const [usuarios, setUsuarios] = useState([]);
+  const [mostrarUsuarios, setMostrarUsuarios] = useState(false);
+
   const { register: registerRepuesto, handleSubmit: handleSubmitRepuesto } =
     useForm();
   const { register: registerVehiculo, handleSubmit: handleSubmitVehiculo } =
@@ -15,6 +19,24 @@ function Admin() {
 
   const { register: registerReporte, handleSubmit: handleSubmitReporte } =
     useForm();
+
+  const deleteUser = async (id) => {
+    try {
+      await eliminarUsuario(id);
+      setUsuarios((prevUsuarios) =>
+        prevUsuarios.filter((usuario) => usuario.id !== id)
+      );
+    } catch (error) {
+      console.error("Error al eliminar el usuario:", error);
+    }
+  };
+  const toggleUsuarios = async () => {
+    if (!mostrarUsuarios) {
+      const usuariosData = await obtenerUsuarios();
+      setUsuarios(usuariosData);
+    }
+    setMostrarUsuarios(!mostrarUsuarios);
+  };
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
@@ -314,9 +336,34 @@ function Admin() {
           >
             Crear
           </button>
-          <button className="text-black border-2 hover:bg-orange-400 hover:text-white ease-in-out duration-300 px-8 py-2 rounded-md cursor-pointer">
+          <button
+            className="text-black border-2 hover:bg-orange-400 hover:text-white ease-in-out duration-300 px-8 py-2 rounded-md cursor-pointer"
+            type="button"
+            onClick={toggleUsuarios}
+          >
             Usuarios Creados
           </button>
+          {mostrarUsuarios && (
+            <ul className="mt-4 w-full text-left">
+              {usuarios.map((usuario) => (
+                <li
+                  key={usuario.id}
+                  className="border-b py-2 flex justify-between items-center"
+                >
+                  <span>{usuario.name}</span>
+                  <div className="flex gap-2">
+                    <button
+                      className="text-red-500 hover:underline"
+                      type="button"
+                      onClick={() => deleteUser(usuario.id)}
+                    >
+                      Eliminar
+                    </button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
         </form>
         <div
           className={`mt-2 p-5 w-96 flex flex-col gap-4 items-center text-center shadow-md rounded-md ${

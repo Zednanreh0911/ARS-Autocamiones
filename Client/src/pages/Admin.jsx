@@ -97,6 +97,9 @@ function Admin() {
     if (data.reporte === "Vehículos") {
       // Abrir una nueva pestaña con la URL /pdf_vehiculos
       window.open("/pdf_vehiculos", "_blank");
+    }
+    if (data.reporte === "Repuestos") {
+      window.open("/pdf_repuestos", "_blank");
     } else {
       console.log("Reporte seleccionado:", data.reporte);
     }
@@ -378,17 +381,6 @@ function Admin() {
           >
             Inventario
           </button>
-          <button
-            onClick={reporte}
-            className={`text-black border-2 hover:bg-orange-400 hover:text-white ease-in-out duration-300 px-8 py-2 rounded-md cursor-pointer ${
-              reportes === "Ventas" ? "bg-orange-400 text-white" : "bg-none"
-            }`}
-          >
-            Ventas
-          </button>
-          <button className="text-black border-2 hover:bg-orange-400 hover:text-white ease-in-out duration-300 px-8 py-2 rounded-md cursor-pointer">
-            Usuarios
-          </button>
 
           <form
             onSubmit={handleGenerarReporte}
@@ -415,46 +407,6 @@ function Admin() {
               Generar Reporte
             </button>
           </form>
-
-          <div
-            className={`text-center mt-10 ${
-              reportes === "Ventas" ? "block" : "hidden"
-            }`}
-          >
-            <select className="border rounded-md w-full p-2 mt-2 mb-2 cursor-pointer">
-              <option value="" disabled>
-                Seleccione reporte a generar
-              </option>
-              <option value="Vehículos">Vehículos</option>
-              <option value="Repuestos">Repuestos</option>
-              <option value="Vehículos y Repuestos">
-                Vehíchulos y Repuestos
-              </option>
-            </select>
-            <label htmlFor="desde">
-              <h2 className="text-left">Seleccione fecha desde:</h2>
-              <input
-                id="desde"
-                className="border rounded-md w-full p-2 mb-2 cursor-pointer"
-                type="date"
-              />
-            </label>
-            <label htmlFor="hasta">
-              <h2 className="text-left">Hasta:</h2>
-              <input
-                id="hasta"
-                className="border rounded-md w-full p-2 mb-2 cursor-pointer"
-                type="date"
-              />
-            </label>
-            <button className="mt-2 text-black border-2 hover:bg-orange-400 hover:text-white ease-in-out duration-300 px-8 py-2 rounded-md cursor-pointer text-center inline">
-              Generar Reporte
-            </button>
-          </div>
-
-          <div
-            className={`mt-10 ${reportes === "Usuarios" ? "block" : "hidden"}`}
-          ></div>
         </div>
       </section>
     </main>

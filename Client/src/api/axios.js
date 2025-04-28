@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:3000";
+//devuelve la url de la api
+const API_URL = `http://${window.location.hostname}:3000`;
 
 export const obtenerRepuestos = async () => {
   try {

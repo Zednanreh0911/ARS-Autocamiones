@@ -9,8 +9,9 @@ import ScrollToTop from "./components/ScrollToTop.jsx";
 import Footerbar from "./components/Footerbar.jsx";
 import Admin from "./pages/Admin.jsx";
 import Error404 from "./pages/Error404.jsx";
-import Pdf from "./components/Pdf.jsx";
-import { obtenerVehiculos } from "./api/axios.js";
+import PdfVehiculos from "./components/PdfVehiculos.jsx";
+import PdfRepuestos from "./components/PdfRepuestos.jsx";
+import { obtenerRepuestos, obtenerVehiculos } from "./api/axios.js";
 import { useEffect, useState } from "react";
 
 function AppRoutes() {
@@ -31,6 +32,7 @@ function AppRoutes() {
   const hideNavbar =
     !validPaths.includes(location.pathname) || location.pathname === "/login";
   const [vehiculos, setVehiculos] = useState([]);
+  const [repuestos, setRepuestos] = useState([]);
   useEffect(() => {
     const fetchVehiculos = async () => {
       const data = await obtenerVehiculos();
@@ -47,7 +49,23 @@ function AppRoutes() {
       setVehiculos(vehiculosTransformados);
     };
 
+    const fetchRepuestos = async () => {
+      const data = await obtenerRepuestos();
+
+      // Transformar los datos para que coincidan con los elementos esperados por Pdf
+      const repuestosTransformados = data.map((repuesto) => ({
+        modelo: repuesto.name || "N/A",
+        marca: repuesto.marca || "N/A",
+        cantidad: repuesto.cantidad || "N/A",
+        categoria: repuesto.cat || "N/A",
+        precio: repuesto.precio || "N/A",
+      }));
+
+      setRepuestos(repuestosTransformados);
+    };
+
     fetchVehiculos();
+    fetchRepuestos();
   }, []);
   return (
     <>
@@ -63,7 +81,11 @@ function AppRoutes() {
         <Route path="*" element={<Error404 />} />
         <Route
           path="/pdf_vehiculos"
-          element={<Pdf title={"Vehiculos"} elementos={vehiculos} />}
+          element={<PdfVehiculos title={"Vehiculos"} elementos={vehiculos} />}
+        />
+        <Route
+          path="/pdf_repuestos"
+          element={<PdfRepuestos title={"Repuestos"} elementos={repuestos} />}
         />
       </Routes>
       {!hideFooter && <Footerbar />}

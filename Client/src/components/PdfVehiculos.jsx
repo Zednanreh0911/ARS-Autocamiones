@@ -9,7 +9,7 @@ import {
 } from "@react-pdf/renderer";
 import PropTypes from "prop-types";
 
-Pdf.propTypes = {
+PdfVehiculos.propTypes = {
   title: PropTypes.string.isRequired,
   elementos: PropTypes.arrayOf(
     PropTypes.shape({
@@ -22,7 +22,7 @@ Pdf.propTypes = {
   ).isRequired,
 };
 
-function Pdf({ title, elementos }) {
+function PdfVehiculos({ title, elementos }) {
   const styles = StyleSheet.create({
     page: {
       position: "relative",
@@ -90,11 +90,11 @@ function Pdf({ title, elementos }) {
       transform: "rotate(-45deg)",
     },
     watermarkImage: {
-      width: 200,
-      height: 200,
+      width: 300,
+      height: 100,
     },
   });
-  const watermarkImageSource = "/encava.png"; // URL del logo
+  const watermarkImageSource = "/logoArs.png"; // URL del logo
 
   return (
     <PDFViewer style={{ width: "100%", height: "100vh" }}>
@@ -178,4 +178,4 @@ function Pdf({ title, elementos }) {
   );
 }
 
-export default Pdf;
+export default PdfVehiculos;

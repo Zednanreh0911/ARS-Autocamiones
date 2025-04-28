@@ -1,5 +1,13 @@
 import { Router } from "express";
-import { getVehiculos, getVehiculo, createVehiculo, updateVehiculo, deleteVehiculo  } from "../controllers/vehiculos.controller.js";
+import {
+  getVehiculos,
+  getVehiculo,
+  createVehiculo,
+  updateVehiculo,
+  deleteVehiculo,
+  updateVehiculoNewImg,
+} from "../controllers/vehiculos.controller.js";
+import upload from "../middlewares/multerConfig.js";
 
 const vehiculosRouter = Router();
 
@@ -7,9 +15,15 @@ vehiculosRouter.get("/", getVehiculos);
 
 vehiculosRouter.get("/:id", getVehiculo);
 
-vehiculosRouter.post("/", createVehiculo);
+vehiculosRouter.post("/", upload.single("imgvehiculo"), createVehiculo);
 
 vehiculosRouter.put("/:id", updateVehiculo);
+
+vehiculosRouter.put(
+  "/:id/new",
+  upload.single("imgvehiculo"),
+  updateVehiculoNewImg
+);
 
 vehiculosRouter.delete("/:id", deleteVehiculo);
 

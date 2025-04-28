@@ -1,11 +1,19 @@
 import { Router } from "express";
-import { getUsuarios, createUsuario, deleteUsuario } from "../controllers/usuarios.controller.js";
+import {
+  getUsuarios,
+  createUsuario,
+  deleteUsuario,
+  loginUsuario,
+} from "../controllers/usuarios.controller.js";
+import { hashPassword, comparePassword } from "../middlewares/hashedPass.js";
 
 const usuariosRouter = Router();
 
 usuariosRouter.get("/", getUsuarios);
 
-usuariosRouter.post("/", createUsuario);
+usuariosRouter.post("/login", comparePassword, loginUsuario);
+
+usuariosRouter.post("/", hashPassword, createUsuario);
 
 usuariosRouter.delete("/:id", deleteUsuario);
 

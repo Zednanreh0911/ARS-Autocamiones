@@ -8,11 +8,24 @@ function RepuestosPage() {
   useEffect(() => {
     obtenerRepuestos().then((repuestos) => setRepuestos(repuestos));
   }, []);
-  const [selectedCategory, setSelectedCategory] = useState("repuestos");
+  const [selectedCategory, setSelectedCategory] = useState("Internos");
   const [openDropdown, setOpenDropdown] = useState(false);
 
   const handleDropdown = () => {
     setOpenDropdown(!openDropdown);
+  };
+
+  const handleEliminarRepuesto = (id) => {
+    setRepuestos((prevRepuestos) =>
+      prevRepuestos.filter((repuesto) => repuesto.id !== id)
+    );
+  };
+  const handleActualizarRepuesto = (id, datosActualizados) => {
+    setRepuestos((prevRepuestos) =>
+      prevRepuestos.map((repuesto) =>
+        repuesto.id === id ? { ...repuesto, ...datosActualizados } : repuesto
+      )
+    );
   };
 
   return (
@@ -58,7 +71,7 @@ function RepuestosPage() {
           </h2>
           {repuestos &&
             repuestos
-              .filter((repuesto) => repuesto.category === selectedCategory)
+              .filter((repuesto) => repuesto.cat === selectedCategory)
               .map((repuesto, index) => (
                 <RepuestoCard
                   key={index}
@@ -66,6 +79,11 @@ function RepuestosPage() {
                   name={repuesto.name}
                   marca={repuesto.marca}
                   precio={repuesto.precio}
+                  id={repuesto.id}
+                  cantidad={repuesto.cantidad}
+                  cat={repuesto.cat}
+                  onEliminar={handleEliminarRepuesto}
+                  onActualizar={handleActualizarRepuesto}
                 />
               ))}
         </div>

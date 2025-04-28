@@ -29,7 +29,12 @@ export const getRepuesto = async (req, res) => {
 
 export const createRepuesto = async (req, res) => {
   try {
-    const { name, marca, cantidad, cat, precio, img } = req.body;
+    if (!req.savedFilename) {
+      return res.status(400).json({ message: "No se ha subido una imagen" });
+    }
+
+    const img = `src/assets/${req.savedFilename}`; // Obtener el nombre del archivo guardado
+    const { name, marca, cantidad, cat, precio } = req.body;
     const response = await pool.query(
       "INSERT INTO repuestos (name, marca, cantidad, cat, precio, img) VALUES ($1, $2, $3, $4, $5, $6)",
       [name, marca, cantidad, cat, precio, img]
@@ -48,15 +53,60 @@ export const createRepuesto = async (req, res) => {
 export const updateRepuesto = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, marca, cantidad, precio, img } = req.body;
+
+    const { name, marca, cantidad, cat, precio, img } = req.body;
+
     const response = await pool.query(
-      "UPDATE repuestos SET name = $1, marca = $2, cantidad = $3, precio = $4, img = $5 WHERE id = $6",
-      [name, marca, cantidad, precio, img, id]
+      `UPDATE repuestos 
+       SET name = $1, marca = $2, cantidad = $3, cat = $4, precio = $5, img = $6
+       WHERE id = $7 RETURNING *`,
+      [name, marca, cantidad, cat, precio, img, id]
     );
+
+    if (response.rowCount === 0) {
+      return res.status(404).json({ message: "Repuesto no encontrado" });
+    }
+
     res.status(200).json({
       message: "Repuesto actualizado",
       body: {
-        repuesto: { name, marca, cantidad, precio, img },
+        Repuesto: response.rows[0],
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const updateRepuestoNewImg = async (req, res) => {
+  try {
+    console.log("youre in updateRepuestoNewImg");
+    console.log("req.body", req.body);
+    const { name, marca, cantidad, cat, precio } = req.body;
+    const { id } = req.params;
+
+    if (!req.savedFilename) {
+      return res.status(400).json({ message: "No se ha subido una imagen" });
+    }
+    const img = `src/assets/${req.savedFilename}`;
+
+    console.log("img", img);
+
+    const response = await pool.query(
+      `UPDATE repuestos 
+       SET name = $1, marca = $2, cantidad = $3, cat = $4, precio = $5, img = $6
+       WHERE id = $7 RETURNING *`,
+      [name, marca, cantidad, cat, precio, img, id]
+    );
+
+    if (response.rowCount === 0) {
+      return res.status(404).json({ message: "Repuesto no encontrado" });
+    }
+
+    res.status(200).json({
+      message: "Repuesto actualizado con nueva imagen",
+      body: {
+        repuesto: response.rows[0],
       },
     });
   } catch (error) {

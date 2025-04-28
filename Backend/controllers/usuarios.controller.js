@@ -12,9 +12,24 @@ export const getUsuarios = async (req, res) => {
   }
 };
 
+export const loginUsuario = async (req, res) => {
+  try {
+    const isMatch = req.isMatch;
+    if (!isMatch) {
+      return res.status(401).json({ message: "Credenciales incorrectas" });
+    }
+    res.status(200).json({ message: "Login exitoso", code: 200 });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 export const createUsuario = async (req, res) => {
   try {
-    const { name, password } = req.body;
+    const { name } = req.body;
+    const password = req.body.password;
+    console.log(password);
+
     const response = await client.query(
       "INSERT INTO usuarios (name, password) VALUES ($1, $2)",
       [name, password]

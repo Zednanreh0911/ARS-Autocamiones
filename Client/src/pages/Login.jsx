@@ -1,17 +1,44 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { loginUsuario } from "../api/axios";
 import auto2 from "../assets/auto2.jpg";
 
 function Login() {
   const { register, handleSubmit } = useForm();
-  const [email, setEmail] = useState("");
+  const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const onSubmit = handleSubmit((data) => {
-    console.log(`Jeison info: ${data.email} ${data.password}`);
-    navigate("/admin");
+  const onSubmit = handleSubmit(async (data) => {
+    try {
+      const response = await loginUsuario({
+        user: data.user,
+        password: data.password,
+      });
+
+      if (response.code === 200) {
+        navigate("/admin");
+      }
+    } catch (error) {
+      console.error("Error en la solicitud:", error);
+      if (error.response) {
+        // El servidor respondió con un código de error (401, 500, etc.)
+        console.error(
+          "Error en la autenticación:",
+          error.response.data.message
+        );
+        alert(error.response.data.message || "Error en la autenticación");
+      } else if (error.request) {
+        // No se recibió respuesta del servidor
+        console.error("No se recibió respuesta del servidor:", error.request);
+        alert("No se pudo conectar al servidor");
+      } else {
+        // Otro tipo de error
+        console.error("Error desconocido:", error.message);
+        alert("Ocurrió un error inesperado");
+      }
+    }
   });
 
   return (
@@ -25,12 +52,11 @@ function Login() {
         <form className="text-center space-y-6" onSubmit={onSubmit}>
           <div>
             <input
-              type="email"
-              {...register("email", { required: true })}
-              placeholder="Email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              type="text"
+              {...register("user", { required: true })}
+              placeholder="Usuario"
+              value={user}
+              onChange={(e) => setUser(e.target.value)}
               required
               className="w-full px-3 py-2 mt-1 border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
             />
@@ -40,7 +66,6 @@ function Login() {
               type="password"
               {...register("password", { required: true })}
               placeholder="Contraseña"
-              id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required

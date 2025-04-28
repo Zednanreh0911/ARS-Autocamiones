@@ -1,4 +1,11 @@
 import PropTypes from "prop-types";
+import { useState, useEffect } from "react";
+import {
+  eliminarVehiculo,
+  editarVehiculo,
+  editarVehiculoNewImg,
+} from "../api/axios";
+import { useForm } from "react-hook-form";
 
 AutoCard.propTypes = {
   image: PropTypes.string.isRequired,
@@ -7,15 +14,172 @@ AutoCard.propTypes = {
   model: PropTypes.string.isRequired,
   combus: PropTypes.string.isRequired,
   trans: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
+  onEliminar: PropTypes.func.isRequired,
+  onActualizar: PropTypes.func.isRequired,
+  tipo: PropTypes.string.isRequired,
 };
 
-function AutoCard({ image, marca, year, model, combus, trans }) {
+function AutoCard({
+  image,
+  marca,
+  year,
+  model,
+  combus,
+  trans,
+  id,
+  onEliminar,
+  onActualizar,
+  tipo,
+}) {
+  const [menuVisible, setMenuVisible] = useState(false);
+  const [modalEliminar, setModalModalEliminar] = useState(false);
+  const [modalEditar, setModalEditar] = useState(false);
+
+  const {
+    register: registerVehiculo,
+    handleSubmit: handleSubmitVehiculo,
+    setValue,
+  } = useForm({
+    defaultValues: {
+      marca: "",
+      anno: "",
+      modelo: "",
+      categoria: "",
+      combustible: "",
+      transmision: "",
+    },
+  });
+
+  useEffect(() => {
+    setValue("marca", marca);
+    setValue("anno", year);
+    setValue("modelo", model);
+    setValue("categoria", tipo);
+    setValue("combustible", combus);
+    setValue("transmision", trans);
+  }, [marca, year, model, tipo, combus, trans, setValue]);
+
+  const toggleMenu = () => {
+    setMenuVisible((prev) => !prev);
+  };
+
+  const openModal = () => {
+    setModalModalEliminar(true);
+  };
+
+  const closeModal = () => {
+    setModalModalEliminar(false);
+  };
+
+  const openEditarModal = () => {
+    setModalEditar(true);
+  };
+
+  const submitEditar = handleSubmitVehiculo((data) => {
+    if (!data.img || data.img.length === 0) {
+      const formattedData = {
+        marca: data.marca,
+        year: data.anno, // Cambiar "anno" a "year"
+        model: data.modelo, // Cambiar "modelo" a "model"
+        tipo: data.categoria, // Cambiar "categoria" a "tipo"
+        combus: data.combustible, // Cambiar "combustible" a "combus"
+        trans: data.transmision, // Cambiar "transmision" a "trans"
+        img: image,
+      };
+      editarVehiculo(id, formattedData)
+        .then((response) => {
+          console.log("Vehículo editado:", response);
+          onActualizar(id, formattedData);
+        })
+        .catch((error) => {
+          console.error("Error al editar el vehículo:", error);
+        });
+    } else {
+      const formData = new FormData();
+      formData.append("imgvehiculo", data.img[0]);
+      formData.append("marca", data.marca);
+      formData.append("year", data.anno);
+      formData.append("model", data.modelo);
+      formData.append("tipo", data.categoria);
+      formData.append("combus", data.combustible);
+      formData.append("trans", data.transmision);
+      editarVehiculoNewImg(id, formData)
+        .then((response) => {
+          console.log("Vehículo editado:", response);
+          onActualizar(id, {
+            marca: data.marca,
+            year: data.anno,
+            model: data.modelo,
+            tipo: data.categoria,
+            combus: data.combustible,
+            trans: data.transmision,
+            img: URL.createObjectURL(data.img[0]), // Actualiza la imagen
+          });
+        })
+        .catch((error) => {
+          console.error("Error al editar el vehículo:", error);
+        });
+    }
+    setModalEditar(false);
+  });
+
+  const closeEditarModal = () => {
+    setModalEditar(false);
+  };
+
+  const confirmDelete = (id) => {
+    console.log("Vehículo eliminado", id);
+    eliminarVehiculo(id)
+      .then((response) => {
+        console.log("Vehículo eliminado:", response);
+        onEliminar(id);
+      })
+      .catch((error) => {
+        console.error("Error al eliminar el vehículo:", error);
+      });
+    setModalModalEliminar(false);
+  };
+
   return (
-    <article className="max-w-96 md:max-w-80 xl:max-w-96 h-fit rounded-2xl overflow-hidden shadow-2xl mt-4">
+    <article className="max-w-96 md:max-w-80 xl:max-w-96 h-fit rounded-2xl overflow-hidden shadow-2xl mt-4 relative">
+      <div className="absolute top-0 right-0">
+        <div
+          className="bg-orange-500 text-white text-xs font-medium px-2 py-1 rounded-bl-lg flex items-center justify-center cursor-pointer relative"
+          onClick={toggleMenu}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="16px"
+            viewBox="0 0 24 24"
+            width="16px"
+            fill="white"
+          >
+            <path d="M0 0h24v24H0z" fill="none" />
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 15h-1v-6h2v6h-1zm0-8h-1V7h2v2h-1z" />
+          </svg>
+        </div>
+        {menuVisible && (
+          <div className="absolute top-full right-0 mt-2 bg-white text-black rounded-lg shadow-lg">
+            <button
+              className="block px-4 py-2 text-sm hover:bg-gray-100 hover:rounded-lg w-full text-left"
+              onClick={openEditarModal}
+            >
+              Editar
+            </button>
+            <button
+              className="block px-4 py-2 text-sm hover:bg-gray-100 hover:rounded-lg w-full text-left"
+              onClick={openModal}
+            >
+              Eliminar
+            </button>
+          </div>
+        )}
+      </div>
       <img
-        className="w-full max-h-64 min-[400px]:min-w-96"
+        className="w-full h-64 min-[400px]:min-w-96"
         src={image}
-        alt="auto1"
+        alt={model}
       />
       <section className="text-left p-4">
         <header>
@@ -82,6 +246,128 @@ function AutoCard({ image, marca, year, model, combus, trans }) {
           </svg>
         </button>
       </section>
+
+      {modalEditar && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg">
+            <h2 className="text-lg font-medium mb-4">Editar Vehículo</h2>
+            <form
+              onSubmit={submitEditar}
+              className="mt-2 p-5 w-96 flex flex-col gap-4 items-center text-center shadow-md rounded-lg"
+            >
+              <select
+                className="border rounded-md w-full p-2 mt-2 cursor-pointer"
+                {...registerVehiculo("marca")}
+                defaultValue={""}
+              >
+                <option value={marca} disabled>
+                  {marca}
+                </option>
+                <option value="Encava">Encava</option>
+                <option value="Isuzu">Isuzu</option>
+              </select>
+              <input
+                className="border rounded-md w-full p-2"
+                type="number"
+                placeholder={year}
+                {...registerVehiculo("anno")}
+              />
+              <input
+                className="border rounded-md w-full p-2"
+                type="text"
+                placeholder={model}
+                {...registerVehiculo("modelo")}
+              />
+              <select
+                className="border rounded-md w-full p-2 mt-2 cursor-pointer"
+                {...registerVehiculo("categoria")}
+                defaultValue={""}
+              >
+                <option value={tipo} disabled>
+                  {tipo}
+                </option>
+                <option value="Buseta">Buseta</option>
+                <option value="Camioneta">Camioneta</option>
+              </select>
+              <select
+                className="border rounded-md w-full p-2 mt-2 cursor-pointer"
+                {...registerVehiculo("combustible")}
+                defaultValue={""}
+              >
+                <option value={combus} disabled>
+                  {combus}
+                </option>
+                <option value="Diesel">Diesel</option>
+                <option value="Gasolina">Gasolina</option>
+                <option value="Hibrido">Hibrido</option>
+              </select>
+              <select
+                className="border rounded-md w-full p-2 mt-2 cursor-pointer"
+                {...registerVehiculo("transmision")}
+                defaultValue={""}
+              >
+                <option value={trans} disabled>
+                  {trans}
+                </option>
+                <option value="Manual">Manual</option>
+                <option value="Automático">Automático</option>
+              </select>
+              <label
+                className="bg-orange-500 text-white w-full p-2 rounded-md cursor-pointer"
+                htmlFor="imgvehiculo"
+              >
+                {" "}
+                Agrega la imagen del vehiculo
+                <input
+                  id="imgvehiculo"
+                  className="hidden"
+                  type="file"
+                  accept="image/*"
+                  placeholder="Imagen del Vehiculo"
+                  {...registerVehiculo("img")}
+                />
+              </label>
+
+              <button
+                className="text-black border-2 hover:bg-orange-400 hover:text-white ease-in-out duration-300 px-8 py-2 rounded-md cursor-pointer"
+                type="submit"
+              >
+                Publicar
+              </button>
+              <button
+                className="text-black border-2 hover:bg-orange-400 hover:text-white ease-in-out duration-300 px-8 py-2 rounded-md cursor-pointer"
+                onClick={closeEditarModal}
+              >
+                Cancelar
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+      {modalEliminar && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-80">
+            <h2 className="text-lg font-medium mb-4">
+              ¿Está seguro que desea eliminar el vehículo seleccionado?
+            </h2>
+            <div className="flex justify-end gap-4">
+              <button
+                className="px-4 py-2 bg-gray-300 rounded-lg hover:bg-gray-400"
+                onClick={closeModal}
+              >
+                Cancelar
+              </button>
+
+              <button
+                className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
+                onClick={() => confirmDelete(id)}
+              >
+                Eliminar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </article>
   );
 }

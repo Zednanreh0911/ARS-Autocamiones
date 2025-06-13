@@ -9,24 +9,24 @@ import {
 
 RepuestoCard.propTypes = {
   image: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
+  nombre: PropTypes.string.isRequired,
   marca: PropTypes.string.isRequired,
-  precio: PropTypes.number.isRequired,
-  id: PropTypes.number.isRequired,
+  precio_unitario: PropTypes.number.isRequired,
+  id_repuesto: PropTypes.number.isRequired,
   cantidad: PropTypes.number.isRequired,
-  cat: PropTypes.string.isRequired,
+  categoria: PropTypes.string.isRequired,
   onEliminar: PropTypes.func.isRequired,
   onActualizar: PropTypes.func.isRequired,
 };
 
 function RepuestoCard({
   image,
-  name,
+  nombre,
   marca,
-  precio,
-  id,
+  precio_unitario,
+  id_repuesto,
   cantidad,
-  cat,
+  categoria,
   onEliminar,
   onActualizar,
 }) {
@@ -41,32 +41,32 @@ function RepuestoCard({
   } = useForm({
     defaultValues: {
       marca: "",
-      name: "",
-      precio: "",
+      nombre: "",
+      precio_unitario: "",
       cantidad: "",
-      cat: "",
+      categoria: "",
     },
   });
 
   useEffect(() => {
     setValue("marca", marca);
-    setValue("name", name);
-    setValue("precio", precio);
+    setValue("nombre", nombre);
+    setValue("precio_unitario", precio_unitario);
     setValue("cantidad", cantidad);
-    setValue("cat", cat);
-  }, [marca, name, precio, cantidad, cat, setValue]);
+    setValue("categoria", categoria);
+  }, [marca, nombre, precio_unitario, cantidad, categoria, setValue]);
 
   const subirRepuesto = handleSubmitRepuesto((data) => {
     console.log("Datos del repuesto:", data);
     if (!data.img || data.img.length === 0) {
       const formattedData = {
         ...data,
-        img: image,
+        imagen_url: image,
       };
-      editarRepuesto(id, formattedData)
+      editarRepuesto(id_repuesto, formattedData)
         .then((response) => {
           console.log("Repuesto editado:", response);
-          onActualizar(id, formattedData);
+          onActualizar(id_repuesto, formattedData);
         })
         .catch((error) => {
           console.error("Error al editar el repuesto:", error);
@@ -75,17 +75,17 @@ function RepuestoCard({
       const formData = new FormData();
       formData.append("imgRepuesto", data.img[0]);
       formData.append("marca", data.marca);
-      formData.append("name", data.name);
-      formData.append("precio", data.precio);
+      formData.append("nombre", data.nombre);
+      formData.append("precio_unitario", data.precio_unitario);
       formData.append("cantidad", data.cantidad);
-      formData.append("cat", data.cat);
+      formData.append("categoria", data.categoria);
 
-      editarRepuestoNewImg(id, formData)
+      editarRepuestoNewImg(id_repuesto, formData)
         .then((response) => {
           console.log("Repuesto editado:", response);
-          onActualizar(id, {
+          onActualizar(id_repuesto, {
             ...data,
-            img: URL.createObjectURL(data.img[0]),
+            imagen_url: response.body.repuesto.imagen_url,
           });
         })
         .catch((error) => {
@@ -158,13 +158,13 @@ function RepuestoCard({
           </div>
         )}
       </div>
-      <img className="w-full max-h-64 min-h-64" src={image} alt={name} />
+      <img className="w-full max-h-64 min-h-64" src={image} alt={nombre} />
       <section className="text-left p-4">
         <header className="border-b border-gray-300 pb-4">
           <h2 className="text-orange-500 text-sm">{marca}</h2>
-          <h3 className="font-medium text-xl mt-2 text-center">{name}</h3>
+          <h3 className="font-medium text-xl mt-2 text-center">{nombre}</h3>
           <p className="text-orange-500 text-base font-medium mt-2">
-            $ {precio}
+            $ {precio_unitario}
           </p>
         </header>
 
@@ -198,15 +198,16 @@ function RepuestoCard({
               <input
                 className="border rounded-md w-full p-2"
                 type="text"
-                placeholder={name}
-                {...registerRepuesto("name")}
+                placeholder={nombre}
+                {...registerRepuesto("nombre")}
               />
               <input
                 className="border rounded-md w-full p-2"
                 type="number"
-                placeholder={precio}
+                placeholder={precio_unitario}
                 min="0" // No permite valores menores a 0
-                {...registerRepuesto("precio")}
+                step="0.01"
+                {...registerRepuesto("precio_unitario")}
               />
               <input
                 className="border rounded-md w-full p-2"
@@ -219,7 +220,7 @@ function RepuestoCard({
               />
               <select
                 className="border rounded-md w-full p-2 mt-2 cursor-pointer"
-                {...registerRepuesto("cat")}
+                {...registerRepuesto("categoria")}
                 defaultValue={""}
               >
                 <option value="" disabled>
@@ -278,7 +279,7 @@ function RepuestoCard({
 
               <button
                 className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
-                onClick={() => confirmDelete(id)}
+                onClick={() => confirmDelete(id_repuesto)}
               >
                 Eliminar
               </button>

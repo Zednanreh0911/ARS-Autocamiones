@@ -24,7 +24,7 @@ function Admin() {
     try {
       await eliminarUsuario(id);
       setUsuarios((prevUsuarios) =>
-        prevUsuarios.filter((usuario) => usuario.id !== id)
+        prevUsuarios.filter((usuario) => usuario.id_usuario !== id)
       );
     } catch (error) {
       console.error("Error al eliminar el usuario:", error);
@@ -51,13 +51,14 @@ function Admin() {
     const formData = new FormData();
     formData.append("imgvehiculo", data.img[0]);
     formData.append("marca", data.marca);
-    formData.append("year", data.anno);
-    formData.append("tipo", data.categoria);
-    formData.append("combus", data.combustible);
-    formData.append("trans", data.transmision);
-    formData.append("model", data.modelo);
+    formData.append("anno", data.año);
+    formData.append("tipo_vehiculo", data.tipo_vehiculo);
+    formData.append("tipo_combustible", data.combustible);
+    formData.append("tipo_transmision", data.transmision);
+    formData.append("modelo", data.modelo);
+    formData.append("cantidad", data.cantidad);
     console.log(
-      `Jeison info: ${data.marca} ${data.combustible} ${data.transmision} ${data.modelo} ${data.anno} ${data.img} ${data.categoria}`
+      `Jeison info: ${data.marca} ${data.año} ${data.tipo_vehiculo} ${data.combustible} ${data.transmision} ${data.modelo} ${data.cantidad}`
     );
 
     crearVehiculo(formData).then(() => {
@@ -69,10 +70,10 @@ function Admin() {
     const formData = new FormData();
     formData.append("imgRepuesto", data.imgRepuesto[0]);
     formData.append("marca", data.marcaRepuesto);
-    formData.append("name", data.nombreRepuesto);
-    formData.append("precio", data.precioRepuesto);
+    formData.append("nombre", data.nombreRepuesto);
+    formData.append("precio_unitario", data.precioRepuesto);
     formData.append("cantidad", data.cantidadRepuesto);
-    formData.append("cat", data.categoriaRepuesto);
+    formData.append("categoria", data.categoriaRepuesto);
     console.log(
       `Jeison info: ${data.marcaRepuesto} ${data.nombreRepuesto} ${data.precioRepuesto} ${data.cantidadRepuesto} ${data.imgRepuesto} ${data.categoriaRepuesto}`
     );
@@ -179,7 +180,7 @@ function Admin() {
             className="border rounded-md w-full p-2"
             type="number"
             placeholder="Año"
-            {...registerVehiculo("anno", { required: true })}
+            {...registerVehiculo("año", { required: true })}
           />
           <input
             className="border rounded-md w-full p-2"
@@ -189,11 +190,11 @@ function Admin() {
           />
           <select
             className="border rounded-md w-full p-2 mt-2 cursor-pointer"
-            {...registerVehiculo("categoria", { required: true })}
+            {...registerVehiculo("tipo_vehiculo", { required: true })}
             defaultValue={""}
           >
             <option value="" disabled>
-              Categoria
+              Tipo de vehiculo
             </option>
             <option value="Buseta">Buseta</option>
             <option value="Camioneta">Camioneta</option>
@@ -221,6 +222,14 @@ function Admin() {
             <option value="Manual">Manual</option>
             <option value="Automático">Automático</option>
           </select>
+
+          <input
+            className="border rounded-md w-full p-2"
+            type="number"
+            placeholder="Cantidad"
+            min="0"
+            {...registerVehiculo("cantidad", { required: true })}
+          />
           <label
             className="bg-orange-500 text-white w-full p-2 rounded-md cursor-pointer"
             htmlFor="imgvehiculo"
@@ -268,6 +277,7 @@ function Admin() {
             type="number"
             placeholder="Precio"
             min="0" // No permite valores menores a 0
+            step="0.01"
             {...registerRepuesto("precioRepuesto", { required: true, min: 0 })}
           />
           <input

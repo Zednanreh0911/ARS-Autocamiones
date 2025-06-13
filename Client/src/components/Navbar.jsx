@@ -40,7 +40,7 @@ function Navbar() {
           </li>
         </ul>
       </div>
-      <nav className="flex justify-between py-7 px-6 text-black border-b-2 border-stone-400 bg-white">
+      <nav className="flex justify-between py-7 px-6 text-black bg-white rounded-b-3xl shadow-lg">
         <span className="font-bold text-3xl">
           <Link to="/">
             <img className="h-12" src={logoArs} alt="ARS" />

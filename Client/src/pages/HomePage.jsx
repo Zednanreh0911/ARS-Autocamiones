@@ -18,14 +18,16 @@ function HomePage() {
 
   const handleEliminarVehiculo = (id) => {
     setVehiculos((prevVehiculos) =>
-      prevVehiculos.filter((vehiculo) => vehiculo.id !== id)
+      prevVehiculos.filter((vehiculo) => vehiculo.id_vehiculo !== id)
     );
   };
 
   const handleActualizarVehiculo = (id, datosActualizados) => {
     setVehiculos((prevVehiculos) =>
       prevVehiculos.map((vehiculo) =>
-        vehiculo.id === id ? { ...vehiculo, ...datosActualizados } : vehiculo
+        vehiculo.id_vehiculo === id
+          ? { ...vehiculo, ...datosActualizados }
+          : vehiculo
       )
     );
   };
@@ -98,16 +100,17 @@ function HomePage() {
               .map((vehiculo, index) => (
                 <AutoCard
                   key={index}
-                  image={vehiculo.img}
+                  image={vehiculo.imagen_url}
                   marca={vehiculo.marca}
-                  year={vehiculo.year}
-                  model={vehiculo.model}
-                  combus={vehiculo.combus}
-                  trans={vehiculo.trans}
-                  id={vehiculo.id}
-                  tipo={vehiculo.tipo}
+                  anno={Number(vehiculo.año)}
+                  modelo={vehiculo.modelo}
+                  tipo_combustible={vehiculo.tipo_combustible}
+                  tipo_transmision={vehiculo.tipo_transmision}
+                  id={vehiculo.id_vehiculo}
                   onEliminar={handleEliminarVehiculo}
                   onActualizar={handleActualizarVehiculo}
+                  tipo_vehiculo={vehiculo.tipo_vehiculo}
+                  cantidad={Number(vehiculo.cantidad)}
                 />
               ))}
         </div>

@@ -14,10 +14,11 @@ PdfVehiculos.propTypes = {
   elementos: PropTypes.arrayOf(
     PropTypes.shape({
       marca: PropTypes.string.isRequired,
-      modelo: PropTypes.string.isRequired,
-      combustible: PropTypes.string.isRequired,
       año: PropTypes.number.isRequired,
-      transmision: PropTypes.string.isRequired,
+      cantidad: PropTypes.number.isRequired,
+      modelo: PropTypes.string.isRequired,
+      tipo_combustible: PropTypes.string.isRequired,
+      tipo_transmision: PropTypes.string.isRequired,
     })
   ).isRequired,
 };
@@ -126,6 +127,9 @@ function PdfVehiculos({ title, elementos }) {
                       <View style={styles.tableColHeader}>
                         <Text style={styles.tableCellHeader}>Transmisión</Text>
                       </View>
+                      <View style={styles.tableColHeader}>
+                        <Text style={styles.tableCellHeader}>Cantidad</Text>
+                      </View>
                     </View>
                   </View>
                 )}
@@ -145,7 +149,7 @@ function PdfVehiculos({ title, elementos }) {
                         </View>
                         <View style={styles.tableCol}>
                           <Text style={styles.tableCell}>
-                            {vehiculo.combustible}
+                            {vehiculo.tipo_combustible}
                           </Text>
                         </View>
                         <View style={styles.tableCol}>
@@ -153,7 +157,12 @@ function PdfVehiculos({ title, elementos }) {
                         </View>
                         <View style={styles.tableCol}>
                           <Text style={styles.tableCell}>
-                            {vehiculo.transmision}
+                            {vehiculo.tipo_transmision}
+                          </Text>
+                        </View>
+                        <View style={styles.tableCol}>
+                          <Text style={styles.tableCell}>
+                            {vehiculo.cantidad}
                           </Text>
                         </View>
                       </View>

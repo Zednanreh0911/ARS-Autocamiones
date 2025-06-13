@@ -31,7 +31,7 @@ export const createUsuario = async (req, res) => {
     console.log(password);
 
     const response = await client.query(
-      "INSERT INTO usuarios (name, password) VALUES ($1, $2)",
+      "INSERT INTO usuarios (nombre, contraseña) VALUES ($1, $2)",
       [name, password]
     );
     res.status(200).json({
@@ -48,9 +48,10 @@ export const createUsuario = async (req, res) => {
 export const deleteUsuario = async (req, res) => {
   try {
     const { id } = req.params;
-    const response = await client.query("DELETE FROM usuarios WHERE id = $1", [
-      id,
-    ]);
+    const response = await client.query(
+      "DELETE FROM usuarios WHERE id_usuario = $1",
+      [id]
+    );
     if (response.rowCount === 0) {
       return res.status(404).json({ message: "Usuario no encontrado" });
     }

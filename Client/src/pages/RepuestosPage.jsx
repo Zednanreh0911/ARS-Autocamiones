@@ -17,13 +17,15 @@ function RepuestosPage() {
 
   const handleEliminarRepuesto = (id) => {
     setRepuestos((prevRepuestos) =>
-      prevRepuestos.filter((repuesto) => repuesto.id !== id)
+      prevRepuestos.filter((repuesto) => repuesto.id_repuesto !== id)
     );
   };
   const handleActualizarRepuesto = (id, datosActualizados) => {
     setRepuestos((prevRepuestos) =>
       prevRepuestos.map((repuesto) =>
-        repuesto.id === id ? { ...repuesto, ...datosActualizados } : repuesto
+        repuesto.id_repuesto === id
+          ? { ...repuesto, ...datosActualizados }
+          : repuesto
       )
     );
   };
@@ -71,17 +73,17 @@ function RepuestosPage() {
           </h2>
           {repuestos &&
             repuestos
-              .filter((repuesto) => repuesto.cat === selectedCategory)
+              .filter((repuesto) => repuesto.categoria === selectedCategory)
               .map((repuesto, index) => (
                 <RepuestoCard
                   key={index}
-                  image={repuesto.img}
-                  name={repuesto.name}
+                  image={repuesto.imagen_url}
+                  nombre={repuesto.nombre}
                   marca={repuesto.marca}
-                  precio={repuesto.precio}
-                  id={repuesto.id}
-                  cantidad={repuesto.cantidad}
-                  cat={repuesto.cat}
+                  precio_unitario={Number(repuesto.precio_unitario)}
+                  id_repuesto={repuesto.id_repuesto}
+                  cantidad={Number(repuesto.cantidad)}
+                  categoria={repuesto.categoria}
                   onEliminar={handleEliminarRepuesto}
                   onActualizar={handleActualizarRepuesto}
                 />

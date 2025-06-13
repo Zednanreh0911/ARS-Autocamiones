@@ -10,27 +10,29 @@ import { useForm } from "react-hook-form";
 AutoCard.propTypes = {
   image: PropTypes.string.isRequired,
   marca: PropTypes.string.isRequired,
-  year: PropTypes.number.isRequired,
-  model: PropTypes.string.isRequired,
-  combus: PropTypes.string.isRequired,
-  trans: PropTypes.string.isRequired,
+  anno: PropTypes.number.isRequired,
+  modelo: PropTypes.string.isRequired,
+  tipo_combustible: PropTypes.string.isRequired,
+  tipo_transmision: PropTypes.string.isRequired,
   id: PropTypes.number.isRequired,
   onEliminar: PropTypes.func.isRequired,
   onActualizar: PropTypes.func.isRequired,
-  tipo: PropTypes.string.isRequired,
+  tipo_vehiculo: PropTypes.string.isRequired,
+  cantidad: PropTypes.number.isRequired,
 };
 
 function AutoCard({
   image,
   marca,
-  year,
-  model,
-  combus,
-  trans,
+  anno,
+  modelo,
+  tipo_combustible,
+  tipo_transmision,
   id,
   onEliminar,
   onActualizar,
-  tipo,
+  tipo_vehiculo,
+  cantidad,
 }) {
   const [menuVisible, setMenuVisible] = useState(false);
   const [modalEliminar, setModalModalEliminar] = useState(false);
@@ -48,17 +50,28 @@ function AutoCard({
       categoria: "",
       combustible: "",
       transmision: "",
+      cantidad: "",
     },
   });
 
   useEffect(() => {
     setValue("marca", marca);
-    setValue("anno", year);
-    setValue("modelo", model);
-    setValue("categoria", tipo);
-    setValue("combustible", combus);
-    setValue("transmision", trans);
-  }, [marca, year, model, tipo, combus, trans, setValue]);
+    setValue("anno", anno);
+    setValue("modelo", modelo);
+    setValue("categoria", tipo_vehiculo);
+    setValue("combustible", tipo_combustible);
+    setValue("transmision", tipo_transmision);
+    setValue("cantidad", cantidad);
+  }, [
+    marca,
+    anno,
+    modelo,
+    tipo_vehiculo,
+    tipo_combustible,
+    tipo_transmision,
+    cantidad,
+    setValue,
+  ]);
 
   const toggleMenu = () => {
     setMenuVisible((prev) => !prev);
@@ -80,17 +93,18 @@ function AutoCard({
     if (!data.img || data.img.length === 0) {
       const formattedData = {
         marca: data.marca,
-        year: data.anno, // Cambiar "anno" a "year"
-        model: data.modelo, // Cambiar "modelo" a "model"
-        tipo: data.categoria, // Cambiar "categoria" a "tipo"
-        combus: data.combustible, // Cambiar "combustible" a "combus"
-        trans: data.transmision, // Cambiar "transmision" a "trans"
-        img: image,
+        anno: data.anno,
+        modelo: data.modelo,
+        tipo_vehiculo: data.categoria,
+        tipo_combustible: data.combustible,
+        tipo_transmision: data.transmision,
+        img_url: image,
+        cantidad: data.cantidad,
       };
       editarVehiculo(id, formattedData)
         .then((response) => {
           console.log("Vehículo editado:", response);
-          onActualizar(id, formattedData);
+          onActualizar(id, { ...formattedData, año: data.anno });
         })
         .catch((error) => {
           console.error("Error al editar el vehículo:", error);
@@ -99,22 +113,23 @@ function AutoCard({
       const formData = new FormData();
       formData.append("imgvehiculo", data.img[0]);
       formData.append("marca", data.marca);
-      formData.append("year", data.anno);
-      formData.append("model", data.modelo);
-      formData.append("tipo", data.categoria);
-      formData.append("combus", data.combustible);
-      formData.append("trans", data.transmision);
+      formData.append("anno", data.anno);
+      formData.append("modelo", data.modelo);
+      formData.append("tipo_vehiculo", data.categoria);
+      formData.append("tipo_combustible", data.combustible);
+      formData.append("tipo_transmision", data.transmision);
+      formData.append("cantidad", data.cantidad);
       editarVehiculoNewImg(id, formData)
         .then((response) => {
           console.log("Vehículo editado:", response);
           onActualizar(id, {
             marca: data.marca,
-            year: data.anno,
-            model: data.modelo,
-            tipo: data.categoria,
-            combus: data.combustible,
-            trans: data.transmision,
-            img: URL.createObjectURL(data.img[0]), // Actualiza la imagen
+            año: data.anno,
+            modelo: data.modelo,
+            tipo_vehiculo: data.categoria,
+            tipo_combustible: data.combustible,
+            tipo_transmision: data.transmision,
+            imagen_url: URL.createObjectURL(data.img[0]), // Actualiza la imagen
           });
         })
         .catch((error) => {
@@ -179,12 +194,12 @@ function AutoCard({
       <img
         className="w-full h-64 min-[400px]:min-w-96"
         src={image}
-        alt={model}
+        alt={modelo}
       />
       <section className="text-left p-4">
         <header>
           <h2 className="text-orange-500 text-xs">{marca}</h2>
-          <h3 className="font-medium mt-2">{model}</h3>
+          <h3 className="font-medium mt-2">{modelo}</h3>
         </header>
         <dl className="grid grid-cols-3 text-sm mt-4 pb-8 border-b border-gray-300">
           <div className="flex justify-evenly">
@@ -199,7 +214,7 @@ function AutoCard({
             </svg>
             <div>
               <dt className="text-gray-400">Combustible</dt>
-              <dd>{combus}</dd>
+              <dd>{tipo_combustible}</dd>
             </div>
           </div>
           <div className="flex justify-evenly border-l border-gray-300">
@@ -214,7 +229,7 @@ function AutoCard({
             </svg>
             <div>
               <dt className="text-gray-400">Año</dt>
-              <dd>{year}</dd>
+              <dd>{anno}</dd>
             </div>
           </div>
           <div className="flex justify-evenly border-l border-gray-300">
@@ -229,7 +244,7 @@ function AutoCard({
             </svg>
             <div>
               <dt className="text-gray-400">transmisión</dt>
-              <dd>{trans}</dd>
+              <dd>{tipo_transmision}</dd>
             </div>
           </div>
         </dl>
@@ -269,13 +284,13 @@ function AutoCard({
               <input
                 className="border rounded-md w-full p-2"
                 type="number"
-                placeholder={year}
+                placeholder={anno}
                 {...registerVehiculo("anno")}
               />
               <input
                 className="border rounded-md w-full p-2"
                 type="text"
-                placeholder={model}
+                placeholder={modelo}
                 {...registerVehiculo("modelo")}
               />
               <select
@@ -283,8 +298,8 @@ function AutoCard({
                 {...registerVehiculo("categoria")}
                 defaultValue={""}
               >
-                <option value={tipo} disabled>
-                  {tipo}
+                <option value={tipo_vehiculo} disabled>
+                  {tipo_vehiculo}
                 </option>
                 <option value="Buseta">Buseta</option>
                 <option value="Camioneta">Camioneta</option>
@@ -294,8 +309,8 @@ function AutoCard({
                 {...registerVehiculo("combustible")}
                 defaultValue={""}
               >
-                <option value={combus} disabled>
-                  {combus}
+                <option value={tipo_combustible} disabled>
+                  {tipo_combustible}
                 </option>
                 <option value="Diesel">Diesel</option>
                 <option value="Gasolina">Gasolina</option>
@@ -306,12 +321,18 @@ function AutoCard({
                 {...registerVehiculo("transmision")}
                 defaultValue={""}
               >
-                <option value={trans} disabled>
-                  {trans}
+                <option value={tipo_transmision} disabled>
+                  {tipo_transmision}
                 </option>
                 <option value="Manual">Manual</option>
                 <option value="Automático">Automático</option>
               </select>
+              <input
+                className="border rounded-md w-full p-2"
+                type="number"
+                placeholder={cantidad}
+                {...registerVehiculo("cantidad")}
+              />
               <label
                 className="bg-orange-500 text-white w-full p-2 rounded-md cursor-pointer"
                 htmlFor="imgvehiculo"

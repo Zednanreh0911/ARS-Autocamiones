@@ -15,9 +15,10 @@ export const getRepuestos = async (req, res) => {
 export const getRepuesto = async (req, res) => {
   try {
     const { id } = req.params;
-    const response = await pool.query("SELECT * FROM repuestos WHERE id = $1", [
-      id,
-    ]);
+    const response = await pool.query(
+      "SELECT * FROM repuestos WHERE id_repuesto = $1",
+      [id]
+    );
     if (response.rows.length === 0) {
       return res.status(404).json({ message: "Repuesto no encontrado" });
     }
@@ -33,16 +34,24 @@ export const createRepuesto = async (req, res) => {
       return res.status(400).json({ message: "No se ha subido una imagen" });
     }
 
-    const img = `src/assets/${req.savedFilename}`; // Obtener el nombre del archivo guardado
-    const { name, marca, cantidad, cat, precio } = req.body;
+    const imagen = `src/assets/${req.savedFilename}`; // Obtener el nombre del archivo guardado
+    const { nombre, marca, cantidad, categoria, precio_unitario } = req.body;
+
     const response = await pool.query(
-      "INSERT INTO repuestos (name, marca, cantidad, cat, precio, img) VALUES ($1, $2, $3, $4, $5, $6)",
-      [name, marca, cantidad, cat, precio, img]
+      "INSERT INTO repuestos (nombre, marca, cantidad, categoria, precio_unitario, imagen_url) VALUES ($1, $2, $3, $4, $5, $6)",
+      [nombre, marca, cantidad, categoria, precio_unitario, imagen]
     );
     res.status(200).json({
       message: "Repuesto creado",
       body: {
-        repuesto: { name, marca, cantidad, precio, img },
+        repuesto: {
+          nombre,
+          marca,
+          cantidad,
+          categoria,
+          precio_unitario,
+          imagen,
+        },
       },
     });
   } catch (error) {
@@ -54,13 +63,14 @@ export const updateRepuesto = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const { name, marca, cantidad, cat, precio, img } = req.body;
+    const { nombre, marca, cantidad, categoria, precio_unitario, imagen_url } =
+      req.body;
 
     const response = await pool.query(
       `UPDATE repuestos 
-       SET name = $1, marca = $2, cantidad = $3, cat = $4, precio = $5, img = $6
-       WHERE id = $7 RETURNING *`,
-      [name, marca, cantidad, cat, precio, img, id]
+       SET nombre = $1, marca = $2, cantidad = $3, categoria = $4, precio_unitario = $5, imagen_url = $6
+       WHERE id_repuesto = $7 RETURNING *`,
+      [nombre, marca, cantidad, categoria, precio_unitario, imagen_url, id]
     );
 
     if (response.rowCount === 0) {
@@ -80,23 +90,19 @@ export const updateRepuesto = async (req, res) => {
 
 export const updateRepuestoNewImg = async (req, res) => {
   try {
-    console.log("youre in updateRepuestoNewImg");
-    console.log("req.body", req.body);
-    const { name, marca, cantidad, cat, precio } = req.body;
+    const { nombre, marca, cantidad, categoria, precio_unitario } = req.body;
     const { id } = req.params;
 
     if (!req.savedFilename) {
       return res.status(400).json({ message: "No se ha subido una imagen" });
     }
-    const img = `src/assets/${req.savedFilename}`;
-
-    console.log("img", img);
+    const imagen = `src/assets/${req.savedFilename}`;
 
     const response = await pool.query(
       `UPDATE repuestos 
-       SET name = $1, marca = $2, cantidad = $3, cat = $4, precio = $5, img = $6
-       WHERE id = $7 RETURNING *`,
-      [name, marca, cantidad, cat, precio, img, id]
+       SET nombre = $1, marca = $2, cantidad = $3, categoria = $4, precio_unitario = $5, imagen_url = $6
+       WHERE id_repuesto = $7 RETURNING *`,
+      [nombre, marca, cantidad, categoria, precio_unitario, imagen, id]
     );
 
     if (response.rowCount === 0) {
@@ -110,16 +116,18 @@ export const updateRepuestoNewImg = async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error(error);
+    res.status(500).json({ message: "error.message " });
   }
 };
 
 export const deleteRepuesto = async (req, res) => {
   try {
     const { id } = req.params;
-    const response = await pool.query("DELETE FROM repuestos WHERE id = $1", [
-      id,
-    ]);
+    const response = await pool.query(
+      "DELETE FROM repuestos WHERE id_repuesto = $1",
+      [id]
+    );
     if (response.rowCount === 0) {
       return res.status(404).json({ message: "Repuesto no encontrado" });
     }

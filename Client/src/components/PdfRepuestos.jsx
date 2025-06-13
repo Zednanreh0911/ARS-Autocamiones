@@ -13,11 +13,11 @@ PdfRepuestos.propTypes = {
   title: PropTypes.string.isRequired,
   elementos: PropTypes.arrayOf(
     PropTypes.shape({
-      modelo: PropTypes.string.isRequired,
+      nombre: PropTypes.string.isRequired,
       marca: PropTypes.string.isRequired,
       cantidad: PropTypes.number.isRequired,
       categoria: PropTypes.string.isRequired,
-      precio: PropTypes.number.isRequired,
+      precio_unitario: PropTypes.number.isRequired,
     })
   ).isRequired,
 };
@@ -137,7 +137,7 @@ function PdfRepuestos({ title, elementos }) {
                       <View style={styles.tableRow}>
                         <View style={styles.tableCol}>
                           <Text style={styles.tableCell}>
-                            {repuesto.modelo}
+                            {repuesto.nombre}
                           </Text>
                         </View>
                         <View style={styles.tableCol}>
@@ -155,7 +155,7 @@ function PdfRepuestos({ title, elementos }) {
                         </View>
                         <View style={styles.tableCol}>
                           <Text style={styles.tableCell}>
-                            {repuesto.precio}
+                            {repuesto.precio_unitario}
                           </Text>
                         </View>
                       </View>

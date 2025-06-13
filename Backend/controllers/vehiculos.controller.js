@@ -13,7 +13,7 @@ export const getVehiculo = async (req, res) => {
   try {
     const { id } = req.params;
     const response = await client.query(
-      "SELECT * FROM vehiculos WHERE id = $1",
+      "SELECT * FROM vehiculos WHERE id_vehiculo = $1",
       [id]
     );
     if (response.rows.length === 0) {
@@ -27,34 +27,54 @@ export const getVehiculo = async (req, res) => {
 
 export const createVehiculo = async (req, res) => {
   try {
-    const { marca, year, tipo, trans, combus, model } = req.body;
+    const {
+      marca,
+      anno,
+      tipo_vehiculo,
+      tipo_transmision,
+      tipo_combustible,
+      modelo,
+      cantidad,
+    } = req.body;
 
+    console.log("año", anno);
     if (!req.savedFilename) {
       return res.status(400).json({ message: "No se ha subido una imagen" });
     }
-    const img = `src/assets/${req.savedFilename}`;
+    const imagen = `src/assets/${req.savedFilename}`;
     const response = await client.query(
-      "INSERT INTO vehiculos (marca, year, tipo, trans, combus, model, img) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
-      [marca, year, tipo, trans, combus, model, img]
+      "INSERT INTO vehiculos (marca, año, tipo_vehiculo, tipo_transmision, tipo_combustible, modelo, cantidad, imagen_url) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *",
+      [
+        marca,
+        anno,
+        tipo_vehiculo,
+        tipo_transmision,
+        tipo_combustible,
+        modelo,
+        cantidad,
+        imagen,
+      ]
     );
     res.status(200).json({
       message: "Vehiculo creado",
       body: {
         vehiculo: {
           marca,
-          year,
-          tipo,
-          trans,
-          combus,
-          model,
-          img,
+          anno,
+          tipo_vehiculo,
+          tipo_transmision,
+          tipo_combustible,
+          modelo,
+          imagen,
         },
       },
     });
   } catch (error) {
+    console.log(error);
     if (error.code === "23505") {
       return res.status(409).json({ message: "Vehiculo ya existe" });
     }
+
     res.status(500).json({ message: error.message });
   }
 };
@@ -63,13 +83,32 @@ export const updateVehiculo = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const { marca, year, tipo, trans, combus, model, img } = req.body;
+    const {
+      marca,
+      anno,
+      tipo_vehiculo,
+      tipo_transmision,
+      tipo_combustible,
+      modelo,
+      img_url,
+      cantidad,
+    } = req.body;
 
     const response = await client.query(
       `UPDATE vehiculos 
-       SET marca = $1, year = $2, tipo = $3, trans = $4, combus = $5, model = $6, img = $7 
-       WHERE id = $8 RETURNING *`,
-      [marca, year, tipo, trans, combus, model, img, id]
+       SET marca = $1, año = $2, tipo_vehiculo = $3, tipo_transmision = $4, tipo_combustible = $5, modelo = $6, imagen_url = $7, cantidad = $8
+       WHERE id_vehiculo = $9 RETURNING *`,
+      [
+        marca,
+        anno,
+        tipo_vehiculo,
+        tipo_transmision,
+        tipo_combustible,
+        modelo,
+        img_url,
+        cantidad,
+        id,
+      ]
     );
 
     if (response.rowCount === 0) {
@@ -92,7 +131,16 @@ export const updateVehiculo = async (req, res) => {
 
 export const updateVehiculoNewImg = async (req, res) => {
   try {
-    const { marca, year, tipo, trans, combus, model } = req.body;
+    const {
+      marca,
+      anno,
+      tipo_vehiculo,
+      tipo_transmision,
+      tipo_combustible,
+      modelo,
+      cantidad,
+    } = req.body;
+
     const { id } = req.params;
 
     if (!req.savedFilename) {
@@ -102,9 +150,19 @@ export const updateVehiculoNewImg = async (req, res) => {
 
     const response = await client.query(
       `UPDATE vehiculos 
-       SET marca = $1, year = $2, tipo = $3, trans = $4, combus = $5, model = $6, img = $7 
-       WHERE id = $8 RETURNING *`,
-      [marca, year, tipo, trans, combus, model, img, id]
+       SET marca = $1, año = $2, tipo_vehiculo = $3, tipo_transmision = $4, tipo_combustible = $5, modelo = $6, imagen_url = $7, cantidad = $8 
+        WHERE id_vehiculo = $9 RETURNING *`,
+      [
+        marca,
+        anno,
+        tipo_vehiculo,
+        tipo_transmision,
+        tipo_combustible,
+        modelo,
+        img,
+        cantidad,
+        id,
+      ]
     );
 
     if (response.rowCount === 0) {
@@ -128,9 +186,10 @@ export const updateVehiculoNewImg = async (req, res) => {
 export const deleteVehiculo = async (req, res) => {
   try {
     const { id } = req.params;
-    const response = await client.query("DELETE FROM vehiculos WHERE id = $1", [
-      id,
-    ]);
+    const response = await client.query(
+      "DELETE FROM vehiculos WHERE id_vehiculo = $1",
+      [id]
+    );
     if (response.rowCount === 0) {
       return res.status(404).json({ message: "Vehiculo no encontrado" });
     }

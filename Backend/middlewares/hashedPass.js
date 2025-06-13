@@ -25,14 +25,14 @@ export const comparePassword = async (req, res, next) => {
     }
 
     const result = await pool.query(
-      "SELECT password FROM usuarios WHERE name = $1",
+      "SELECT contraseña FROM usuarios WHERE nombre = $1",
       [user]
     );
     if (result.rows.length === 0) {
       return res.status(401).json({ message: "Usuario no encontrado" });
     }
 
-    const storedPassword = result.rows[0].password;
+    const storedPassword = result.rows[0].contraseña;
 
     const isMatch = await bcrypt.compare(password, storedPassword);
 

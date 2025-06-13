@@ -26,14 +26,16 @@ function VehiclePage() {
   const handleActualizarVehiculo = (id, datosActualizados) => {
     setVehiculos((prevVehiculos) =>
       prevVehiculos.map((vehiculo) =>
-        vehiculo.id === id ? { ...vehiculo, ...datosActualizados } : vehiculo
+        vehiculo.id_vehiculo === id
+          ? { ...vehiculo, ...datosActualizados }
+          : vehiculo
       )
     );
   };
 
   const handleEliminarVehiculo = (id) => {
     setVehiculos((prevVehiculos) =>
-      prevVehiculos.filter((vehiculo) => vehiculo.id !== id)
+      prevVehiculos.filter((vehiculo) => vehiculo.id_vehiculo !== id)
     );
   };
 
@@ -80,42 +82,44 @@ function VehiclePage() {
             <h3 className="font-bold text-4xl">Camionetas</h3>
             {vehiculos &&
               vehiculos
-                .filter((vehiculo) => vehiculo.tipo === "Camioneta")
+                .filter((vehiculo) => vehiculo.tipo_vehiculo === "Camioneta")
                 .slice(0, 1)
                 .map((vehiculo, index) => (
                   <AutoCard
                     key={index}
-                    image={vehiculo.img}
+                    image={vehiculo.imagen_url}
                     marca={vehiculo.marca}
-                    year={vehiculo.year}
-                    model={vehiculo.model}
-                    combus={vehiculo.combus}
-                    trans={vehiculo.trans}
-                    id={vehiculo.id}
+                    anno={Number(vehiculo.año)}
+                    modelo={vehiculo.modelo}
+                    tipo_combustible={vehiculo.tipo_combustible}
+                    tipo_transmision={vehiculo.tipo_transmision}
+                    id={vehiculo.id_vehiculo}
                     onEliminar={handleEliminarVehiculo}
                     onActualizar={handleActualizarVehiculo}
-                    tipo={vehiculo.tipo}
+                    tipo_vehiculo={vehiculo.tipo_vehiculo}
+                    cantidad={Number(vehiculo.cantidad)}
                   />
                 ))}
           </div>
 
           {vehiculos &&
             vehiculos
-              .filter((vehiculo) => vehiculo.tipo === "Camioneta")
+              .filter((vehiculo) => vehiculo.tipo_vehiculo === "Camioneta")
               .slice(1)
               .map((vehiculo, index) => (
                 <AutoCard
                   key={index}
-                  image={vehiculo.img}
+                  image={vehiculo.imagen_url}
                   marca={vehiculo.marca}
-                  year={vehiculo.year}
-                  model={vehiculo.model}
-                  combus={vehiculo.combus}
-                  trans={vehiculo.trans}
-                  id={vehiculo.id}
+                  anno={Number(vehiculo.año)}
+                  modelo={vehiculo.modelo}
+                  tipo_combustible={vehiculo.tipo_combustible}
+                  tipo_transmision={vehiculo.tipo_transmision}
+                  id={vehiculo.id_vehiculo}
                   onEliminar={handleEliminarVehiculo}
                   onActualizar={handleActualizarVehiculo}
-                  tipo={vehiculo.tipo}
+                  tipo_vehiculo={vehiculo.tipo_vehiculo}
+                  cantidad={Number(vehiculo.cantidad)}
                 />
               ))}
         </div>
@@ -131,42 +135,44 @@ function VehiclePage() {
             <h3 className="font-bold text-4xl">Buseta</h3>
             {vehiculos &&
               vehiculos
-                .filter((vehiculo) => vehiculo.tipo === "Buseta")
+                .filter((vehiculo) => vehiculo.tipo_vehiculo === "Buseta")
                 .slice(0, 1)
                 .map((vehiculo, index) => (
                   <AutoCard
                     key={index}
-                    image={vehiculo.img}
+                    image={vehiculo.imagen_url}
                     marca={vehiculo.marca}
-                    year={vehiculo.year}
-                    model={vehiculo.model}
-                    combus={vehiculo.combus}
-                    trans={vehiculo.trans}
-                    id={vehiculo.id}
+                    anno={Number(vehiculo.año)}
+                    modelo={vehiculo.modelo}
+                    tipo_combustible={vehiculo.tipo_combustible}
+                    tipo_transmision={vehiculo.tipo_transmision}
+                    id={vehiculo.id_vehiculo}
                     onEliminar={handleEliminarVehiculo}
                     onActualizar={handleActualizarVehiculo}
-                    tipo={vehiculo.tipo}
+                    tipo_vehiculo={vehiculo.tipo_vehiculo}
+                    cantidad={Number(vehiculo.cantidad)}
                   />
                 ))}
           </div>
 
           {vehiculos &&
             vehiculos
-              .filter((vehiculo) => vehiculo.tipo === "Buseta")
+              .filter((vehiculo) => vehiculo.tipo_vehiculo === "Buseta")
               .slice(1)
               .map((vehiculo, index) => (
                 <AutoCard
                   key={index}
-                  image={vehiculo.img}
+                  image={vehiculo.imagen_url}
                   marca={vehiculo.marca}
-                  year={vehiculo.year}
-                  model={vehiculo.model}
-                  combus={vehiculo.combus}
-                  trans={vehiculo.trans}
-                  id={vehiculo.id}
+                  anno={Number(vehiculo.año)}
+                  modelo={vehiculo.modelo}
+                  tipo_combustible={vehiculo.tipo_combustible}
+                  tipo_transmision={vehiculo.tipo_transmision}
+                  id={vehiculo.id_vehiculo}
                   onEliminar={handleEliminarVehiculo}
                   onActualizar={handleActualizarVehiculo}
-                  tipo={vehiculo.tipo}
+                  tipo_vehiculo={vehiculo.tipo_vehiculo}
+                  cantidad={Number(vehiculo.cantidad)}
                 />
               ))}
         </div>

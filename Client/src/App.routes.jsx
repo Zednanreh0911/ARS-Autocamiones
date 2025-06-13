@@ -37,36 +37,19 @@ function AppRoutes() {
     const fetchVehiculos = async () => {
       const data = await obtenerVehiculos();
 
-      // Transformar los datos para que coincidan con los elementos esperados por Pdf
-      const vehiculosTransformados = data.map((vehiculo) => ({
-        marca: vehiculo.marca || "N/A",
-        modelo: vehiculo.model || "N/A",
-        combustible: vehiculo.combus || "N/A",
-        año: vehiculo.year || "N/A",
-        transmision: vehiculo.trans || "N/A",
-      }));
-
-      setVehiculos(vehiculosTransformados);
+      setVehiculos(data);
     };
 
     const fetchRepuestos = async () => {
       const data = await obtenerRepuestos();
 
-      // Transformar los datos para que coincidan con los elementos esperados por Pdf
-      const repuestosTransformados = data.map((repuesto) => ({
-        modelo: repuesto.name || "N/A",
-        marca: repuesto.marca || "N/A",
-        cantidad: repuesto.cantidad || "N/A",
-        categoria: repuesto.cat || "N/A",
-        precio: repuesto.precio || "N/A",
-      }));
-
-      setRepuestos(repuestosTransformados);
+      setRepuestos(data);
     };
 
     fetchVehiculos();
     fetchRepuestos();
   }, []);
+
   return (
     <>
       {!hideNavbar && <Navbar />}

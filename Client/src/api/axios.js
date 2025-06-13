@@ -35,7 +35,10 @@ export const loginUsuario = async (datos) => {
     const response = await axios.post(`${API_URL}/usuarios/login`, datos);
     return response.data;
   } catch (error) {
-    console.error(error);
+    throw new Error(
+      error?.response?.data?.message ||
+        "Ocurrió un error inesperado. Intenta de nuevo."
+    );
   }
 };
 
@@ -112,6 +115,7 @@ export const editarVehiculoNewImg = async (id, datos) => {
 };
 export const editarRepuesto = async (id, datos) => {
   try {
+    console.log("datos", datos);
     const response = await axios.put(`${API_URL}/repuestos/${id}`, datos);
     return response.data;
   } catch (error) {

@@ -8,6 +8,7 @@ import Login from "./pages/Login";
 import ScrollToTop from "./components/ScrollToTop.jsx";
 import Footerbar from "./components/Footerbar.jsx";
 import Admin from "./pages/Admin.jsx";
+import ProtectedRoute from "./components/ProtectedRoute";
 import Error404 from "./pages/Error404.jsx";
 import PdfVehiculos from "./components/PdfVehiculos.jsx";
 import PdfRepuestos from "./components/PdfRepuestos.jsx";
@@ -60,7 +61,14 @@ function AppRoutes() {
         <Route path="/repuestos" element={<RepuestosPage />} />
         <Route path="/sobre_nosotros" element={<SobreNosotrosPage />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/admin" element={<Admin />} />
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute rolesPermitidos={["admin", "editor"]}>
+              <Admin />
+            </ProtectedRoute>
+          }
+        />
         <Route path="*" element={<Error404 />} />
         <Route
           path="/pdf_vehiculos"

@@ -1,5 +1,7 @@
 import pool from "../db.js";
 
+import { deleteImageFile } from "../utils/fileUtils.js";
+
 export const getRepuestos = async (req, res) => {
   try {
     const response = await pool.query("SELECT * FROM repuestos");
@@ -34,7 +36,7 @@ export const createRepuesto = async (req, res) => {
       return res.status(400).json({ message: "No se ha subido una imagen" });
     }
 
-    const imagen = `src/assets/${req.savedFilename}`; // Obtener el nombre del archivo guardado
+    const imagen = `src/assets/${req.savedFilename}`;
     const { nombre, marca, cantidad, categoria, precio_unitario } = req.body;
 
     const response = await pool.query(
@@ -124,6 +126,15 @@ export const updateRepuestoNewImg = async (req, res) => {
 export const deleteRepuesto = async (req, res) => {
   try {
     const { id } = req.params;
+    const repuestoResult = await pool.query(
+      "SELECT imagen_url FROM repuestos WHERE id_repuesto = $1",
+      [id]
+    );
+    if (repuestoResult.rows.length === 0) {
+      return res.status(404).json({ message: "Repuesto no encontrado" });
+    }
+    const imagenUrl = repuestoResult.rows[0].imagen_url;
+
     const response = await pool.query(
       "DELETE FROM repuestos WHERE id_repuesto = $1",
       [id]
@@ -131,6 +142,9 @@ export const deleteRepuesto = async (req, res) => {
     if (response.rowCount === 0) {
       return res.status(404).json({ message: "Repuesto no encontrado" });
     }
+
+    deleteImageFile(imagenUrl);
+
     res.status(200).json({
       message: "Repuesto eliminado",
     });

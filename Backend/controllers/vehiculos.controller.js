@@ -1,4 +1,5 @@
 import client from "../db.js";
+import { deleteImageFile } from "../utils/fileUtils.js";
 
 export const getVehiculos = async (req, res) => {
   try {
@@ -186,6 +187,15 @@ export const updateVehiculoNewImg = async (req, res) => {
 export const deleteVehiculo = async (req, res) => {
   try {
     const { id } = req.params;
+    const vehiculoResult = await client.query(
+      "SELECT imagen_url FROM vehiculos WHERE id_vehiculo = $1",
+      [id]
+    );
+    if (vehiculoResult.rows.length === 0) {
+      return res.status(404).json({ message: "Vehiculo no encontrado" });
+    }
+    const imagenUrl = vehiculoResult.rows[0].imagen_url;
+
     const response = await client.query(
       "DELETE FROM vehiculos WHERE id_vehiculo = $1",
       [id]
@@ -193,6 +203,9 @@ export const deleteVehiculo = async (req, res) => {
     if (response.rowCount === 0) {
       return res.status(404).json({ message: "Vehiculo no encontrado" });
     }
+
+    deleteImageFile(imagenUrl);
+
     res.status(200).json({
       message: "Vehiculo eliminado",
       body: {

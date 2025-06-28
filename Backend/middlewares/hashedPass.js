@@ -19,9 +19,7 @@ export const comparePassword = async (req, res, next) => {
     const { user, password } = req.body;
     console.log("Datos de inicio de sesión:", req.body);
     if (!user || !password) {
-      return res
-        .status(400)
-        .json({ message: "Usuario y contraseña requeridos" });
+      return res.status(400).json({ code: 400, message: "Usuario y contraseña requeridos" });
     }
 
     const result = await pool.query(
@@ -29,7 +27,7 @@ export const comparePassword = async (req, res, next) => {
       [user]
     );
     if (result.rows.length === 0) {
-      return res.status(401).json({ message: "Usuario no encontrado" });
+      return res.status(404).json({ code: 404, message: "Usuario no encontrado" });
     }
 
     const storedPassword = result.rows[0].contraseña;
@@ -37,13 +35,13 @@ export const comparePassword = async (req, res, next) => {
     const isMatch = await bcrypt.compare(password, storedPassword);
 
     if (!isMatch) {
-      return res.status(401).json({ message: "Contraseña incorrecta" });
+      return res.status(401).json({ code: 401, message: "Contraseña incorrecta" });
     }
 
     req.isMatch = isMatch;
 
     next();
   } catch (error) {
-    res.status(500).json({ message: "Error al comparar la contraseña", error });
+    res.status(500).json({ code: 500, message: "Error al comparar la contraseña", error: error.message });
   }
 };

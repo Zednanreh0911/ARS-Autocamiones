@@ -4,6 +4,7 @@ import {
   createUsuario,
   deleteUsuario,
   loginUsuario,
+  logoutUsuario,
 } from "../controllers/usuarios.controller.js";
 import { hashPassword, comparePassword } from "../middlewares/hashedPass.js";
 
@@ -16,5 +17,7 @@ usuariosRouter.post("/login", comparePassword, loginUsuario);
 usuariosRouter.post("/", hashPassword, createUsuario);
 
 usuariosRouter.delete("/:id", deleteUsuario);
+
+usuariosRouter.post("/logout", logoutUsuario);
 
 export default usuariosRouter;

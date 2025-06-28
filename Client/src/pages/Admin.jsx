@@ -1,21 +1,32 @@
 import { useState } from "react";
+import { useAuth } from "../context/useAuth";
 import { useForm } from "react-hook-form";
 import { crearRepuesto, crearVehiculo, crearUsuario } from "../api/axios";
 import { obtenerUsuarios, eliminarUsuario } from "../api/axios";
 import DialogoAfirmativo from "../components/DialogoAfirmativo";
 
 function Admin() {
+  const { userName } = useAuth();
   const [category, setCategory] = useState("");
   const [reportes, setReportes] = useState("");
   const [usuarios, setUsuarios] = useState([]);
   const [mostrarUsuarios, setMostrarUsuarios] = useState(false);
 
-  const { register: registerRepuesto, handleSubmit: handleSubmitRepuesto } =
-    useForm();
-  const { register: registerVehiculo, handleSubmit: handleSubmitVehiculo } =
-    useForm();
-  const { register: registerUsuario, handleSubmit: handleSubmitUsuario } =
-    useForm();
+  const {
+    register: registerRepuesto,
+    handleSubmit: handleSubmitRepuesto,
+    reset: resetRepuesto,
+  } = useForm();
+  const {
+    register: registerVehiculo,
+    handleSubmit: handleSubmitVehiculo,
+    reset: resetVehiculo,
+  } = useForm();
+  const {
+    register: registerUsuario,
+    handleSubmit: handleSubmitUsuario,
+    reset: resetUsuario,
+  } = useForm();
 
   const { register: registerReporte, handleSubmit: handleSubmitReporte } =
     useForm();
@@ -39,6 +50,7 @@ function Admin() {
   };
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [dialogError, setDialogError] = useState("");
 
   const manejoDeCategoria = (e) => {
     setCategory(e.target.innerText);
@@ -46,6 +58,16 @@ function Admin() {
   const reporte = (e) => {
     setReportes(e.target.innerText);
   };
+
+  const [vehiculoFormKey, setVehiculoFormKey] = useState(
+    () => Date.now() + Math.random()
+  );
+  const [repuestoFormKey, setRepuestoFormKey] = useState(
+    () => Date.now() + Math.random()
+  );
+  const [usuarioFormKey, setUsuarioFormKey] = useState(
+    () => Date.now() + Math.random()
+  );
 
   const subirVehiculo = handleSubmitVehiculo((data) => {
     const formData = new FormData();
@@ -61,9 +83,19 @@ function Admin() {
       `Jeison info: ${data.marca} ${data.año} ${data.tipo_vehiculo} ${data.combustible} ${data.transmision} ${data.modelo} ${data.cantidad}`
     );
 
-    crearVehiculo(formData).then(() => {
-      setIsDialogOpen(true);
-    });
+    crearVehiculo(formData)
+      .then(() => {
+        setIsDialogOpen(true);
+        setDialogError("");
+      })
+      .catch((error) => {
+        setDialogError(
+          error?.response?.data?.message ||
+            error?.message ||
+            "Error al crear el vehículo. Por favor, intente nuevamente."
+        );
+        setIsDialogOpen(true);
+      });
   });
 
   const subirRepuesto = handleSubmitRepuesto((data) => {
@@ -77,29 +109,67 @@ function Admin() {
     console.log(
       `Jeison info: ${data.marcaRepuesto} ${data.nombreRepuesto} ${data.precioRepuesto} ${data.cantidadRepuesto} ${data.imgRepuesto} ${data.categoriaRepuesto}`
     );
-    crearRepuesto(formData).then(() => {
-      setIsDialogOpen(true);
-    });
+    crearRepuesto(formData)
+      .then(() => {
+        setIsDialogOpen(true);
+        setDialogError("");
+      })
+      .catch((error) => {
+        setDialogError(
+          error?.response?.data?.message ||
+            error?.message ||
+            "Error al crear el repuesto. Por favor, intente nuevamente."
+        );
+        setIsDialogOpen(true);
+      });
   });
+
+  const handleDialogClose = () => {
+    setIsDialogOpen(false);
+    setDialogError("");
+    if (category === "Vehículos") {
+      resetVehiculo();
+      setVehiculoFormKey(Date.now() + Math.random());
+    } else if (category === "Repuestos") {
+      resetRepuesto();
+      setRepuestoFormKey(Date.now() + Math.random());
+    } else if (category === "Usuarios") {
+      resetUsuario();
+      setUsuarioFormKey(Date.now() + Math.random());
+    }
+  };
 
   const subirUsuario = handleSubmitUsuario((data) => {
     console.log(`Jeison info: ${data.name} ${data.password}`);
     crearUsuario({
       name: data.name,
       password: data.password,
-    }).then(() => {
-      setIsDialogOpen(true);
-    });
+    })
+      .then((nuevoUsuario) => {
+        setIsDialogOpen(true);
+        setDialogError("");
+        if (mostrarUsuarios) {
+          if (nuevoUsuario && nuevoUsuario.id_usuario) {
+            setUsuarios((prev) => [...prev, nuevoUsuario]);
+          } else {
+            obtenerUsuarios().then(setUsuarios);
+          }
+        }
+      })
+      .catch((error) => {
+        setDialogError(
+          error?.response?.data?.message ||
+            error?.message ||
+            "Error al crear el usuario. Por favor, intente nuevamente."
+        );
+        setIsDialogOpen(true);
+      });
   });
 
   const handleGenerarReporte = handleSubmitReporte((data) => {
-    console.log(`Jeison info: ${data.reporte}`);
-
     if (data.reporte === "Vehículos") {
-      // Abrir una nueva pestaña con la URL /pdf_vehiculos
       window.open("/pdf_vehiculos", "_blank");
-    }
-    if (data.reporte === "Repuestos") {
+    } else if (data.reporte === "Repuestos") {
       window.open("/pdf_repuestos", "_blank");
     } else {
       console.log("Reporte seleccionado:", data.reporte);
@@ -110,56 +180,43 @@ function Admin() {
     <main className="mt-[138px] w-full h-screen flex">
       <aside className="w-1/6 h-screen bg-black pt-4 opacity-90">
         <ul className="text-center text-2xl gap-4 flex flex-col font-bold">
-          <li>
-            <button
-              onClick={manejoDeCategoria}
-              className={`cursor-pointer hover:text-orange-500 ease-in-out duration-300 ${
-                category === "Vehículos" ? "text-orange-500" : "text-white"
-              }`}
-            >
-              Vehículos
-            </button>
-          </li>
-          <li>
-            <button
-              onClick={manejoDeCategoria}
-              className={`cursor-pointer hover:text-orange-500 ease-in-out duration-300 ${
-                category === "Repuestos" ? "text-orange-500" : "text-white"
-              }`}
-            >
-              Repuestos
-            </button>
-          </li>
-          <li>
-            <button
-              onClick={manejoDeCategoria}
-              className={`cursor-pointer hover:text-orange-500 ease-in-out duration-300 ${
-                category === "Usuarios" ? "text-orange-500" : "text-white"
-              }`}
-            >
-              Usuarios
-            </button>
-          </li>
-          <li>
-            <button
-              onClick={manejoDeCategoria}
-              className={`cursor-pointer hover:text-orange-500 ease-in-out duration-300 ${
-                category === "Reportes" ? "text-orange-500" : "text-white"
-              }`}
-            >
-              Reportes
-            </button>
-          </li>
+          {["Vehículos", "Repuestos", "Usuarios", "Reportes"].map((cat) => (
+            <li key={cat}>
+              <button
+                onClick={manejoDeCategoria}
+                className={`cursor-pointer hover:text-orange-500 ease-in-out duration-300 ${
+                  category === cat ? "text-orange-500" : "text-white"
+                }`}
+              >
+                {cat}
+              </button>
+            </li>
+          ))}
         </ul>
       </aside>
 
       <section className="flex items-center flex-col w-5/6 h-screen p-4">
-        <DialogoAfirmativo isOpen={isDialogOpen} setIsOpen={setIsDialogOpen}>
-          ¡Operacion exitosa!
+        {category === "" && (
+          <div className="flex flex-col items-center justify-start h-full w-full">
+            <h2 className="text-3xl font-bold mb-2">
+              ¡Hola{userName ? `, ${userName}` : ""}!
+            </h2>
+            <p className="text-lg text-gray-600">
+              Selecciona una opción del menú para comenzar.
+            </p>
+          </div>
+        )}
+        <DialogoAfirmativo isOpen={isDialogOpen} setIsOpen={handleDialogClose}>
+          {dialogError ? (
+            <span className="text-red-500 font-semibold">{dialogError}</span>
+          ) : (
+            "¡Operacion exitosa!"
+          )}
         </DialogoAfirmativo>
         <h1 className="text-4xl text-center font-bold">{category}</h1>
         {/* form de vehiculos */}
         <form
+          key={vehiculoFormKey}
           onSubmit={subirVehiculo}
           className={`mt-2 p-5 w-96 flex flex-col gap-4 items-center text-center shadow-md rounded-lg ${
             category === "Vehículos" ? "block" : "hidden"
@@ -255,6 +312,7 @@ function Admin() {
         </form>
         {/* form de repuestos */}
         <form
+          key={repuestoFormKey}
           onSubmit={subirRepuesto}
           className={`mt-2 p-5 w-96 flex flex-col gap-4 items-center text-center shadow-md rounded-lg ${
             category === "Repuestos" ? "block" : "hidden"
@@ -326,6 +384,7 @@ function Admin() {
         </form>
         {/* form de usuarios */}
         <form
+          key={usuarioFormKey}
           onSubmit={subirUsuario}
           className={`mt-2 p-5 w-96 flex flex-col gap-4 items-center text-center shadow-md rounded-lg ${
             category === "Usuarios" ? "block" : "hidden"
@@ -358,25 +417,43 @@ function Admin() {
           </button>
           {mostrarUsuarios && (
             <ul className="mt-4 w-full text-left">
-              {usuarios.map((usuario) => (
-                <li
-                  key={usuario.id}
-                  className="border-b py-2 flex justify-between items-center"
-                >
-                  <span>{usuario.name}</span>
-                  <div className="flex gap-2">
-                    <button
-                      className="text-red-500 hover:underline"
-                      type="button"
-                      onClick={() => deleteUser(usuario.id)}
-                    >
-                      Eliminar
-                    </button>
-                  </div>
+              {usuarios.length === 0 ? (
+                <li className="text-gray-500 italic text-center py-2">
+                  Actualmente no hay usuarios registrados en el sistema.
                 </li>
-              ))}
+              ) : (
+                usuarios.map((usuario) => {
+                  const key = usuario.id_usuario || usuario.id || usuario.name;
+                  return (
+                    <li
+                      key={key}
+                      className="border-b py-2 flex justify-between items-center"
+                    >
+                      <span>{usuario.nombre}</span>
+                      <div className="flex gap-2">
+                        <button
+                          className="text-red-500 hover:underline"
+                          type="button"
+                          onClick={() =>
+                            deleteUser(usuario.id_usuario || usuario.id)
+                          }
+                        >
+                          Eliminar
+                        </button>
+                      </div>
+                    </li>
+                  );
+                })
+              )}
             </ul>
           )}
+          {!mostrarUsuarios &&
+            usuarios.length === 0 &&
+            category === "Usuarios" && (
+              <div className="mt-4 w-full text-center text-gray-500 italic py-2">
+                Actualmente no hay usuarios registrados en el sistema.
+              </div>
+            )}
         </form>
         <div
           className={`mt-2 p-5 w-96 flex flex-col gap-4 items-center text-center shadow-md rounded-md ${

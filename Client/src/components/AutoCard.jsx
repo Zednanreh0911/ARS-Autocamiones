@@ -1,11 +1,13 @@
 import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
+import { useAuth } from "../context/useAuth";
 import {
   eliminarVehiculo,
   editarVehiculo,
   editarVehiculoNewImg,
 } from "../api/axios";
 import { useForm } from "react-hook-form";
+import VehiculoDetallesModal from "./VehiculoDetallesModal";
 
 AutoCard.propTypes = {
   image: PropTypes.string.isRequired,
@@ -34,9 +36,11 @@ function AutoCard({
   tipo_vehiculo,
   cantidad,
 }) {
+  const { userRole } = useAuth();
   const [menuVisible, setMenuVisible] = useState(false);
   const [modalEliminar, setModalModalEliminar] = useState(false);
   const [modalEditar, setModalEditar] = useState(false);
+  const [modalDetalles, setModalDetalles] = useState(false);
 
   const {
     register: registerVehiculo,
@@ -87,6 +91,14 @@ function AutoCard({
 
   const openEditarModal = () => {
     setModalEditar(true);
+  };
+
+  const openDetallesModal = () => {
+    setModalDetalles(true);
+  };
+
+  const closeDetallesModal = () => {
+    setModalDetalles(false);
   };
 
   const submitEditar = handleSubmitVehiculo((data) => {
@@ -158,39 +170,44 @@ function AutoCard({
 
   return (
     <article className="max-w-96 md:max-w-80 xl:max-w-96 h-fit rounded-2xl overflow-hidden shadow-2xl mt-4 relative">
-      <div className="absolute top-0 right-0">
-        <div
-          className="bg-orange-500 text-white text-xs font-medium px-2 py-1 rounded-bl-lg flex items-center justify-center cursor-pointer relative"
-          onClick={toggleMenu}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            height="16px"
-            viewBox="0 0 24 24"
-            width="16px"
-            fill="white"
+      {/* Solo admin y gerente pueden ver el menú de acciones */}
+      {(userRole === "admin" || userRole === "gerente") && (
+        <div className="absolute top-0 right-0">
+          <div
+            className="bg-orange-500 text-white text-xs font-medium px-2 py-1 rounded-bl-lg flex items-center justify-center cursor-pointer relative"
+            onClick={toggleMenu}
           >
-            <path d="M0 0h24v24H0z" fill="none" />
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 15h-1v-6h2v6h-1zm0-8h-1V7h2v2h-1z" />
-          </svg>
-        </div>
-        {menuVisible && (
-          <div className="absolute top-full right-0 mt-2 bg-white text-black rounded-lg shadow-lg">
-            <button
-              className="block px-4 py-2 text-sm hover:bg-gray-100 hover:rounded-lg w-full text-left"
-              onClick={openEditarModal}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="16px"
+              viewBox="0 0 24 24"
+              width="16px"
+              fill="white"
             >
-              Editar
-            </button>
-            <button
-              className="block px-4 py-2 text-sm hover:bg-gray-100 hover:rounded-lg w-full text-left"
-              onClick={openModal}
-            >
-              Eliminar
-            </button>
+              <path d="M0 0h24v24H0z" fill="none" />
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 15h-1v-6h2v6h-1zm0-8h-1V7h2v2h-1z" />
+            </svg>
           </div>
-        )}
-      </div>
+          {menuVisible && (
+            <div className="absolute top-full right-0 mt-2 bg-white text-black rounded-lg shadow-lg">
+              <button
+                className="block px-4 py-2 text-sm hover:bg-gray-100 hover:rounded-lg w-full text-left"
+                onClick={openEditarModal}
+              >
+                Editar
+              </button>
+              {userRole === "gerente" && (
+                <button
+                  className="block px-4 py-2 text-sm hover:bg-gray-100 hover:rounded-lg w-full text-left"
+                  onClick={openModal}
+                >
+                  Eliminar
+                </button>
+              )}
+            </div>
+          )}
+        </div>
+      )}
       <img
         className="w-full h-64 min-[400px]:min-w-96"
         src={image}
@@ -248,19 +265,50 @@ function AutoCard({
             </div>
           </div>
         </dl>
-        <button className="mt-4 flex items-center gap-2 border border-transparent rounded-xl hover:border-orange-500 ease-in-out duration-300 p-3">
-          Ver detalles{" "}
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            height="20px"
-            viewBox="0 -960 960 960"
-            width="20px"
-            fill="#f97316"
-          >
-            <path d="m560-242-43-42 168-168H160v-60h525L516-681l43-42 241 241-240 240Z" />
-          </svg>
+        <button
+          className="mt-4 flex items-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-orange-400 to-orange-500 text-white font-semibold shadow-lg transition-all duration-300 border-2 border-transparent hover:from-orange-500 hover:to-orange-600 hover:text-orange-500 hover:bg-white hover:border-orange-500 group"
+          onClick={openDetallesModal}
+        >
+          <span className="mr-2 group-hover:text-orange-500 transition-colors duration-300">
+            Ver detalles
+          </span>
+          <span className="flex items-center justify-center w-7 h-7 rounded-full bg-white group-hover:bg-orange-500 transition-colors duration-300">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="20px"
+              viewBox="0 -960 960 960"
+              width="20px"
+              fill="currentColor"
+              className="group-hover:fill-white transition-colors duration-300"
+            >
+              <path d="m560-242-43-42 168-168H160v-60h525L516-681l43-42 241 241-240 240Z" />
+            </svg>
+          </span>
         </button>
       </section>
+
+      {/* Modal de detalles del vehículo */}
+      <div
+        className={`fixed inset-0 z-50 flex items-center justify-center transition-opacity duration-300 ${
+          modalDetalles ? "opacity-100 visible" : "opacity-0 invisible"
+        }`}
+        style={{ pointerEvents: modalDetalles ? "auto" : "none" }}
+      >
+        <VehiculoDetallesModal
+          open={modalDetalles}
+          onClose={closeDetallesModal}
+          vehiculo={{
+            image,
+            marca,
+            anno,
+            modelo,
+            tipo_combustible,
+            tipo_transmision,
+            tipo_vehiculo,
+            cantidad,
+          }}
+        />
+      </div>
 
       {modalEditar && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">

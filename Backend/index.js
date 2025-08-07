@@ -13,7 +13,7 @@ const SERVER_PORT = PORT;
 // Configuración CORS para permitir credenciales y origen específico
 app.use(
   cors({
-    origin: ["http://localhost:5173"], // Cambiar si frontend usa otro puerto
+    origin: ["http://localhost:5173", "http://192.168.0.103:5173"],
     credentials: true,
   })
 );

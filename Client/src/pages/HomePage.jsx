@@ -77,13 +77,13 @@ function HomePage() {
   return (
     <main className="mt-36">
       <Carousel images={[auto1, auto2, auto3]} />
-      <section className="container mx-auto text-center mt-32">
-        <h1 className="text-4xl font-bold">
+      <section className="container mx-auto text-center mt-20 sm:mt-24 md:mt-28 lg:mt-32 px-2">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold leading-tight">
           COMPRA TU VEHICULO EN{" "}
           <span className="text-orange-500">ARS AUTOCAMIONES</span>
         </h1>
         {/* Hacer que la cantidad de BeneficioCard y grid-cols coincidan OJO */}
-        <div className="grid grid-cols-1 min-[430px]:grid-cols-2 min-[1030px]:grid-cols-4 justify-items-center mt-8">
+        <div className="grid grid-cols-1 min-[430px]:grid-cols-2 md:grid-cols-3 min-[1030px]:grid-cols-4 justify-items-center gap-4 sm:gap-6 mt-8">
           <BeneficioCard />
           <BeneficioCard />
           <BeneficioCard />
@@ -91,9 +91,9 @@ function HomePage() {
         </div>
       </section>
 
-      <section className="container mx-auto text-center mt-32">
+      <section className="container mx-auto text-center mt-20 sm:mt-24 md:mt-28 lg:mt-32 px-2">
         <SubtituloTipo1 texto="Echa un vistazo a nuestros vehiculos disponibles" />
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  mt-8 justify-items-center">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mt-8 justify-items-center">
           {vehiculos &&
             vehiculos
               .slice(0, 3)
@@ -114,15 +114,17 @@ function HomePage() {
                 />
               ))}
         </div>
-        <BotonTipo1
-          texto="Ver más"
-          paddingY="1.2rem"
-          paddingX="5.8rem"
-          navigateTo={"vehiculos"}
-        />
+        <div className="flex justify-center mt-6">
+          <BotonTipo1
+            texto="Ver más"
+            paddingY="1.1rem"
+            paddingX="3.5rem"
+            navigateTo={"vehiculos"}
+          />
+        </div>
       </section>
 
-      <section className="container mx-auto h-96 mt-32 rounded-2xl overflow-hidden">
+      <section className="container mx-auto h-48 sm:h-64 md:h-80 lg:h-96 mt-20 sm:mt-24 md:mt-28 lg:mt-32 rounded-2xl overflow-hidden px-2">
         <img
           className="w-full h-full object-cover"
           src={auto1}
@@ -130,12 +132,12 @@ function HomePage() {
         />
       </section>
 
-      <section className="container mx-auto mt-32 flex justify-evenly">
-        <article className="text-center md:text-left">
+      <section className="container mx-auto mt-20 sm:mt-24 md:mt-28 lg:mt-32 flex flex-col md:flex-row gap-10 md:gap-0 justify-evenly items-center px-2">
+        <article className="text-center md:text-left max-w-xs sm:max-w-md md:max-w-lg">
           <header>
             <SubtituloTipo1 texto="Ofrecemos Servicios de Excelente Calidad" />
           </header>
-          <div className="mt-8 flex justify-around">
+          <div className="mt-8 flex flex-col min-[375px]:flex-row items-center justify-around gap-4">
             <svg
               className="hidden min-[375px]:block"
               id="Capa_1"
@@ -148,7 +150,7 @@ function HomePage() {
               <path d="m505.385 283.58c0-11.956-6.646-22.39-16.436-27.803 4.787-5.56 7.685-12.791 7.685-20.687 0-17.504-14.241-31.744-31.745-31.744h-3.391c2.063-20.04 10.667-38.796 24.662-53.47 16.663-17.47 25.84-40.392 25.84-64.542 0-36.016-21.053-69.229-53.635-84.616-2.319-1.096-5.046-.929-7.217.447-2.17 1.375-3.485 3.766-3.485 6.335v78.457l-29.191 16.854-29.19-16.854-.001-78.457c0-2.569-1.315-4.96-3.485-6.335-2.173-1.377-4.896-1.545-7.218-.447-33.262 15.708-54.308 49.627-53.617 86.413.181 9.557 1.822 18.978 4.882 28.001 1.329 3.923 5.588 6.023 9.511 4.694s6.024-5.588 4.694-9.511c-2.563-7.56-3.938-15.455-4.089-23.467-.503-26.734 12.665-51.664 34.323-66.439v69.878c0 2.68 1.43 5.155 3.75 6.495l36.69 21.184c2.32 1.34 5.18 1.34 7.5 0l36.691-21.184c2.32-1.34 3.75-3.815 3.75-6.495v-69.868c21.179 14.488 34.337 38.827 34.337 64.916 0 20.277-7.704 39.522-21.693 54.188-16.664 17.471-26.766 39.906-28.878 63.823h-55.902c-2.087-23.891-12.224-46.416-28.977-64.086-2.85-3.007-7.598-3.132-10.603-.282-3.006 2.85-3.133 7.597-.282 10.603 1.619 1.708 3.166 3.468 4.64 5.276h-11.465c-31.009 0-60.967 11.183-84.354 31.489-6.797 5.9-15.705 9.15-25.084 9.15l-25.727.005c-.368-3.799-3.57-6.767-7.464-6.767h-66.762c-3.895 0-7.097 2.969-7.464 6.769h-119.485c-4.142 0-7.5 3.357-7.5 7.5v161.155c0 4.143 3.358 7.5 7.5 7.5h119.483c.368 3.799 3.569 6.769 7.464 6.769h66.762c3.895 0 7.096-2.969 7.464-6.767l25.729.004c9.378 0 18.287 3.25 25.083 9.151 23.388 20.307 53.346 31.489 84.354 31.489l32.076-.001.014 57.156c0 23.458 19.084 42.542 42.542 42.542s42.542-19.084 42.542-42.54l.017-58.053c13.897-3.378 24.247-15.928 24.247-30.849 0-7.188-2.401-13.825-6.444-19.152 11.504-4.774 19.616-16.126 19.616-29.337 0-8.229-3.147-15.736-8.302-21.383 9.132-5.582 15.238-15.644 15.238-27.107zm-370.937-19.391c-4.142 0-7.5 3.357-7.5 7.5v84.969h-111.948v-146.155h111.947v26.187c0 4.143 3.358 7.5 7.5 7.5s7.5-3.357 7.5-7.5v-32.955h51.762v159.692h-51.762v-91.737c.001-4.143-3.357-7.501-7.499-7.501zm339.192 36.136h-6.936-51.087c-4.143 0-7.5 3.357-7.5 7.5s3.357 7.5 7.5 7.5h51.087c9.233 0 16.745 7.512 16.745 16.744 0 9.233-7.512 16.745-16.745 16.745h-13.172-37.915c-4.143 0-7.5 3.357-7.5 7.5s3.357 7.5 7.5 7.5h37.915c9.233 0 16.745 7.512 16.745 16.744s-7.512 16.744-16.745 16.744h-15.105c-4.143 0-7.5 3.357-7.5 7.5s3.357 7.5 7.5 7.5h7.603l-.016 57.156c0 15.187-12.355 27.542-27.542 27.542s-27.542-12.355-27.542-27.544l-.014-57.154h12.511c4.143 0 7.5-3.358 7.5-7.5 0-4.143-3.358-7.5-7.5-7.5l-59.587.001c-27.396 0-53.86-9.879-74.521-27.815-9.524-8.271-21.925-12.825-34.916-12.825l-25.694-.004v-146.157l25.693-.005c12.991 0 25.392-4.555 34.917-12.824 20.66-17.937 47.125-27.815 74.521-27.815h21.429c5.517 10.38 8.991 21.733 10.19 33.489h-9.164c-4.143 0-7.5 3.357-7.5 7.5s3.357 7.5 7.5 7.5h17.119 81.475c9.233 0 16.745 7.512 16.745 16.745 0 9.232-7.512 16.744-16.744 16.744h-49.272c-4.143 0-7.5 3.357-7.5 7.5s3.357 7.5 7.5 7.5h49.272 8.75c9.233 0 16.745 7.512 16.745 16.744 0 9.233-7.511 16.745-16.745 16.745z" />
               <path d="m418.474 478.768c4.143 0 7.5-3.357 7.5-7.5v-19.961c0-4.143-3.357-7.5-7.5-7.5s-7.5 3.357-7.5 7.5v19.961c0 4.143 3.358 7.5 7.5 7.5z" />
             </svg>
-            <p className="max-w-56 md:max-w-72 text-justify">
+            <p className="max-w-56 md:max-w-72 text-justify text-base sm:text-lg">
               {" "}
               Necesitas ayuda con alguna falla que presenta tu vehículo,
               nuestros mecánicos calificados y capacitados te darán la mejor
@@ -182,7 +184,7 @@ function HomePage() {
         </svg>
       </section>
 
-      <section className="container mx-auto mt-28  xl:mt-32 grid grid-cols-2 min-[800px]:grid-cols-4 justify-items-center">
+      <section className="container mx-auto mt-16 sm:mt-20 md:mt-24 xl:mt-32 grid grid-cols-2 min-[500px]:grid-cols-3 min-[800px]:grid-cols-4 gap-4 sm:gap-6 justify-items-center px-2">
         <LogroCard
           icono={iconoAuto}
           titulo="Vehiculos en stock"
@@ -197,8 +199,8 @@ function HomePage() {
         <LogroCard icono={iconoPremio} titulo="Reconocimientos" cantidad="5" />
       </section>
 
-      <section className="container mx-auto mt-32 flex justify-evenly items-center">
-        <figure className="flex">
+      <section className="container mx-auto mt-20 sm:mt-24 md:mt-28 lg:mt-32 flex flex-col xl:flex-row gap-10 xl:gap-0 justify-evenly items-center px-2">
+        <figure className="flex justify-center xl:justify-start w-full xl:w-auto mb-6 xl:mb-0">
           <svg
             className="hidden xl:block"
             viewBox="0 0 512 512"
@@ -224,12 +226,12 @@ function HomePage() {
             <path d="M500.153,24.212c-15.83-15.831-41.457-15.834-57.289,0l-40.885,40.885c-16.422-8.518-37.54-6.197-51.787,8.051 L210.147,213.193c-8.988-8.864-20.87-13.746-33.507-13.746c-12.75,0-24.735,4.964-33.751,13.98l-21.488,21.488 c-6.541,6.542-6.541,17.148,0,23.69l21.668,21.668l-22.027,22.027l-6.303-4.015c-7.803-4.971-18.158-2.675-23.128,5.13 c-4.97,7.803-2.674,18.158,5.13,23.128l0.036,0.022L85.802,337.54l-6.303-4.015c-7.803-4.971-18.158-2.675-23.128,5.13 c-4.97,7.803-2.674,18.158,5.13,23.128l0.036,0.022L14.783,408.56C5.25,418.09,0,430.763,0,444.242s5.25,26.152,14.781,35.683 l14.83,14.83c6.541,6.542,17.148,6.543,23.69,0c6.542-6.542,6.542-17.148,0-23.69l-14.83-14.831 c-3.203-3.203-4.967-7.462-4.967-11.992c0-4.53,1.765-8.789,4.967-11.993l29.119-29.12c0.18,0.302,0.375,0.594,0.563,0.891 c-1.856,4.638-2.835,9.631-2.835,14.777c0,10.614,4.133,20.593,11.639,28.099c7.506,7.506,17.484,11.639,28.099,11.639 c5.078,0,10.006-0.956,14.592-2.765c7.167,4.716,15.553,7.253,24.331,7.253c11.857,0,23.004-4.617,31.388-13.002l9.599-9.599 l5.678,3.616c2.79,1.777,5.904,2.624,8.983,2.624c5.535,0,10.951-2.741,14.145-7.755c4.845-7.606,2.768-17.622-4.565-22.726l11-11 l5.678,3.616c2.79,1.777,5.904,2.624,8.983,2.624c5.535,0,10.951-2.741,14.145-7.755c3.332-5.233,3.384-11.608,0.711-16.743 l16.037,16.037c3.141,3.141,7.402,4.907,11.844,4.907c4.444,0,8.704-1.766,11.846-4.907l21.487-21.488 c18.53-18.53,18.603-48.627,0.232-67.257l140.046-140.046c13.99-13.99,16.666-35.068,8.04-51.777L500.15,81.5 C515.949,65.707,515.949,40.007,500.153,24.212z M151.678,426.334c-2.056,2.056-4.791,3.188-7.699,3.188 c-2.906,0-5.637-1.13-7.692-3.183l-38.261-38.261c-1.352-1.355-2.295-3.006-2.787-4.805l60.784,38.715L151.678,426.334z M180.29,397.722l-65.545-41.747L125.72,345l65.545,41.747L180.29,397.722z M215.53,362.481l-65.544-41.747l16.752-16.752 l53.645,53.645L215.53,362.481z M287.249,357.786l-9.642,9.642l-120.67-120.67l9.642-9.643c2.687-2.687,6.26-4.167,10.061-4.167 c3.8,0,7.374,1.48,10.061,4.167l11.601,11.602c0.001,0.001,0.003,0.003,0.004,0.006l77.337,77.337l11.606,11.606 C292.797,343.212,292.797,352.239,287.249,357.786z M427.528,150.484l-140.04,140.039l-53.645-53.645L373.882,96.838 c4.255-4.255,11.142-4.255,15.398,0c1.012,1.012,37.152,37.153,38.248,38.25C431.773,139.331,431.773,146.239,427.528,150.484z M476.464,57.811l-39.415,39.414l-9.909-9.909l39.414-39.415c2.734-2.733,7.171-2.738,9.91,0 C479.196,50.634,479.196,55.08,476.464,57.811z" />
           </svg>
         </figure>
-        <article className="text-center md:text-left">
+        <article className="text-center md:text-left max-w-xs sm:max-w-md md:max-w-lg">
           <header>
             <SubtituloTipo1 texto="¿Necesitas repuestos para tu vehiculo?" />
           </header>
 
-          <p className="pl-5 md:pl-0 max-w-64 md:max-w-96 text-justify mt-8 text-lg">
+          <p className="pl-2 md:pl-0 max-w-64 md:max-w-96 text-justify mt-8 text-base sm:text-lg">
             Repuestos de la más alta calidad para tu vehiculo, aprovecha
             nuestros precios y ofertas de productos de alta resistencia.
           </p>

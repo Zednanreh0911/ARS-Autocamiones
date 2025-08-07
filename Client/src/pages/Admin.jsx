@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "../context/useAuth";
 import { useForm } from "react-hook-form";
 import { crearRepuesto, crearVehiculo, crearUsuario } from "../api/axios";
@@ -6,7 +6,7 @@ import { obtenerUsuarios, eliminarUsuario } from "../api/axios";
 import DialogoAfirmativo from "../components/DialogoAfirmativo";
 
 function Admin() {
-  const { userName } = useAuth();
+  const { userName, userRole } = useAuth();
   const [category, setCategory] = useState("");
   const [reportes, setReportes] = useState("");
   const [usuarios, setUsuarios] = useState([]);
@@ -55,6 +55,13 @@ function Admin() {
   const manejoDeCategoria = (e) => {
     setCategory(e.target.innerText);
   };
+
+  // Cargar usuarios automáticamente al entrar a la sección Usuarios
+  useEffect(() => {
+    if (category === "Usuarios") {
+      obtenerUsuarios().then(setUsuarios);
+    }
+  }, [category]);
   const reporte = (e) => {
     setReportes(e.target.innerText);
   };
@@ -199,6 +206,7 @@ function Admin() {
         {category === "" && (
           <div className="flex flex-col items-center justify-start h-full w-full">
             <h2 className="text-3xl font-bold mb-2">
+              {console.log("User Name:", userName)}
               ¡Hola{userName ? `, ${userName}` : ""}!
             </h2>
             <p className="text-lg text-gray-600">
@@ -383,78 +391,126 @@ function Admin() {
           </button>
         </form>
         {/* form de usuarios */}
-        <form
-          key={usuarioFormKey}
-          onSubmit={subirUsuario}
-          className={`mt-2 p-5 w-96 flex flex-col gap-4 items-center text-center shadow-md rounded-lg ${
-            category === "Usuarios" ? "block" : "hidden"
-          }`}
-        >
-          <input
-            className="border rounded-md w-full p-2"
-            type="text"
-            placeholder="Nombre de usuario"
-            {...registerUsuario("name", { required: true })}
-          />
-          <input
-            className="border rounded-md w-full p-2"
-            type="password"
-            placeholder="Contraseña"
-            {...registerUsuario("password", { required: true })}
-          />
-          <button
-            className="text-black border-2 hover:bg-orange-400 hover:text-white ease-in-out duration-300 px-8 py-2 rounded-md cursor-pointer"
-            type="submit"
+        {/* Solo el gerente puede crear usuarios */}
+        {console.log("User Role:", userRole)}
+        {userRole === "gerente" && (
+          <form
+            key={usuarioFormKey}
+            onSubmit={subirUsuario}
+            className={`mt-2 p-5 w-96 flex flex-col gap-4 items-center text-center shadow-md rounded-lg ${
+              category === "Usuarios" ? "block" : "hidden"
+            }`}
           >
-            Crear
-          </button>
-          <button
-            className="text-black border-2 hover:bg-orange-400 hover:text-white ease-in-out duration-300 px-8 py-2 rounded-md cursor-pointer"
-            type="button"
-            onClick={toggleUsuarios}
-          >
-            Usuarios Creados
-          </button>
-          {mostrarUsuarios && (
-            <ul className="mt-4 w-full text-left">
-              {usuarios.length === 0 ? (
-                <li className="text-gray-500 italic text-center py-2">
-                  Actualmente no hay usuarios registrados en el sistema.
-                </li>
-              ) : (
-                usuarios.map((usuario) => {
-                  const key = usuario.id_usuario || usuario.id || usuario.name;
-                  return (
-                    <li
-                      key={key}
-                      className="border-b py-2 flex justify-between items-center"
-                    >
-                      <span>{usuario.nombre}</span>
-                      <div className="flex gap-2">
-                        <button
-                          className="text-red-500 hover:underline"
-                          type="button"
-                          onClick={() =>
-                            deleteUser(usuario.id_usuario || usuario.id)
-                          }
+            <input
+              className="border rounded-md w-full p-2"
+              type="text"
+              placeholder="Nombre de usuario"
+              {...registerUsuario("name", { required: true })}
+            />
+            <input
+              className="border rounded-md w-full p-2"
+              type="password"
+              placeholder="Contraseña"
+              {...registerUsuario("password", { required: true })}
+            />
+            <button
+              className="text-black border-2 hover:bg-orange-400 hover:text-white ease-in-out duration-300 px-8 py-2 rounded-md cursor-pointer"
+              type="submit"
+            >
+              Crear
+            </button>
+            <button
+              className="text-black border-2 hover:bg-orange-400 hover:text-white ease-in-out duration-300 px-8 py-2 rounded-md cursor-pointer"
+              type="button"
+              onClick={toggleUsuarios}
+            >
+              Usuarios Creados
+            </button>
+            {mostrarUsuarios && (
+              <ul className="mt-4 w-full text-left">
+                {usuarios.length === 0 ? (
+                  <li className="text-gray-500 italic text-center py-2">
+                    Actualmente no hay usuarios registrados en el sistema.
+                  </li>
+                ) : (
+                  usuarios
+                    .filter((usuario) => usuario.rol !== "gerente")
+                    .map((usuario) => {
+                      const key =
+                        usuario.id_usuario || usuario.id || usuario.name;
+                      return (
+                        <li
+                          key={key}
+                          className="border-b py-2 flex justify-between items-center"
                         >
-                          Eliminar
-                        </button>
-                      </div>
-                    </li>
-                  );
-                })
+                          <span>{usuario.nombre}</span>
+                          <div className="flex gap-2">
+                            <button
+                              className="text-red-500 hover:underline"
+                              type="button"
+                              onClick={() =>
+                                deleteUser(usuario.id_usuario || usuario.id)
+                              }
+                            >
+                              Eliminar
+                            </button>
+                          </div>
+                        </li>
+                      );
+                    })
+                )}
+              </ul>
+            )}
+            {!mostrarUsuarios &&
+              usuarios.length === 0 &&
+              category === "Usuarios" && (
+                <div className="mt-4 w-full text-center text-gray-500 italic py-2">
+                  Actualmente no hay usuarios registrados en el sistema.
+                </div>
               )}
-            </ul>
-          )}
-          {!mostrarUsuarios &&
-            usuarios.length === 0 &&
-            category === "Usuarios" && (
+          </form>
+        )}
+        {/* Si no es gerente, solo muestra la lista de usuarios si corresponde */}
+        {userRole !== "gerente" && category === "Usuarios" && (
+          <div className="mt-2 p-5 w-96 flex flex-col gap-4 items-center text-center shadow-md rounded-lg">
+            <button
+              className="text-black border-2 hover:bg-orange-400 hover:text-white ease-in-out duration-300 px-8 py-2 rounded-md cursor-pointer"
+              type="button"
+              onClick={toggleUsuarios}
+            >
+              Usuarios Creados
+            </button>
+            {mostrarUsuarios && (
+              <ul className="mt-4 w-full text-left">
+                {usuarios.length === 0 ? (
+                  <li className="text-gray-500 italic text-center py-2">
+                    Actualmente no hay usuarios registrados en el sistema.
+                  </li>
+                ) : (
+                  usuarios
+                    .filter((usuario) => usuario.rol !== "gerente")
+                    .map((usuario) => {
+                      const key =
+                        usuario.id_usuario || usuario.id || usuario.name;
+                      return (
+                        <li
+                          key={key}
+                          className="border-b py-2 flex justify-between items-center"
+                        >
+                          <span>{usuario.nombre}</span>
+                        </li>
+                      );
+                    })
+                )}
+              </ul>
+            )}
+            {!mostrarUsuarios && usuarios.length === 0 && (
               <div className="mt-4 w-full text-center text-gray-500 italic py-2">
                 Actualmente no hay usuarios registrados en el sistema.
               </div>
             )}
-        </form>
+          </div>
+        )}
         <div
           className={`mt-2 p-5 w-96 flex flex-col gap-4 items-center text-center shadow-md rounded-md ${
             category === "Reportes" ? "block" : "hidden"

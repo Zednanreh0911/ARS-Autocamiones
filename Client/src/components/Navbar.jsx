@@ -1,9 +1,12 @@
 import { Link, NavLink } from "react-router-dom";
 import { useState } from "react";
+import { useAuth } from "../context/useAuth";
+import LogoutIcon from "./LogoutIcon";
 import logoArs from "../assets/logoArs.png";
 
 function Navbar() {
   const [menu, setMenu] = useState(false);
+  const { isAuthenticated, logout } = useAuth();
 
   const handleMenu = () => {
     setMenu(!menu);
@@ -40,13 +43,13 @@ function Navbar() {
           </li>
         </ul>
       </div>
-      <nav className="flex justify-between py-7 px-6 text-black bg-white rounded-b-3xl shadow-lg">
+      <nav className="flex py-7 px-6 text-black bg-white rounded-b-3xl shadow-lg justify-between">
         <span className="font-bold text-3xl">
           <Link to="/">
             <img className="h-12" src={logoArs} alt="ARS" />
           </Link>
         </span>
-        <ul className="hidden min-[720px]:flex min-[720px]:gap-8">
+        <ul className="hidden min-[720px]:flex min-[720px]:gap-8 ml-auto">
           <li className="flex items-center">
             <NavLink
               to="/"
@@ -104,30 +107,44 @@ function Navbar() {
             </a>
           </li>
         </ul>
-        <button
-          onClick={handleMenu}
-          className="relative block z-20 min-[720px]:hidden"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className={`w-10 h-10  transition-all ease duration-300 ${
-              menu ? "rotate-90 opacity-0" : "opacity-100"
-            }`}
-            viewBox="0 0 24 24"
+        <div className="flex items-center gap-4">
+          {isAuthenticated && (
+            <button
+              onClick={logout}
+              title="Cerrar sesión"
+              className="group ml-5 p-1 rounded-full border border-transparent focus:outline-none focus:ring-2 focus:ring-orange-400 transition-all duration-300"
+              style={{ transitionProperty: 'color, background, border, box-shadow, transform' }}
+            >
+              <span className="block">
+                <LogoutIcon className="w-8 h-8 group-hover:scale-110 group-hover:text-orange-500 group-active:scale-95 transition-all duration-300" />
+              </span>
+            </button>
+          )}
+          <button
+            onClick={handleMenu}
+            className="relative block z-20 min-[720px]:hidden"
           >
-            <path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z" />
-          </svg>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className={`w-10 h-10 absolute top-0 left-0 transition-all ease duration-300 ${
-              menu ? "opacity-100" : "rotate-90 opacity-0"
-            }`}
-            viewBox="0 -960 960 960"
-            fill="#000000"
-          >
-            <path d="m249-207-42-42 231-231-231-231 42-42 231 231 231-231 42 42-231 231 231 231-42 42-231-231-231 231Z" />
-          </svg>
-        </button>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className={`w-10 h-10  transition-all ease duration-300 ${
+                menu ? "rotate-90 opacity-0" : "opacity-100"
+              }`}
+              viewBox="0 0 24 24"
+            >
+              <path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z" />
+            </svg>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className={`w-10 h-10 absolute top-0 left-0 transition-all ease duration-300 ${
+                menu ? "opacity-100" : "rotate-90 opacity-0"
+              }`}
+              viewBox="0 -960 960 960"
+              fill="#000000"
+            >
+              <path d="m249-207-42-42 231-231-231-231 42-42 231 231 231-231 42 42-231 231 231 231-42 42-231-231-231 231Z" />
+            </svg>
+          </button>
+        </div>
 
         <div
           onClick={handleMenu}

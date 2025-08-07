@@ -1,11 +1,14 @@
 import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useAuth } from "../context/useAuth";
 import {
   eliminarRepuesto,
   editarRepuesto,
   editarRepuestoNewImg,
 } from "../api/axios";
+
+import RepuestoDetallesModal from "./RepuestoDetallesModal";
 
 RepuestoCard.propTypes = {
   image: PropTypes.string.isRequired,
@@ -30,6 +33,15 @@ function RepuestoCard({
   onEliminar,
   onActualizar,
 }) {
+  // Handlers para el modal de detalles
+  const [modalDetalles, setModalDetalles] = useState(false);
+  const openDetallesModal = () => {
+    setModalDetalles(true);
+  };
+  const closeDetallesModal = () => {
+    setModalDetalles(false);
+  };
+  const { userRole } = useAuth();
   const [menuVisible, setMenuVisible] = useState(false);
   const [modalEliminar, setModalModalEliminar] = useState(false);
   const [modalEditar, setModalEditar] = useState(false);
@@ -125,39 +137,44 @@ function RepuestoCard({
   };
   return (
     <article className="w-72 md:w-80 xl:w-96 h-full rounded-2xl overflow-hidden shadow-2xl mt-4 relative">
-      <div className="absolute top-0 right-0">
-        <div
-          className="bg-orange-500 text-white text-xs font-medium px-2 py-1 rounded-bl-lg flex items-center justify-center cursor-pointer relative"
-          onClick={toggleMenu}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            height="16px"
-            viewBox="0 0 24 24"
-            width="16px"
-            fill="white"
+      {/* Solo admin y gerente pueden ver el menú de acciones */}
+      {(userRole === "admin" || userRole === "gerente") && (
+        <div className="absolute top-0 right-0">
+          <div
+            className="bg-orange-500 text-white text-xs font-medium px-2 py-1 rounded-bl-lg flex items-center justify-center cursor-pointer relative"
+            onClick={toggleMenu}
           >
-            <path d="M0 0h24v24H0z" fill="none" />
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 15h-1v-6h2v6h-1zm0-8h-1V7h2v2h-1z" />
-          </svg>
-        </div>
-        {menuVisible && (
-          <div className="absolute top-full right-0 mt-2 bg-white text-black rounded-lg shadow-lg">
-            <button
-              className="block px-4 py-2 text-sm hover:bg-gray-100 hover:rounded-lg w-full text-left"
-              onClick={openEditarModal}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="16px"
+              viewBox="0 0 24 24"
+              width="16px"
+              fill="white"
             >
-              Editar
-            </button>
-            <button
-              className="block px-4 py-2 text-sm hover:bg-gray-100 hover:rounded-lg w-full text-left"
-              onClick={openModal}
-            >
-              Eliminar
-            </button>
+              <path d="M0 0h24v24H0z" fill="none" />
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 15h-1v-6h2v6h-1zm0-8h-1V7h2v2h-1z" />
+            </svg>
           </div>
-        )}
-      </div>
+          {menuVisible && (
+            <div className="absolute top-full right-0 mt-2 bg-white text-black rounded-lg shadow-lg">
+              <button
+                className="block px-4 py-2 text-sm hover:bg-gray-100 hover:rounded-lg w-full text-left"
+                onClick={openEditarModal}
+              >
+                Editar
+              </button>
+              {userRole === "gerente" && (
+                <button
+                  className="block px-4 py-2 text-sm hover:bg-gray-100 hover:rounded-lg w-full text-left"
+                  onClick={openModal}
+                >
+                  Eliminar
+                </button>
+              )}
+            </div>
+          )}
+        </div>
+      )}
       <img className="w-full max-h-64 min-h-64" src={image} alt={nombre} />
       <section className="text-left p-4">
         <header className="border-b border-gray-300 pb-4">
@@ -168,18 +185,42 @@ function RepuestoCard({
           </p>
         </header>
 
-        <button className="border rounded-xl border-transparent hover:border-orange-500 ease-in-out duration-300 mt-4 flex items-center gap-2 p-3">
-          Ver detalles{" "}
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            height="20px"
-            viewBox="0 -960 960 960"
-            width="20px"
-            fill="#f97316"
-          >
-            <path d="m560-242-43-42 168-168H160v-60h525L516-681l43-42 241 241-240 240Z" />
-          </svg>
+        <button
+          className="mt-4 flex items-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-orange-400 to-orange-500 text-white font-semibold shadow-lg transition-all duration-300 border-2 border-transparent hover:from-orange-500 hover:to-orange-600 hover:text-orange-500 hover:bg-white hover:border-orange-500 group"
+          onClick={openDetallesModal}
+        >
+          <span className="mr-2 group-hover:text-orange-500 transition-colors duration-300">Ver detalles</span>
+          <span className="flex items-center justify-center w-7 h-7 rounded-full bg-white group-hover:bg-orange-500 transition-colors duration-300">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="20px"
+              viewBox="0 -960 960 960"
+              width="20px"
+              fill="currentColor"
+              className="group-hover:fill-white transition-colors duration-300"
+            >
+              <path d="m560-242-43-42 168-168H160v-60h525L516-681l43-42 241 241-240 240Z" />
+            </svg>
+          </span>
         </button>
+      {/* Modal de detalles del repuesto */}
+      <div
+        className={`fixed inset-0 z-50 flex items-center justify-center transition-opacity duration-300 ${modalDetalles ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
+        style={{ pointerEvents: modalDetalles ? 'auto' : 'none' }}
+      >
+        <RepuestoDetallesModal
+          open={modalDetalles}
+          onClose={closeDetallesModal}
+          repuesto={{
+            image,
+            nombre,
+            marca,
+            precio_unitario,
+            cantidad,
+            categoria,
+          }}
+        />
+      </div>
       </section>
       {modalEditar && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">

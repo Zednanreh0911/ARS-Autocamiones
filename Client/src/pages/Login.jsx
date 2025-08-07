@@ -46,12 +46,16 @@ function Login() {
   });
 
   useEffect(() => {
+    // Redirigir a 404 si el ancho de pantalla es menor a 720px
+    if (window.innerWidth < 720) {
+      navigate("/404", { replace: true });
+    }
     return () => {
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
     };
-  }, []);
+  }, [navigate]);
 
   return (
     <div

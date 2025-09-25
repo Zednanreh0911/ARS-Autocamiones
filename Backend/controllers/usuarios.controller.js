@@ -1,5 +1,6 @@
 import client from "../db.js";
 import jwt from "jsonwebtoken";
+import { registrarAuditoria } from "../utils/auditoriaUtils.js";
 
 export const logoutUsuario = (req, res) => {
   res.clearCookie("auth", {
@@ -62,9 +63,19 @@ export const createUsuario = async (req, res) => {
     const password = req.body.password;
 
     const response = await client.query(
-      "INSERT INTO usuarios (nombre, contraseña, rol) VALUES ($1, $2, $3) RETURNING id_usuario",
+      "INSERT INTO usuarios (nombre, contraseña, rol) VALUES ($1, $2, $3) RETURNING *",
       [name, password, "admin"]
     );
+    // Auditoría: registrar acción (si hay usuario autenticado)
+    await registrarAuditoria({
+      usuario_nombre: req.user?.user || null,
+      accion: "crear_usuario",
+      entidad_afectada: "usuarios",
+      entidad_id: response.rows[0]?.id_usuario,
+      detalle_anterior: null,
+      detalle_nuevo: response.rows[0],
+      ip_origen: req.ip || null,
+    });
     res.status(200).json({
       message: "Usuario creado",
       body: {
@@ -79,6 +90,16 @@ export const createUsuario = async (req, res) => {
 export const deleteUsuario = async (req, res) => {
   try {
     const { id } = req.params;
+    // Obtener estado anterior para auditoría
+    const prevRes = await client.query(
+      "SELECT * FROM usuarios WHERE id_usuario = $1",
+      [id]
+    );
+    if (prevRes.rows.length === 0) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+    const usuarioAnterior = prevRes.rows[0];
+
     const response = await client.query(
       "DELETE FROM usuarios WHERE id_usuario = $1",
       [id]
@@ -86,6 +107,18 @@ export const deleteUsuario = async (req, res) => {
     if (response.rowCount === 0) {
       return res.status(404).json({ message: "Usuario no encontrado" });
     }
+
+    // Auditoría: registrar acción de eliminación
+    await registrarAuditoria({
+      usuario_nombre: req.user?.user || null,
+      accion: "eliminar_usuario",
+      entidad_afectada: "usuarios",
+      entidad_id: id,
+      detalle_anterior: usuarioAnterior,
+      detalle_nuevo: null,
+      ip_origen: req.ip || null,
+    });
+
     res.status(200).json({
       message: "Usuario eliminado",
       body: {

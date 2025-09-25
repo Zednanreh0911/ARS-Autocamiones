@@ -31,6 +31,11 @@ const axiosConCredenciales = axios.create({
   withCredentials: true,
 });
 
+export const obtenerLogs = async () => {
+  const response = await axiosConCredenciales.get(`${API_URL}/auditoria`);
+  return response.data;
+};
+
 export const obtenerRepuestos = async () => {
   const response = await axios.get(`${API_URL}/repuestos`);
   return response.data;
@@ -63,50 +68,77 @@ export const logoutUsuario = async () => {
 };
 
 export const crearVehiculo = async (datos) => {
-  const response = await axios.post(`${API_URL}/vehiculos`, datos);
+  const response = await axiosConCredenciales.post(
+    `${API_URL}/vehiculos`,
+    datos
+  );
   return response.data;
 };
 
 export const crearRepuesto = async (datos) => {
-  const response = await axios.post(`${API_URL}/repuestos`, datos);
+  const response = await axiosConCredenciales.post(
+    `${API_URL}/repuestos`,
+    datos
+  );
   return response.data;
 };
 
 export const crearUsuario = async (datos) => {
-  const response = await axios.post(`${API_URL}/usuarios`, datos);
+  const response = await axiosConCredenciales.post(
+    `${API_URL}/usuarios`,
+    datos
+  );
   return response.data;
 };
 
 export const eliminarUsuario = async (id) => {
-  const response = await axios.delete(`${API_URL}/usuarios/${id}`);
+  const response = await axiosConCredenciales.delete(
+    `${API_URL}/usuarios/${id}`
+  );
   return response.data;
 };
 
 export const eliminarVehiculo = async (id) => {
-  const response = await axios.delete(`${API_URL}/vehiculos/${id}`);
+  const response = await axiosConCredenciales.delete(
+    `${API_URL}/vehiculos/${id}`
+  );
   return response.data;
 };
 
 export const eliminarRepuesto = async (id) => {
-  const response = await axios.delete(`${API_URL}/repuestos/${id}`);
+  const response = await axiosConCredenciales.delete(
+    `${API_URL}/repuestos/${id}`
+  );
   return response.data;
 };
 
 export const editarVehiculo = async (id, datos) => {
-  const response = await axios.put(`${API_URL}/vehiculos/${id}`, datos);
+  const response = await axiosConCredenciales.put(
+    `${API_URL}/vehiculos/${id}`,
+    datos
+  );
   return response.data;
 };
 
 export const editarVehiculoNewImg = async (id, datos) => {
-  const response = await axios.put(`${API_URL}/vehiculos/${id}/new`, datos);
+  const response = await axiosConCredenciales.put(
+    `${API_URL}/vehiculos/${id}/new`,
+    datos
+  );
   return response.data;
 };
 export const editarRepuesto = async (id, datos) => {
-  const response = await axios.put(`${API_URL}/repuestos/${id}`, datos);
+  const response = await axiosConCredenciales.put(
+    `${API_URL}/repuestos/${id}`,
+    datos
+  );
   return response.data;
 };
 
 export const editarRepuestoNewImg = async (id, datos) => {
-  const response = await axios.put(`${API_URL}/repuestos/${id}/new`, datos);
+  const response = await axiosConCredenciales.put(
+    `${API_URL}/repuestos/${id}/new`,
+    datos
+  );
   return response.data;
 };

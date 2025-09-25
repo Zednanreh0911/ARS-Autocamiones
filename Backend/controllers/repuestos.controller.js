@@ -1,6 +1,6 @@
 import pool from "../db.js";
-
 import { deleteImageFile } from "../utils/fileUtils.js";
+import { registrarAuditoria } from "../utils/auditoriaUtils.js";
 
 export const getRepuestos = async (req, res) => {
   try {
@@ -40,9 +40,19 @@ export const createRepuesto = async (req, res) => {
     const { nombre, marca, cantidad, categoria, precio_unitario } = req.body;
 
     const response = await pool.query(
-      "INSERT INTO repuestos (nombre, marca, cantidad, categoria, precio_unitario, imagen_url) VALUES ($1, $2, $3, $4, $5, $6)",
+      "INSERT INTO repuestos (nombre, marca, cantidad, categoria, precio_unitario, imagen_url) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
       [nombre, marca, cantidad, categoria, precio_unitario, imagen]
     );
+    // Auditoría: registrar acción
+    await registrarAuditoria({
+      usuario_nombre: req.user?.user || null,
+      accion: "crear_repuesto",
+      entidad_afectada: "repuestos",
+      entidad_id: response.rows[0]?.id_repuesto,
+      detalle_anterior: null,
+      detalle_nuevo: response.rows[0],
+      ip_origen: req.ip || null,
+    });
     res.status(200).json({
       message: "Repuesto creado",
       body: {
@@ -68,6 +78,13 @@ export const updateRepuesto = async (req, res) => {
     const { nombre, marca, cantidad, categoria, precio_unitario, imagen_url } =
       req.body;
 
+    // Obtener estado anterior para auditoría
+    const prevRes = await pool.query(
+      "SELECT * FROM repuestos WHERE id_repuesto = $1",
+      [id]
+    );
+    const repuestoAnterior = prevRes.rows[0] || null;
+
     const response = await pool.query(
       `UPDATE repuestos 
        SET nombre = $1, marca = $2, cantidad = $3, categoria = $4, precio_unitario = $5, imagen_url = $6
@@ -78,6 +95,17 @@ export const updateRepuesto = async (req, res) => {
     if (response.rowCount === 0) {
       return res.status(404).json({ message: "Repuesto no encontrado" });
     }
+
+    // Auditoría: registrar acción de edición
+    await registrarAuditoria({
+      usuario_nombre: req.user?.user || null,
+      accion: "editar_repuesto",
+      entidad_afectada: "repuestos",
+      entidad_id: id,
+      detalle_anterior: repuestoAnterior,
+      detalle_nuevo: response.rows[0],
+      ip_origen: req.ip || null,
+    });
 
     res.status(200).json({
       message: "Repuesto actualizado",
@@ -100,6 +128,13 @@ export const updateRepuestoNewImg = async (req, res) => {
     }
     const imagen = `src/assets/${req.savedFilename}`;
 
+    // Obtener estado anterior para auditoría
+    const prevRes = await pool.query(
+      "SELECT * FROM repuestos WHERE id_repuesto = $1",
+      [id]
+    );
+    const repuestoAnterior = prevRes.rows[0] || null;
+
     const response = await pool.query(
       `UPDATE repuestos 
        SET nombre = $1, marca = $2, cantidad = $3, categoria = $4, precio_unitario = $5, imagen_url = $6
@@ -110,6 +145,17 @@ export const updateRepuestoNewImg = async (req, res) => {
     if (response.rowCount === 0) {
       return res.status(404).json({ message: "Repuesto no encontrado" });
     }
+
+    // Auditoría: registrar acción de edición con nueva imagen
+    await registrarAuditoria({
+      usuario_nombre: req.user?.user || null,
+      accion: "editar_repuesto",
+      entidad_afectada: "repuestos",
+      entidad_id: id,
+      detalle_anterior: repuestoAnterior,
+      detalle_nuevo: response.rows[0],
+      ip_origen: req.ip || null,
+    });
 
     res.status(200).json({
       message: "Repuesto actualizado con nueva imagen",
@@ -126,14 +172,16 @@ export const updateRepuestoNewImg = async (req, res) => {
 export const deleteRepuesto = async (req, res) => {
   try {
     const { id } = req.params;
+    // Obtener estado anterior para auditoría
     const repuestoResult = await pool.query(
-      "SELECT imagen_url FROM repuestos WHERE id_repuesto = $1",
+      "SELECT * FROM repuestos WHERE id_repuesto = $1",
       [id]
     );
     if (repuestoResult.rows.length === 0) {
       return res.status(404).json({ message: "Repuesto no encontrado" });
     }
-    const imagenUrl = repuestoResult.rows[0].imagen_url;
+    const repuestoAnterior = repuestoResult.rows[0];
+    const imagenUrl = repuestoAnterior.imagen_url;
 
     const response = await pool.query(
       "DELETE FROM repuestos WHERE id_repuesto = $1",
@@ -142,6 +190,17 @@ export const deleteRepuesto = async (req, res) => {
     if (response.rowCount === 0) {
       return res.status(404).json({ message: "Repuesto no encontrado" });
     }
+
+    // Auditoría: registrar acción de eliminación
+    await registrarAuditoria({
+      usuario_nombre: req.user?.user || null,
+      accion: "eliminar_repuesto",
+      entidad_afectada: "repuestos",
+      entidad_id: id,
+      detalle_anterior: repuestoAnterior,
+      detalle_nuevo: null,
+      ip_origen: req.ip || null,
+    });
 
     deleteImageFile(imagenUrl);
 

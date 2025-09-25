@@ -6,6 +6,7 @@ import {
   loginUsuario,
   logoutUsuario,
 } from "../controllers/usuarios.controller.js";
+import { requireAuth } from "../middlewares/requireAuth.js";
 import { hashPassword, comparePassword } from "../middlewares/hashedPass.js";
 
 const usuariosRouter = Router();
@@ -14,9 +15,9 @@ usuariosRouter.get("/", getUsuarios);
 
 usuariosRouter.post("/login", comparePassword, loginUsuario);
 
-usuariosRouter.post("/", hashPassword, createUsuario);
+usuariosRouter.post("/", requireAuth, hashPassword, createUsuario);
 
-usuariosRouter.delete("/:id", deleteUsuario);
+usuariosRouter.delete("/:id", requireAuth, deleteUsuario);
 
 usuariosRouter.post("/logout", logoutUsuario);
 

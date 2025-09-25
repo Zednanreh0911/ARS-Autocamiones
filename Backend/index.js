@@ -4,6 +4,7 @@ import cors from "cors";
 import vehiculosRouter from "./routes/vehiculos.routes.js";
 import repuestosRouter from "./routes/repuestos.routes.js";
 import usuariosRouter from "./routes/usuarios.routes.js";
+import auditoriaRouter from "./routes/auditoria.routes.js";
 import { PORT } from "./config.js";
 
 const app = express();
@@ -26,6 +27,8 @@ app.use("/vehiculos", vehiculosRouter);
 app.use("/repuestos", repuestosRouter);
 
 app.use("/usuarios", usuariosRouter);
+
+app.use("/auditoria", auditoriaRouter);
 
 app.listen(SERVER_PORT, () => {
   console.log("Server is running on http://localhost:" + SERVER_PORT);

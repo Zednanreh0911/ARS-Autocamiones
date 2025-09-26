@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Ignorar todos los archivos .jpg en la carpeta assets
+src/assets/*.jpg
+

@@ -12,6 +12,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Error404 from "./pages/Error404.jsx";
 import PdfVehiculos from "./components/PdfVehiculos.jsx";
 import PdfRepuestos from "./components/PdfRepuestos.jsx";
+import PdfAuditoria from "./components/PdfAuditoria.jsx";
 import { obtenerRepuestos, obtenerVehiculos } from "./api/axios.js";
 import { useEffect, useState } from "react";
 
@@ -77,6 +78,15 @@ function AppRoutes() {
         <Route
           path="/pdf_repuestos"
           element={<PdfRepuestos title={"Repuestos"} elementos={repuestos} />}
+        />
+        <Route
+          path="/pdf_auditoria"
+          element={
+            <PdfAuditoria
+              title={"Auditoría"}
+              elementos={(location.state && location.state.elementos) || []}
+            />
+          }
         />
       </Routes>
       {!hideFooter && <Footerbar />}

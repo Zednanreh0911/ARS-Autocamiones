@@ -112,8 +112,11 @@ function Admin() {
     ) {
       resultado = resultado.filter((log) => {
         const fecha = new Date(log.fecha_hora);
-        const inicio = new Date(filters.fechaInicio);
-        const fin = new Date(filters.fechaFin);
+        const [y1, m1, d1] = filters.fechaInicio.split("-").map(Number);
+        const inicio = new Date(y1, m1 - 1, d1, 0, 0, 0, 0);
+        const [y2, m2, d2] = filters.fechaFin.split("-").map(Number);
+        const fin = new Date(y2, m2 - 1, d2, 23, 59, 59, 999);
+        console.log("fecha: ", fecha, " inicio: ", inicio, " fin: ", fin);
         return fecha >= inicio && fecha <= fin;
       });
     }
@@ -902,18 +905,27 @@ function Admin() {
                 type="button"
                 className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-2 rounded-md shadow transition-colors duration-200"
                 onClick={() => {
-                  // Construir la URL con los filtros actuales
-                  const params = new URLSearchParams({
-                    usuario: filters.usuario || "",
-                    accion: filters.accion || "",
-                    entidad: filters.entidad || "",
-                    fechaInicio: filters.fechaInicio || "",
-                    fechaFin: filters.fechaFin || "",
-                  });
-                  window.open(
-                    `/api/auditoria/pdf?${params.toString()}`,
-                    "_blank"
-                  );
+                  // Abrir PdfAuditoria en una nueva ventana con los datos filtrados
+                  const newWindow = window.open("/pdf_auditoria", "_blank");
+                  // Esperar a que la nueva ventana cargue y luego pasarle los datos por postMessage
+                  if (newWindow) {
+                    const elementos = auditLogs.map((log) => ({
+                      fecha: formatFechaHora(log.fecha_hora),
+                      usuario: getNombreUsuario(log.usuario_id),
+                      accion: log.accion,
+                      entidad: log.entidad || log.entidad_afectada || "-",
+                    }));
+                    const sendState = () => {
+                      newWindow.postMessage(
+                        { type: "PDF_AUDITORIA_DATA", elementos },
+                        window.location.origin
+                      );
+                    };
+                    // Esperar a que la nueva ventana esté lista
+                    newWindow.onload = sendState;
+                    // Fallback por si onload no funciona
+                    setTimeout(sendState, 1000);
+                  }
                 }}
               >
                 Ver PDF de estos datos

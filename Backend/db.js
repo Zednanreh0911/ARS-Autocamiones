@@ -90,6 +90,32 @@ const pool = new Pool({
       } else {
         console.log("Usuario 'gerente' ya existe en la base de datos.");
       }
+      // Comprobar existencia del usuario por defecto 'auditor'
+      try {
+        const auditorRes = await pool.query(
+          "SELECT id_usuario FROM usuarios WHERE nombre = $1",
+          ["auditor"]
+        );
+        if (auditorRes.rows.length === 0) {
+          const defaultPassword2 = "1234";
+          const saltRounds2 = 10;
+          const hashed2 = await bcrypt.hash(defaultPassword2, saltRounds2);
+          await pool.query(
+            "INSERT INTO usuarios (nombre, contraseña, rol) VALUES ($1, $2, $3)",
+            ["auditor", hashed2, "auditor"]
+          );
+          console.log(
+            "Usuario por defecto 'auditor' creado con contraseña por defecto '1234'. Por seguridad, cámbiala después de iniciar sesión."
+          );
+        } else {
+          console.log("Usuario 'auditor' ya existe en la base de datos.");
+        }
+      } catch (e) {
+        console.error(
+          "Error comprobando/creando usuario 'auditor':",
+          e.message
+        );
+      }
     } catch (e) {
       console.error("Error asegurando tabla/usuario por defecto:", e.message);
     }
